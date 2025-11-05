@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>SkillConnect | AddMe</title>
+
+    <style>
+      /* Flip Card Animation */
+      .flip-card {
+        perspective: 1000px;
+      }
+      .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+      }
+      .flip-card.toggled .flip-card-inner {
+        transform: rotateY(180deg);
+      }
+      .flip-card-front,
+      .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        padding: 2rem;
+        border-radius: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+      .flip-card-back {
+        transform: rotateY(180deg);
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-gradient-to-br from-black via-purple-900 to-black min-h-screen flex flex-col justify-center items-center text-white"
+  >
+    <!-- <nav
+      class="bg-white w-full flex justify-between items-center p-3 shadow-lg fixed top-0 left-0 z-50"
+    >
+      <div class="flex gap-2 items-center">
+        <svg
+          class="w-8 h-8 text-indigo-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 10V3L4 14h7v7l9-11h-7z"
+          ></path>
+        </svg>
+        <p class="text-blue-700 font-bold text-xl">SkillConnect</p>
+      </div>
+
+      <div class="hidden md:flex gap-6 items-center">
+        <a
+          href="/users/loginregister"
+          class="hover:bg-zinc-100 px-3 py-1 rounded-lg transition"
+        >
+          Sign In
+        </a>
+
+        <a
+          href="users/loginregister"
+          class="bg-blue-700 hover:bg-blue-900 rounded-lg px-3 py-1 text-white transition"
+        >
+          Get Started
+        </a>
+      </div>
+
+      <div class="md:hidden">
+        <button id="menuBtn" class="p-2 focus:outline-none">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-blue-700"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <div
+      id="mobileMenu"
+      class="hidden flex-col items-center bg-white shadow-md py-4 mt-[56px] space-y-4 md:hidden fixed top-0 w-full z-40"
+    >
+      <a
+        href="#"
+        class="hover:text-blue-700 transition-all duration-300 block p-2 cursor-pointer"
+      >
+        Sign In
+      </a>
+      <a
+        href="#"
+        class="bg-blue-700 hover:bg-blue-900 rounded-lg px-4 py-2 text-white font-bold transition-all duration-300 block cursor-pointer"
+      >
+        Get Started
+      </a>
+    </div> -->
+    <!-- Logo + Header -->
+    <div class="text-center mb-6 mt-15">
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/1828/1828506.png"
+        alt="logo"
+        class="mx-auto w-20 h-20 mb-3"
+      />
+      <h1 class="text-4xl font-bold">SkillConnect</h1>
+      <p class="text-gray-300 mt-1">Collaborate with talented peers</p>
+    </div>
+
+    <!-- Flip Card -->
+    <div class="flip-card w-full max-w-md h-[400px] mb-10 relative">
+      <div class="flip-card-inner">
+        <!-- FRONT (Login) -->
+        <div class="flip-card-front flex flex-col justify-center items-center">
+          <form action="/users/login" method="POST" class="space-y-4 w-full">
+            <!-- Email -->
+            <div class="relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 12H8m8 0l-8-8m8 8l-8 8"
+                />
+              </svg>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                class="w-full pl-10 pr-4 py-2 bg-transparent border border-gray-400 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none placeholder-gray-400"
+                required
+              />
+            </div>
+
+            <!-- Password -->
+            <div class="relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 11c.5304 0 1.0391.2107 1.4142.5858C13.7893 11.9609 14 12.4696 14 13v2m-4 0v-2c0-.5304.2107-1.0391.5858-1.4142C10.9609 11.2107 11.4696 11 12 11zm0 0V7a4 4 0 00-8 0v4m8 0H4"
+                />
+              </svg>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                class="w-full pl-10 pr-4 py-2 bg-transparent border border-gray-400 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none placeholder-gray-400"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              class="w-full bg-purple-600 hover:bg-purple-700 transition py-2 rounded-lg font-semibold"
+            >
+              Sign in
+            </button>
+          </form>
+
+          <p class="text-sm text-center mt-4">
+            Don’t have an account?
+            <span
+              class="text-purple-300 cursor-pointer hover:underline"
+              id="showRegister"
+              >Sign up</span
+            >
+          </p>
+        </div>
+
+        <!-- BACK (Register) -->
+        <div class="flip-card-back flex flex-col justify-center items-center">
+          <form action="/users/register" method="POST" class="space-y-4 w-full">
+            <!-- Full Name -->
+            <div class="relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5.121 17.804A9 9 0 1118.878 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              <input
+                type="text"
+                name="fullname"
+                placeholder="Full name"
+                class="w-full pl-10 pr-4 py-2 bg-transparent border border-gray-400 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none placeholder-gray-400"
+                required
+              />
+            </div>
+
+            <!-- Email -->
+            <div class="relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 12H8m8 0l-8-8m8 8l-8 8"
+                />
+              </svg>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email address"
+                class="w-full pl-10 pr-4 py-2 bg-transparent border border-gray-400 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none placeholder-gray-400"
+                required
+              />
+            </div>
+
+            <!-- University -->
+            <div class="relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6l9 4.5-9 4.5L3 10.5 12 6z"
+                />
+              </svg>
+              <input
+                type="text"
+                name="university"
+                placeholder="University"
+                class="w-full pl-10 pr-4 py-2 bg-transparent border border-gray-400 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none placeholder-gray-400"
+                required
+              />
+            </div>
+
+            <!-- Password -->
+            <div class="relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 11c.5304 0 1.0391.2107 1.4142.5858C13.7893 11.9609 14 12.4696 14 13v2m-4 0v-2c0-.5304.2107-1.0391.5858-1.4142C10.9609 11.2107 11.4696 11 12 11zm0 0V7a4 4 0 00-8 0v4m8 0H4"
+                />
+              </svg>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                class="w-full pl-10 pr-4 py-2 bg-transparent border border-gray-400 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none placeholder-gray-400"
+                required
+              />
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 11c.5304 0 1.0391.2107 1.4142.5858C13.7893 11.9609 14 12.4696 14 13v2m-4 0v-2c0-.5304.2107-1.0391.5858-1.4142C10.9609 11.2107 11.4696 11 12 11zm0 0V7a4 4 0 00-8 0v4m8 0H4"
+                />
+              </svg>
+              <input
+                type="password"
+                name="confirmpassword"
+                placeholder="Confirm password"
+                class="w-full pl-10 pr-4 py-2 bg-transparent border border-gray-400 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none placeholder-gray-400"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              class="w-full bg-purple-600 hover:bg-purple-700 transition py-2 rounded-lg font-semibold"
+            >
+              Create Account
+            </button>
+          </form>
+
+          <p class="text-sm text-center mt-4">
+            Already have an account?
+            <span
+              class="text-purple-300 cursor-pointer hover:underline"
+              id="showLogin"
+              >Sign in</span
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+      const flipCard = document.querySelector(".flip-card");
+      const showRegister = document.getElementById("showRegister");
+      const showLogin = document.getElementById("showLogin");
+
+      if (showRegister && showLogin && flipCard) {
+        showRegister.addEventListener("click", () =>
+          flipCard.classList.add("toggled")
+        );
+        showLogin.addEventListener("click", () =>
+          flipCard.classList.remove("toggled")
+        );
+      }
+
+      // ✅ Inject EJS variable safely into JS
+      const toastMessage =
+        "<%= typeof toastMessage !== 'undefined' ? toastMessage : '' %>";
+      const toastType =
+        "<%= typeof toastType !== 'undefined' ? toastType : 'success' %>";
+
+      if (toastMessage) {
+        Swal.fire({
+          toast: true,
+          icon: "success",
+          title: toastMessage,
+          position: "top-center",
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+        });
+      }
+    </script>
+  </body>
+</html>
