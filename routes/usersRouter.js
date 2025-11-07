@@ -51,11 +51,11 @@ router.post("/register", async (req, res) => {
     // Set token as HTTP-only cookie
     res.cookie("token", token, { httpOnly: true });
 
-    console.log("Form Data:", req.body);
+    // console.log("Form Data:", req.body);
 
     // Show success toast
-    res.render("loginregister", {
-      toastMessage: "User registered successfully!",
+    return res.render("dashboard", {
+      toastMessage: "User Registered successful!",
       toastType: "success",
     });
   } catch (err) {
@@ -100,11 +100,11 @@ router.post("/login", async (req, res) => {
     res.cookie("token", token, { httpOnly: true });
 
     // ✅ render toast or redirect
-    // return res.render("loginregister", {
-    //   toastMessage: "Login successful!",
-    //   toastType: "success",
-    // });
-    res.send("login successful");
+    return res.render("dashboard", {
+      toastMessage: "Login successful!",
+      toastType: "success",
+    });
+    // res.send("login successful");
   } catch (error) {
     console.error("Login error:", error);
     res.render("loginregister", {
@@ -112,6 +112,11 @@ router.post("/login", async (req, res) => {
       toastType: "error",
     });
   }
+});
+
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.redirect("/");
 });
 
 module.exports = router;
