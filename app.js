@@ -20,6 +20,7 @@ app.use(express.json());
 app.use(cookieParser()); // 3. IMPORTANT: Re-added cookie-parser middleware
 
 app.use("/users", usersRouter);
+app.use("/nav", navRouter);
 
 // Database Connection
 mongoose
