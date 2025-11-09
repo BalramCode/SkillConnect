@@ -1,117 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>SkillConnect - Dashboard</title>
+    <style>
+      /* Ensure HTML/Body are set up for full-height fixed layouts */
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+        /* Prevent body scroll, let the specific content area scroll */
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>SkillConnect - Dashboard</title>
-  <style>
-    /* Ensure HTML/Body are set up for full-height fixed layouts */
-    html,
-    body {
-      height: 100%;
-      overflow: hidden;
-      /* Prevent body scroll, let the specific content area scroll */
-    }
+      /* This class forces the right content area to take up the remaining height and scroll */
+      .content-area-wrapper {
+        height: 100vh;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
 
-    /* This class forces the right content area to take up the remaining height and scroll */
-    .content-area-wrapper {
-      height: 100vh;
-      overflow-y: auto;
-    }
-  </style>
-</head>
+  <body>
+    <div class="flex h-screen bg-gray-50">
+      <nav class="w-64 bg-white flex flex-col shadow-xl z-20 fixed h-full">
+        <div class="flex gap-2 items-center p-5 border-b border-gray-100">
+          <svg
+            class="w-8 h-8 text-indigo-600"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <p class="text-indigo-800 font-extrabold text-2xl">SkillConnect</p>
+        </div>
 
-<body>
-  <div class="flex h-screen bg-gray-50">
-    <nav class="w-64 bg-white flex flex-col shadow-xl z-20 fixed h-full">
-      <div class="flex gap-2 items-center p-5 border-b border-gray-100">
-        <svg class="w-8 h-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-        <p class="text-indigo-800 font-extrabold text-2xl">SkillConnect</p>
-      </div>
+        <div class="mt-8 flex-grow overflow-y-auto">
+          <ul class="flex flex-col gap-1 px-4 text-gray-700">
+            <li class="group">
+              <a
+                class="flex items-center gap-3 p-3 text-lg rounded-lg transition-all duration-300"
+                href="/nav/dashboard"
+              >
+                <svg
+                  class="w-6 h-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 01-1 1h-3m-6 0a1 1 0001-1v-4a1 1 011-1h2a1 1 011 1v4a1 1 0001 1m-6 0h6"
+                  />
+                </svg>
+                Dashboard
+              </a>
+            </li>
 
-      <div class="mt-8 flex-grow overflow-y-auto">
-        <ul class="flex flex-col gap-1 px-4 text-gray-700">
-          <li class="group">
-            <a class="flex items-center gap-3 p-3 text-lg rounded-lg transition-all duration-300"
-              href="/nav/dashboard">
-              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 01-1 1h-3m-6 0a1 1 0001-1v-4a1 1 011-1h2a1 1 011 1v4a1 1 0001 1m-6 0h6" />
-              </svg>
-              Dashboard
-            </a>
-          </li>
+            <li class="group">
+              <a
+                class="flex items-center gap-3 p-3 text-lg rounded-lg transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600 bg-indigo-50 text-indigo-600 font-medium"
+                href="/nav/projects"
+              >
+                <svg
+                  class="w-6 h-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M3 7a2 2 0 012-2h14a2 2 0 012 2M3 7h18"
+                  />
+                </svg>
+                Projects
+              </a>
+            </li>
 
-          <li class="group">
-            <a class="flex items-center gap-3 p-3 text-lg rounded-lg transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600  bg-indigo-50 text-indigo-600 font-medium"
-              href="/nav/projects">
-              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M3 7a2 2 0 012-2h14a2 2 0 012 2M3 7h18" />
-              </svg>
-              Projects
-            </a>
-          </li>
+            <li class="group">
+              <a
+                class="flex items-center gap-3 p-3 text-lg rounded-lg transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600"
+                href="/nav/groups"
+              >
+                <svg
+                  class="w-6 h-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M17 20h5v-2a3 3 0 00-3-3H5a3 3 0 00-3 3v2h5"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"
+                  />
+                </svg>
+                Groups
+              </a>
+            </li>
 
-          <li class="group">
-            <a class="flex items-center gap-3 p-3 text-lg rounded-lg transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600"
-              href="/nav/groups">
-              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-3-3H5a3 3 0 00-3 3v2h5" />
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M12 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" />
-              </svg>
-              Groups
-            </a>
-          </li>
+            <li class="group">
+              <a
+                class="flex items-center gap-3 p-3 text-lg rounded-lg transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600"
+                href="/nav/chat"
+              >
+                <svg
+                  class="w-6 h-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M8 10h.01M12 10h.01M16 10h.01"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                Chat
+              </a>
+            </li>
 
-          <li class="group">
-            <a class="flex items-center gap-3 p-3 text-lg rounded-lg transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600"
-              href="/nav/chat">
-              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Chat
-            </a>
-          </li>
+            <li class="group">
+              <a
+                class="flex items-center gap-3 p-3 text-lg rounded-lg transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600"
+                href="/nav/profile"
+              >
+                <svg
+                  class="w-6 h-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 14c-4.418 0-8 3.582-8 8h16c0-4.418-3.582-8-8-8z"
+                  />
+                </svg>
+                Profile
+              </a>
+            </li>
 
-          <li class="group">
-            <a class="flex items-center gap-3 p-3 text-lg rounded-lg transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600"
-              href="/nav/profile">
-              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M12 14c-4.418 0-8 3.582-8 8h16c0-4.418-3.582-8-8-8z" />
-              </svg>
-              Profile
-            </a>
-          </li>
+            <li class="group">
+              <a
+                class="flex items-center gap-3 p-3 text-lg rounded-lg transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600"
+                href="/nav/setting"
+              >
+                <svg
+                  class="w-6 h-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 01.073.431c.219 1.056 1.14 1.636 2.2 1.636h.273c1.072 0 2.053.7 2.207 1.745a.695.695 0 00.147.165l.659.659c.745.745 1.14 1.94 1.14 3.14s-.395 2.395-1.14 3.14l-.659.659c-.06.06-.11.12-.147.165c-.154 1.045-1.076 1.636-2.207 1.745h-.273c-1.06 0-1.981.58-2.2 1.636a1.724 1.724 0 01-.073.431c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 01-.073-.431c-.219-1.056-1.14-1.636-2.2-1.636h-.273c-1.072 0-2.053-.7-2.207-1.745a.695.695 0 00-.147-.165l-.659-.659c-.745-.745-1.14-1.94-1.14-3.14s.395-2.395 1.14-3.14l.659-.659c.06-.06.11-.12.147-.165c.154-1.045 1.076-1.636 2.207-1.745h.273c1.06 0 1.981-.58 2.2-1.636a1.724 1.724 0 01.073-.431z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 14a2 2 0 100-4 2 2 0 000 4z"
+                  />
+                </svg>
+                Setting
+              </a>
+            </li>
 
-          <li class="group">
-            <a class="flex items-center gap-3 p-3 text-lg rounded-lg transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600"
-              href="/nav/setting">
-              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 01.073.431c.219 1.056 1.14 1.636 2.2 1.636h.273c1.072 0 2.053.7 2.207 1.745a.695.695 0 00.147.165l.659.659c.745.745 1.14 1.94 1.14 3.14s-.395 2.395-1.14 3.14l-.659.659c-.06.06-.11.12-.147.165c-.154 1.045-1.076 1.636-2.207 1.745h-.273c-1.06 0-1.981.58-2.2 1.636a1.724 1.724 0 01-.073.431c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 01-.073-.431c-.219-1.056-1.14-1.636-2.2-1.636h-.273c-1.072 0-2.053-.7-2.207-1.745a.695.695 0 00-.147-.165l-.659-.659c-.745-.745-1.14-1.94-1.14-3.14s.395-2.395 1.14-3.14l.659-.659c.06-.06.11-.12.147-.165c.154-1.045 1.076-1.636 2.207-1.745h.273c1.06 0 1.981-.58 2.2-1.636a1.724 1.724 0 01.073-.431z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 14a2 2 0 100-4 2 2 0 000 4z" />
-              </svg>
-              Setting
-            </a>
-          </li>
-
-          <!-- <li class="group">
+            <!-- <li class="group">
               <a
                 class="flex items-center gap-3 p-3 text-lg rounded-lg transition-all duration-300 hover:bg-indigo-50 hover:text-indigo-600"
                 href="#"
@@ -179,255 +269,291 @@
                 Calendar
               </a>
             </li> -->
-        </ul>
-      </div>
-
-      <div class="p-4 border-t border-gray-100">
-        <a href="/nav/logout"
-          class="flex items-center gap-3 p-3 text-lg rounded-lg transition-all duration-300 text-red-500 hover:bg-red-50 hover:text-red-700">
-          <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-            stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-          </svg>
-          Logout
-        </a>
-      </div>
-    </nav>
-
-    <div class="flex-1 ml-64 content-area-wrapper">
-      <nav
-        class="bg-white sticky top-0 z-10 shadow-md flex justify-between p-4 items-center h-16 border-b border-gray-100">
-        <div class="font-bold text-2xl text-gray-800 ml-6">Projects</div>
-
-        <div class="relative w-96">
-          <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
-            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 1114 0z" />
-          </svg>
-          <input
-            class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150"
-            type="text" placeholder="Search projects, teammates..." />
+          </ul>
         </div>
 
-        <div class="flex items-center gap-3 pr-6">
-          <div
-            class="w-10 h-10 bg-indigo-200 rounded-full flex items-center justify-center text-indigo-800 font-semibold">
-            BN
-          </div>
-          <div class="flex flex-col justify-center">
-            <p class="font-semibold text-gray-800 leading-none">
-              Balram Naik
-            </p>
-            <p class="text-sm text-gray-500 leading-none mt-1">
-              Computer Science
-            </p>
-          </div>
+        <div class="p-4 border-t border-gray-100">
+          <a
+            href="/nav/logout"
+            class="flex items-center gap-3 p-3 text-lg rounded-lg transition-all duration-300 text-red-500 hover:bg-red-50 hover:text-red-700"
+          >
+            <svg
+              class="w-6 h-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+            Logout
+          </a>
         </div>
       </nav>
 
-      <div class="p-6">
-        <div class="grid grid-cols-4 gap-6">
-          <div
-            class="bg-white p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-l-4 border-indigo-500">
-            <div class="flex justify-between items-center">
-              <p class="text-sm font-medium text-gray-500 uppercase">
-                Active Projects
-              </p>
-              <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 012-2h14a2 2 0 012 2M3 7h18" />
-              </svg>
-            </div>
-            <div class="mt-4 flex items-end justify-between">
-              <p class="text-3xl font-bold text-gray-900">6</p>
-              <div class="text-sm font-medium text-green-500">
-                +2 this month
-              </div>
-            </div>
-          </div>
+      <div class="flex-1 ml-64 content-area-wrapper">
+        <nav
+          class="bg-white sticky top-0 z-10 shadow-md flex justify-between p-4 items-center h-16 border-b border-gray-100"
+        >
+          <div class="font-bold text-2xl text-gray-800 ml-6">Projects</div>
 
-          <div
-            class="bg-white p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-l-4 border-teal-500">
-            <div class="flex justify-between items-center">
-              <p class="text-sm font-medium text-gray-500 uppercase">
-                Team Members
-              </p>
-              <svg class="w-6 h-6 text-teal-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-3-3H5a3 3 0 00-3 3v2h5" />
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M12 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" />
-              </svg>
-            </div>
-            <div class="mt-4 flex items-end justify-between">
-              <p class="text-3xl font-bold text-gray-900">24</p>
-              <div class="text-sm font-medium text-green-500">
-                +5 new members
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="bg-white p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-l-4 border-yellow-500">
-            <div class="flex justify-between items-center">
-              <p class="text-sm font-medium text-gray-500 uppercase">
-                Task Completed
-              </p>
-              <svg class="w-6 h-6 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 011-9 9 9 01-9 9z" />
-              </svg>
-            </div>
-            <div class="mt-4 flex items-end justify-between">
-              <p class="text-3xl font-bold text-gray-900">142</p>
-              <div class="text-sm font-medium text-green-500">
-                +18 this week
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="bg-white p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-l-4 border-red-500">
-            <div class="flex justify-between items-center">
-              <p class="text-sm font-medium text-gray-500 uppercase">
-                Pending Reviews
-              </p>
-              <svg class="w-6 h-6 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-12 0v3.159c0 .538.214 1.055.595 1.436L14 17z" />
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M12 14c0 .283-.027.562-.08.832c.189.967 1.077 1.701 2.051 1.701h.001c.974 0 1.862-.734 2.051-1.701A2 2 0 0112 10a2 2 0 000 2z" />
-              </svg>
-            </div>
-            <div class="mt-4 flex items-end justify-between">
-              <p class="text-3xl font-bold text-gray-900">8</p>
-              <div class="text-sm font-medium text-red-500">2 urgent</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex justify-between items-center mt-12 mb-6">
-          <div class="text-2xl font-semibold text-gray-800">My Projects</div>
-          <a href="#"
-            class="flex items-center gap-1 bg-indigo-600 rounded-lg px-4 py-2 text-white font-medium transition-colors duration-200 hover:bg-indigo-700 shadow-md">
-            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          <div class="relative w-96">
+            <svg
+              class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 1114 0z"
+              />
             </svg>
-            New Project
-          </a>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-          <div
-            class="group relative h-auto border border-gray-200 rounded-xl shadow-lg bg-white overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-indigo-500">
-            <div class="h-40 w-full overflow-hidden rounded-t-xl">
-              <span
-                class="absolute z-10 top-2 right-2 px-3 py-1 text-xs rounded-full bg-green-500 text-white font-semibold shadow">Completed</span><img
-                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                src="../public/images/streetfood1.jpg" alt="TasteRadar" />
-            </div>
-            <div class="p-4 flex flex-col gap-3">
-              <h3 class="text-xl font-semibold text-gray-800">
-                TasteRadar – StreetFood App
-              </h3>
-              <p class="text-gray-600 text-sm leading-relaxed min-h-[4rem]">
-                A mobile app that helps food lovers discover the most
-                hygienic, tasty, and affordable street food with the help of
-                visual map location + rating.
-              </p>
-              <div class="flex justify-between text-sm text-gray-500 mt-3 border-t pt-3">
-                <span>👥 4 members</span><span>⏱️ 3 months</span><span>⭐ 4.8 rating</span>
-              </div>
-              <a href="#"
-                class="mt-4 border border-indigo-600 text-indigo-600 text-center rounded-lg py-2 font-medium transition-all duration-300 hover:bg-indigo-600 hover:text-white">View
-                Project</a>
-            </div>
+            <input
+              class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150"
+              type="text"
+              placeholder="Search projects, teammates..."
+            />
           </div>
 
-          <div
-            class="group relative h-auto border border-gray-200 rounded-xl shadow-lg bg-white overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-indigo-500">
-            <div class="h-40 w-full overflow-hidden rounded-t-xl">
-              <span
-                class="absolute z-10 top-2 right-2 px-3 py-1 text-xs rounded-full bg-green-500 text-white font-semibold shadow">Completed</span><img
-                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                src="../public/images/Screenshot 2025-10-26 122312.png" alt="ShopMee" />
+          <div class="flex items-center gap-3 pr-6">
+            <div
+              class="w-10 h-10 bg-indigo-200 rounded-full flex items-center justify-center text-indigo-800 font-semibold"
+            >
+              BN
             </div>
-            <div class="p-4 flex flex-col gap-3">
-              <h3 class="text-xl font-semibold text-gray-800">
-                ShopMee – Shopping App
-              </h3>
-              <p class="text-gray-600 text-sm leading-relaxed min-h-[4rem]">
-                An online shopping platform that connects users to top-rated
-                products with personalized recommendations, fast checkout, and
-                affordable pricing.
+            <div class="flex flex-col justify-center">
+              <p class="font-semibold text-gray-800 leading-none">
+                Balram Naik
               </p>
-              <div class="flex justify-between text-sm text-gray-500 mt-3 border-t pt-3">
-                <span>👥 3 members</span><span>⏱️ 6 months</span><span>⭐ 4.2 rating</span>
-              </div>
-              <a href="#"
-                class="mt-4 border border-indigo-600 text-indigo-600 text-center rounded-lg py-2 font-medium transition-all duration-300 hover:bg-indigo-600 hover:text-white">View
-                Project</a>
+              <p class="text-sm text-gray-500 leading-none mt-1">
+                Computer Science
+              </p>
             </div>
           </div>
-
-          <div
-            class="group relative h-auto border border-gray-200 rounded-xl shadow-lg bg-white overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-indigo-500">
-            <div class="h-40 w-full overflow-hidden rounded-t-xl">
-              <span
-                class="absolute z-10 top-2 right-2 px-3 py-1 text-xs rounded-full bg-green-500 text-white font-semibold shadow">Completed</span><img
-                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                src="../public/images/image copy.png" alt="Ghar Set Go" />
-            </div>
-            <div class="p-4 flex flex-col gap-3">
-              <h3 class="text-xl font-semibold text-gray-800">
-                Ghar Set Go – Hire Workers
-              </h3>
-              <p class="text-gray-600 text-sm leading-relaxed min-h-[4rem]">
-                A platform that connects households with verified service
-                professionals for tasks like elder care, babysitting, cooking,
-                home cleaning, etc.
+        </nav>
+        <div
+          class="flex flex-col gap-6 p-6 bg-white rounded-xl shadow-sm border border-gray-200"
+        >
+          <!-- Header -->
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="font-semibold text-2xl text-gray-800">Project Groups</p>
+              <p class="text-gray-500 text-sm">
+                Join or create groups to collaborate on exciting projects
               </p>
-              <div class="flex justify-between text-sm text-gray-500 mt-3 border-t pt-3">
-                <span>👥 5 members</span><span>⏱️ 2 months</span><span>⭐ 4.9 rating</span>
-              </div>
-              <a href="#"
-                class="mt-4 border border-indigo-600 text-indigo-600 text-center rounded-lg py-2 font-medium transition-all duration-300 hover:bg-indigo-600 hover:text-white">View
-                Project</a>
             </div>
+
+            <button
+              id="openProjectModal"
+              class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 transition-all text-white px-4 py-2 rounded-lg shadow-sm"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-5 h-5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 4.5v15m7.5-7.5h-15"
+                />
+              </svg>
+              New Project
+            </button>
           </div>
 
+          <!-- To Do Tomorrow -->
+          <!-- Modal Background -->
           <div
-            class="group relative h-auto border border-gray-200 rounded-xl shadow-lg bg-white overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-indigo-500">
-            <div class="h-40 w-full overflow-hidden rounded-t-xl">
-              <span
-                class="absolute z-10 top-2 right-2 px-3 py-1 text-xs rounded-full bg-green-500 text-white font-semibold shadow">Completed</span><img
-                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                src="../public/images/streetfood1.jpg" alt="TasteRadar" />
+            id="projectModal"
+            class="fixed hidden inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+          >
+            <!-- Modal Box -->
+            <div
+              class="bg-white rounded-xl shadow-xl w-full max-w-2xl p-6 relative max-h-[90vh] overflow-y-auto"
+            >
+              <button
+                id="closeProjectModal"
+                class="absolute top-6 right-3 text-center text-gray-500 hover:text-black"
+              >
+                ✕
+              </button>
+
+              <h2 class="text-xl font-semibold mb-4 text-center">
+                Create New Project
+              </h2>
+
+              <form
+                id="projectForm"
+                action="/projects/create"
+                method="post"
+                class="space-y-4"
+              >
+                <div>
+                  <label class="block text-sm font-medium">Project Name</label>
+                  <input
+                    type="text"
+                    name="projectName"
+                    required
+                    class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium">Description</label>
+                  <textarea
+                    name="projectDescription"
+                    required
+                    class="w-full border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium"
+                    >Skill and Technology</label
+                  >
+                  <input
+                    type="text"
+                    name="skill"
+                    placeholder="e.g. MERN, Python, Flutter"
+                    class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium"
+                    >Maximum Members</label
+                  >
+                  <input
+                    type="number"
+                    name="members"
+                    required
+                    class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium mb-2"
+                    >Privacy Settings</label
+                  >
+
+                  <div
+                    class="flex flex-col space-y-3 bg-gray-50 p-4 rounded-xl border"
+                  >
+                    <!-- Public Option -->
+                    <label class="flex items-start space-x-3 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="visibility"
+                        value="public"
+                        checked
+                        class="mt-1 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                      />
+                      <div>
+                        <span class="font-medium text-gray-900">Public</span>
+                        <p class="text-gray-500 text-sm">
+                          Anyone can join this group
+                        </p>
+                      </div>
+                    </label>
+
+                    <!-- Private Option -->
+                    <label class="flex items-start space-x-3 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="visibility"
+                        value="private"
+                        class="mt-1 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                      />
+                      <div>
+                        <span class="font-medium text-gray-900">Private</span>
+                        <p class="text-gray-500 text-sm">
+                          Members need approval to join
+                        </p>
+                      </div>
+                    </label>
+                      
+                  </div>
+                </div>
+
+                <div class="flex justify-end">
+                  <button
+                    type="submit"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  >
+                    Create
+                  </button>
+                </div>
+              </form>
+                
             </div>
-            <div class="p-4 flex flex-col gap-3">
-              <h3 class="text-xl font-semibold text-gray-800">
-                TasteRadar – StreetFood App (2)
-              </h3>
-              <p class="text-gray-600 text-sm leading-relaxed min-h-[4rem]">
-                More content to force scroll. This dashboard layout now
-                features fixed navigation for a professional user experience.
-              </p>
-              <div class="flex justify-between text-sm text-gray-500 mt-3 border-t pt-3">
-                <span>👥 4 members</span><span>⏱️ 3 months</span><span>⭐ 4.8 rating</span>
-              </div>
-              <a href="#"
-                class="mt-4 border border-indigo-600 text-indigo-600 text-center rounded-lg py-2 font-medium transition-all duration-300 hover:bg-indigo-600 hover:text-white">View
-                Project</a>
+          </div>
+          <!-- Search + Filter -->
+          <div class="flex gap-3">
+            <div class="relative w-full">
+              <input
+                type="text"
+                placeholder="Search groups by name, description, or tags..."
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-5 h-5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21 21l-4.35-4.35m1.43-6.18a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"
+                />
+              </svg>
             </div>
+
+            <select
+              class="px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+            >
+              <option>All Groups</option>
+              <option>My Groups</option>
+              <option>Artificial Intelligence</option>
+              <option>Web Development</option>
+              <option>Mobile Development</option>
+              <option>Blockchain</option>
+              <option>Data Science</option>
+              <option>Cyber Security</option>
+            </select>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
+    <script>
+      const openBtn = document.getElementById("openProjectModal");
+      const closeBtn = document.getElementById("closeProjectModal");
+      const modal = document.getElementById("projectModal");
+      const form = document.getElementById("projectForm");
 
+      openBtn.addEventListener("click", () => modal.classList.remove("hidden"));
+      closeBtn.addEventListener("click", () => modal.classList.add("hidden"));
+      window.addEventListener("click", (e) => {
+        if (e.target === modal) modal.classList.add("hidden");
+      });
+
+      form.addEventListener("submit", () => {
+        modal.classList.add("hidden");
+      });
+    </script>
+  </body>
 </html>

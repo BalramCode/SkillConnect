@@ -5,8 +5,35 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 // GET: render login/register page
-router.get("/loginregister", (req, res) => {
-  res.render("loginregister", { toastMessage: "", toastType: "" });
+router.get("/loginregister", async (req, res) => {
+  try {
+    const token = req.cookies.token;
+
+    if (!token) {
+      // No token → show login/register
+      return res.render("loginregister");
+    }
+
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_KEY);
+    // Find user by decoded email
+    const user = await userModel.findOne({ email: decoded.email });
+
+    if (!user) {
+      // Invalid user → clear token + show login/register
+      res.clearCookie("token");
+      return res.render("loginregister");
+    }
+
+    // ✅ If token is valid, render dashboard and pass user data
+    // The user's full name is now available in EJS as 'userName'
+    res.render("dashboard", { userName: user.name });
+  } catch (error) {
+    // This catches expired/invalid JWT errors as well
+    console.error("Authentication Error:", error.message);
+    res.clearCookie("token");
+    res.render("index");
+  }
 });
 
 // POST: handle register form submission
@@ -113,6 +140,5 @@ router.post("/login", async (req, res) => {
     });
   }
 });
-
 
 module.exports = router;
