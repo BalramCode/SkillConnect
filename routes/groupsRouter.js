@@ -1,19 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const groupModel = require("../model/groupModel");
+const userModel = require("../model/userModel");
+const isLoggedIn = require("../middleware/isLoggedIn"); // <--- Import middleware
 
 // Show all groups page
-router.get("/", async (req, res) => {
+router.get("/", isLoggedIn, async (req, res) => {
   try {
     const groups = await groupModel.find().sort({ createdAt: -1 });
-    res.render("groups", { groups });
+    // Use req.user (logged-in user)
+    res.render("groups", { groups, user: req.user });
   } catch (error) {
     console.log(error);
     res.status(500).send("Failed to load groups ❌");
   }
 });
 
-router.post("/create", async (req, res) => {
+router.post("/create", isLoggedIn, async (req, res) => {
   try {
     const {
       groupName,
@@ -31,18 +34,15 @@ router.post("/create", async (req, res) => {
       members,
       visibility,
       skill,
+      
     });
-    // return res.status(200).send("Group created successfully ✅");
+
+    // Redirect to the GET route, which will handle fetching the user
     res.redirect("/groups");
   } catch (error) {
     console.log(error);
     return res.status(500).send("Failed to create group ❌");
   }
 });
-
-// router.get("/getGroups", async (req, res) => {
-//   let groups = await groupModel.find();
-//   res.render("Groups", groups);
-// });
 
 module.exports = router;

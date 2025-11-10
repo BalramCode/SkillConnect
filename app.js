@@ -10,8 +10,6 @@ const groupsRouter = require("./routes/groupsRouter");
 const projectsRouter = require("./routes/projectsRouter");
 const navRouter = require("./routes/navRouter");
 
-// Assuming ./model/userModel exports the compiled Mongoose Model
-// Renaming from userSChema to userModel for correct usage below.
 const userModel = require("./model/userModel");
 
 // Middleware Setup

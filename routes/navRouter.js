@@ -1,33 +1,43 @@
+// mainRouter.js
 const express = require("express");
 const router = express.Router();
 const userModel = require("../model/userModel");
 const groupModel = require("../model/groupModel");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const projectModel = require("../model/projectModel");
+const isLoggedIn = require('../middleware/isLoggedIn'); // <--- Import your middleware
 
 router.get("/logout", (req, res) => {
   res.clearCookie("token");
   res.redirect("/");
 });
 
-router.get("/dashboard", (req, res) => {
-  res.render("Dashboard");
+// Use the middleware to protect and populate req.user
+router.get("/dashboard", isLoggedIn, async (req, res) => {
+  // Now req.user holds the logged-in user's data!
+  res.render("dashboard", { user: req.user });
 });
-router.get("/projects", (req, res) => {
-  res.render("Projects");
+
+router.get("/projects", isLoggedIn, async (req, res) => {
+  const projects = await projectModel.find().sort({ createdAt: -1 });
+  // Pass req.user instead of fetching a random user
+  res.render("projects", { projects, user: req.user });
 });
-router.get("/groups", async (req, res) => {
+
+router.get("/groups", isLoggedIn, async (req, res) => {
   const groups = await groupModel.find().sort({ createdAt: -1 });
-  res.render("groups", { groups }); // ✅ now groups is defined
+  // Pass req.user instead of fetching a random user
+  res.render("groups", { groups, user: req.user });
 });
-router.get("/chat", (req, res) => {
-  res.render("Chat");
+
+// Apply middleware to other protected routes
+router.get("/chat", isLoggedIn, (req, res) => {
+  res.render("Chat", { user: req.user });
 });
-router.get("/setting", (req, res) => {
-  res.render("Setting");
+router.get("/setting", isLoggedIn, (req, res) => {
+  res.render("Setting", { user: req.user });
 });
-router.get("/profile", (req, res) => {
-  res.render("Profile");
+router.get("/profile", isLoggedIn, (req, res) => {
+  res.render("Profile", { user: req.user });
 });
 
 module.exports = router;
