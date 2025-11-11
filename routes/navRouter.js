@@ -4,7 +4,7 @@ const router = express.Router();
 const userModel = require("../model/userModel");
 const groupModel = require("../model/groupModel");
 const projectModel = require("../model/projectModel");
-const isLoggedIn = require('../middleware/isLoggedIn'); // <--- Import your middleware
+const isLoggedIn = require('../middleware/isLoggedIn');
 
 router.get("/logout", (req, res) => {
   res.clearCookie("token");
