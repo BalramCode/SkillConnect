@@ -111,27 +111,30 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Update profile (PUT)
-router.put("/:id", async (req, res) => {
+// Update profile
+router.post("/edit/:id", async (req, res) => {
   try {
-    const { fullname, bio, email, university } = req.body;
+    const { username, bio, email, university } = req.body;
 
-    await userModel.findByIdAndUpdate(
+    // Find and update the user, and return the updated document
+    const updatedUser = await userModel.findByIdAndUpdate(
       req.params.id,
-      {
-        fullname,
-        bio,
-        email,
-        university,
-      },
-      { new: true }
+      { username, bio, email, university },
+      { new: true } // returns the updated user
     );
 
-    res.redirect(`/profile/${req.params.id}`); // or wherever your profile page route is
+    // If user not found
+    if (!updatedUser) {
+      return res.status(404).send("User not found");
+    }
+
+    // Render with the updated user data
+    res.render("Profile", { user: updatedUser });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error updating profile");
   }
 });
+
 
 module.exports = router;
