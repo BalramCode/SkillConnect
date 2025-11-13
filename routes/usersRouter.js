@@ -27,7 +27,7 @@ router.get("/loginregister", async (req, res) => {
     console.error("Authentication Error:", error.message);
     res.clearCookie("token");
     // Change: Render loginregister if auth fails, as index wasn't defined
-    return res.render("loginregister"); 
+    return res.render("loginregister");
   }
 });
 
@@ -108,6 +108,29 @@ router.post("/login", async (req, res) => {
       toastMessage: "Something went wrong during login.",
       toastType: "error",
     });
+  }
+});
+
+// Update profile (PUT)
+router.put("/:id", async (req, res) => {
+  try {
+    const { fullname, bio, email, university } = req.body;
+
+    await userModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        fullname,
+        bio,
+        email,
+        university,
+      },
+      { new: true }
+    );
+
+    res.redirect(`/profile/${req.params.id}`); // or wherever your profile page route is
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error updating profile");
   }
 });
 
