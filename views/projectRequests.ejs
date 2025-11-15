@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notifications</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-6">
+
+  <h1 class="text-3xl font-bold mb-6">Notifications</h1>
+
+  <!-- =========================== -->
+  <!--   1️⃣ Requests YOU Sent      -->
+  <!-- =========================== -->
+  <div class="bg-white p-5 shadow rounded mb-8">
+    <h2 class="text-2xl font-semibold mb-4 text-indigo-600">
+      Your Join Requests
+    </h2>
+
+    <% 
+      let foundRequests = false; 
+      userJoinRequests.forEach(project => {
+        project.joinRequests.forEach(req => {
+          if (req.user._id.toString() === user._id.toString()) {
+            foundRequests = true;
+    %>
+
+      <div class="border rounded p-4 mb-3 bg-gray-50">
+        <p class="font-medium text-lg">
+          Project: <span class="text-indigo-700"><%= project.projectName %></span>
+        </p>
+
+        <p>Status:
+          <% if (req.status === "accepted") { %>
+            <span class="text-green-600 font-bold">Accepted ✔</span>
+          <% } else if (req.status === "rejected") { %>
+            <span class="text-red-600 font-bold">Rejected ✘</span>
+          <% } else { %>
+            <span class="text-yellow-600 font-bold">Pending ⏳</span>
+          <% } %>
+        </p>
+
+        <a href="/project/<%= project._id %>" 
+           class="text-indigo-600 underline font-medium mt-2 inline-block">
+           View Project
+        </a>
+      </div>
+
+    <% 
+          }
+        });
+      });
+
+      if (!foundRequests) {
+    %>
+      <p class="text-gray-500">No join request notifications.</p>
+    <% } %>
+  </div>
+
+
+
+  <!-- =========================== -->
+  <!--   2️⃣ Requests YOU RECEIVED  -->
+  <!-- =========================== -->
+  <div class="bg-white p-5 shadow rounded">
+    <h2 class="text-2xl font-semibold mb-4 text-green-600">
+      Requests on Your Projects
+    </h2>
+
+    <% 
+      let creatorDataFound = false;
+      creatorProjects.forEach(project => {
+        if (project.joinRequests.length > 0) {
+          creatorDataFound = true;
+    %>
+
+      <div class="border rounded p-4 mb-4">
+        <p class="font-medium text-lg mb-2">
+          Project: <span class="text-indigo-700"><%= project.projectName %></span>
+        </p>
+
+        <% project.joinRequests.forEach(r => { %>
+            <div class="flex justify-between bg-gray-100 p-3 rounded mb-2">
+              <div>
+                <p class="font-medium"><%= r.user.username %></p>
+                <p class="text-sm text-gray-700">Status: <%= r.status %></p>
+              </div>
+
+              <div class="flex gap-2">
+                <a href="/project/<%= project._id %>/accept/<%= r.user._id %>"
+                  class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition">
+                  Accept
+                </a>
+
+                <a href="/project/<%= project._id %>/reject/<%= r.user._id %>"
+                  class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition">
+                  Reject
+                </a>
+              </div>
+            </div>
+        <% }) %>
+      </div>
+
+    <% 
+        }
+      });
+
+      if (!creatorDataFound) { 
+    %>
+      <p class="text-gray-500">No new requests on your projects.</p>
+    <% } %>
+  </div>
+
+
+</body>
+</html>

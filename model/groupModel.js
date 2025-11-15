@@ -5,29 +5,62 @@ const groupSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
   groupDescription: String,
-  members: {
-    type: Number,
-    default: 1,
+
+  // REAL MEMBERS
+  members: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    }
+  ],
+
+  // JOIN REQUESTS
+  joinRequests: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      status: {
+        type: String,
+        enum: ["pending", "accepted", "rejected"],
+        default: "pending",
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
+    }
+  ],
+
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
   },
+
   category: {
     type: String,
     required: true,
   },
+
   visibility: {
-    type: String, 
+    type: String,
     enum: ["public", "private"],
     default: "public",
   },
+
   skill: {
     type: String,
     required: true,
   },
+
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
-
 
 module.exports = mongoose.model("Group", groupSchema);
