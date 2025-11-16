@@ -7,22 +7,18 @@ const projectModel = require("../model/projectModel");
 
 router.get("/notifications", isLoggedIn, async (req, res) => {
   try {
+    const message = req.query.msg || null;  // <--- MESSAGE HERE
+
     const userId = req.user._id;
 
-    // 1️⃣ Find requests where THIS user is the requester
     const userJoinRequests = await projectModel
-      .find({
-        "joinRequests.user": userId,
-      })
+      .find({ "joinRequests.user": userId })
       .populate("joinRequests.user")
       .populate("creator")
       .sort({ createdAt: -1 });
 
-    // 2️⃣ Find projects CREATED BY THIS USER (so they can see requests)
     const creatorProjects = await projectModel
-      .find({
-        creator: userId,
-      })
+      .find({ creator: userId })
       .populate("joinRequests.user")
       .populate("creator")
       .sort({ createdAt: -1 });
@@ -31,6 +27,7 @@ router.get("/notifications", isLoggedIn, async (req, res) => {
       user: req.user,
       userJoinRequests,
       creatorProjects,
+      message,   // <--- SEND TO FRONTEND
     });
   } catch (err) {
     console.log(err);
@@ -38,15 +35,7 @@ router.get("/notifications", isLoggedIn, async (req, res) => {
   }
 });
 
-// Join Request
-router.post("/join/:id", isLoggedIn, async (req, res) => {
-  const project = await projectModel.findById(req.params.id);
 
-  project.joinRequests.push({ user: req.user._id });
-
-  await project.save();
-  res.redirect(`/projects/project/${req.params.id}`);
-});
 
 // creator can see the request
 router.get("/project/:id/requests", isLoggedIn, async (req, res) => {
@@ -60,6 +49,20 @@ router.get("/project/:id/requests", isLoggedIn, async (req, res) => {
   res.render("projectRequests.ejs", { project });
 });
 
+// Join Request
+router.post("/join/:id", isLoggedIn, async (req, res) => {
+  const project = await projectModel.findById(req.params.id);
+
+  project.joinRequests.push({ user: req.user._id });
+
+  await project.save();
+
+  // Redirect to projects page WITH message
+  res.redirect(`/projects?message=sent`);
+});
+
+
+
 // Accept Request
 router.get("/project/:projectId/accept/:userId", async (req, res) => {
   const project = await projectModel.findById(req.params.projectId);
@@ -71,10 +74,13 @@ router.get("/project/:projectId/accept/:userId", async (req, res) => {
   );
 
   await project.save();
-  res.redirect(`/project/${req.params.projectId}/requests`);
+
+  // Redirect with query message
+  res.redirect(`/requestRoute/notifications?msg=accepted`);
 });
 
-// Reject Router
+
+// Reject Request
 router.get("/project/:projectId/reject/:userId", async (req, res) => {
   const project = await projectModel.findById(req.params.projectId);
 
@@ -83,7 +89,12 @@ router.get("/project/:projectId/reject/:userId", async (req, res) => {
   );
 
   await project.save();
-  res.redirect(`/project/${req.params.projectId}/requests`);
+
+  // Redirect with message
+  res.redirect(`/requestRoute/notifications?msg=rejected`);
 });
+
+
+
 
 module.exports = router;

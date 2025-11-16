@@ -595,7 +595,7 @@
             </div>
 
             <!-- Description -->
-            <p class="mt-4 text-gray-600 text-sm leading-relaxed">
+            <p class="truncate mt-4 text-gray-600 text-sm leading-relaxed">
               <%= project.projectDescription %>
             </p>
 
@@ -839,6 +839,36 @@
           
       </div>
     </div>
+    <% if (message === "sent") { %>
+    <div
+      id="toast"
+      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-lg text-center text-lg font-semibold animate-slideIn z-50"
+    >
+      Join Request Sent ✔
+    </div>
+
+    <script>
+      setTimeout(() => {
+        document.getElementById("toast").classList.add("opacity-0");
+      }, 2000);
+    </script>
+
+    <style>
+      .animate-slideIn {
+        animation: slideIn 0.4s ease-out;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -40%);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%);
+        }
+      }
+    </style>
+    <% } %>
 
     <script>
       const openBtn = document.getElementById("openProjectModal");

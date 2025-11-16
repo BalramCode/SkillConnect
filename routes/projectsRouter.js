@@ -12,12 +12,15 @@ router.get("/", isLoggedIn, async (req, res) => {
       .populate("members")
       .sort({ createdAt: -1 });
 
-    res.render("Projects", { projects, user: req.user });
+    const message = req.query.message || null;  // <-- ADD THIS
+
+    res.render("Projects", { projects, user: req.user, message }); // <-- PASS TO FRONTEND
   } catch (error) {
     console.log(error);
     res.status(500).send("Failed to load projects ❌");
   }
 });
+
 
 // Create project
 router.post("/create", isLoggedIn, async (req, res) => {

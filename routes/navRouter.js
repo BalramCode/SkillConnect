@@ -18,10 +18,28 @@ router.get("/dashboard", isLoggedIn, async (req, res) => {
 });
 
 router.get("/projects", isLoggedIn, async (req, res) => {
-  const projects = await projectModel.find().sort({ createdAt: -1 });
-  // Pass req.user instead of fetching a random user
-  res.render("projects", { projects, user: req.user });
+  try {
+    const projects = await projectModel.find()
+      .populate("creator")
+      .populate("members")
+      .populate("joinRequests.user")
+      .sort({ createdAt: -1 });
+
+    const message = req.query.msg || null;   // <-- ADD THIS
+
+    res.render("projects", { 
+      projects, 
+      user: req.user,
+      message                 // <-- SEND TO EJS
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.send("Error loading projects");
+  }
 });
+
+
 
 router.get("/groups", isLoggedIn, async (req, res) => {
   const groups = await groupModel.find().sort({ createdAt: -1 });
