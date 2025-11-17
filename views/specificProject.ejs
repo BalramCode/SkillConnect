@@ -1001,51 +1001,37 @@
               </div>
 
               <!-- Team Grid -->
+               <!-- The badge role to do tomorrow -->
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <% project.members.forEach(function(member){ %>
                 <div
-                  class="w-30 bg-white p-2 rounded-xl shadow hover:shadow-md transition"
+                  class="w-full bg-white rounded-xl shadow p-4 flex items-center justify-between"
                 >
-                  <div class=" flex items-center gap-3">
-                    <!-- To Do Next -->
-                    <div>
-                      <img
-                        src="https://i.pravatar.cc/100?u=<%= member._id %>"
-                        class="w-12 h-12 rounded-full"
-                      />
-
-                    </div>
-
-                    <div>
-                      <h3 class="font-semibold"><%= member.fullname %></h3>
-                      <p class="text-sm text-gray-500"><%= member.email %></p>
-                    </div>
-
-                    <!-- Role Badge -->
-                    <span
-                      class=" text-xs px-3 py-1 rounded-full <% if (String(member._id) === String(project.creator._id)) { %> bg-purple-100 text-purple-700 <% } else { %> bg-blue-100 text-blue-700 <% } %>"
+                  <!-- Left Section -->
+                  <div class="flex gap-4">
+                    <div
+                      class="w-10 h-10 rounded-full bg-indigo-200 flex items-center justify-center text-indigo-800 font-bold text-lg"
                     >
-                      <% if (String(member._id) === String(project.creator._id))
-                      { %> Owner <% } else { %> Member <% } %>
-                    </span>
+                      <%= member.fullname.charAt(0).toUpperCase() %>
+                    </div>
+
+                    <div class="leading-tight">
+                      <h3 class="font-semibold text-lg">
+                        <%= member.fullname %>
+                      </h3>
+                      <p class="text-gray-500 text-sm"><%= member.email %></p>
+                    </div>
                   </div>
 
-                  <!-- <div class="mt-4 flex items-center justify-between">
-                    <button
-                      class="w-full bg-gray-100 py-2 rounded-lg hover:bg-gray-200 transition"
-                    >
-                      Manage
-                    </button>
-                    <button
-                      class="ml-2 p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition"
-                    >
-                      ✖
-                    </button>
-                  </div> -->
+                  <!-- Role Badge -->
+                  <span
+                    class="px-4 py-1 rounded-full text-sm font-medium <%= String(member._id) === String(project.creator._id) ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700' %>"
+                  >
+                    <%= String(member._id) === String(project.creator._id) ?
+                    "Owner" : "Member" %>
+                  </span>
                 </div>
                 <% }); %>
-
-                <!-- Add more cards as needed -->
               </div>
 
               <!-- Invite Section -->
