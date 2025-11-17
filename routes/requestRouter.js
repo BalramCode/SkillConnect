@@ -7,7 +7,7 @@ const projectModel = require("../model/projectModel");
 
 router.get("/notifications", isLoggedIn, async (req, res) => {
   try {
-    const message = req.query.msg || null;  // <--- MESSAGE HERE
+    const message = req.query.msg || null; // <--- MESSAGE HERE
 
     const userId = req.user._id;
 
@@ -27,15 +27,13 @@ router.get("/notifications", isLoggedIn, async (req, res) => {
       user: req.user,
       userJoinRequests,
       creatorProjects,
-      message,   // <--- SEND TO FRONTEND
+      message, // <--- SEND TO FRONTEND
     });
   } catch (err) {
     console.log(err);
     res.status(500).send("Failed to load notifications ❌");
   }
 });
-
-
 
 // creator can see the request
 router.get("/project/:id/requests", isLoggedIn, async (req, res) => {
@@ -61,13 +59,13 @@ router.post("/join/:id", isLoggedIn, async (req, res) => {
   res.redirect(`/projects?message=sent`);
 });
 
-
-
 // Accept Request
 router.get("/project/:projectId/accept/:userId", async (req, res) => {
   const project = await projectModel.findById(req.params.projectId);
 
-  project.members.push(req.params.userId);
+  if (!project.members.includes(req.params.userId)) {
+    project.members.push(req.params.userId);
+  }
 
   project.joinRequests = project.joinRequests.map((r) =>
     r.user.toString() === req.params.userId ? { ...r, status: "accepted" } : r
@@ -78,7 +76,6 @@ router.get("/project/:projectId/accept/:userId", async (req, res) => {
   // Redirect with query message
   res.redirect(`/requestRoute/notifications?msg=accepted`);
 });
-
 
 // Reject Request
 router.get("/project/:projectId/reject/:userId", async (req, res) => {
@@ -93,8 +90,5 @@ router.get("/project/:projectId/reject/:userId", async (req, res) => {
   // Redirect with message
   res.redirect(`/requestRoute/notifications?msg=rejected`);
 });
-
-
-
 
 module.exports = router;
