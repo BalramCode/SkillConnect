@@ -1001,11 +1001,11 @@
               </div>
 
               <!-- Team Grid -->
-               <!-- The badge role to do tomorrow -->
+              <!-- The badge role to do tomorrow -->
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <% project.members.forEach(function(member){ %>
                 <div
-                  class="w-full bg-white rounded-xl shadow p-4 flex items-center justify-between"
+                  class="w-full bg-white rounded-xl shadow p-3 flex items-center justify-between"
                 >
                   <!-- Left Section -->
                   <div class="flex gap-4">
@@ -1015,21 +1015,37 @@
                       <%= member.fullname.charAt(0).toUpperCase() %>
                     </div>
 
-                    <div class="leading-tight">
-                      <h3 class="font-semibold text-lg">
+                    <div class="leading-tight border">
+                      <h3 class="font-semibold border inline text-lg">
                         <%= member.fullname %>
                       </h3>
                       <p class="text-gray-500 text-sm"><%= member.email %></p>
                     </div>
+                    <div class="flex justify-between mr-10 items-center">
+                      <span
+                        class="text-xs mr-10 bg-red-100 text-red-600 px-2 py-1 rounded-full"
+                        >high</span
+                      >
+                    </div>
                   </div>
 
                   <!-- Role Badge -->
-                  <span
+                  <!-- <span
                     class="px-4 py-1 rounded-full text-sm font-medium <%= String(member._id) === String(project.creator._id) ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700' %>"
                   >
                     <%= String(member._id) === String(project.creator._id) ?
                     "Owner" : "Member" %>
-                  </span>
+                  </span> -->
+
+                  <!-- <div class="flex justify-between items-center mb-1">
+                    <h3 class="font-semibold text-gray-800">
+                      User Research Analysis
+                    </h3>
+                    <span
+                      class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full"
+                      >high</span
+                    >
+                  </div> -->
                 </div>
                 <% }); %>
               </div>
