@@ -442,6 +442,8 @@
 
               <!-- Action Buttons -->
               <div class="flex flex-wrap gap-4 mt-8">
+             <% if (loggedInUser && loggedInUser._id.toString() === user._id.toString()) { %>
+
                 <button
                   class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg font-semibold shadow-md transition transform hover:scale-105"
                 >
@@ -462,6 +464,7 @@
                   </svg>
                   Edit Profile
                 </button>
+                <% } %>
 
                 <button
                   class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold shadow-md transition transform hover:scale-105"

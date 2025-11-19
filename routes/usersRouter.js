@@ -114,26 +114,41 @@ router.post("/login", async (req, res) => {
 // Update profile
 router.post("/edit/:id", async (req, res) => {
   try {
+    const token = req.cookies.token;
+
+    if (!token) {
+      return res.status(401).send("Unauthorized");
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_KEY);
+
+    // Prevent editing another user's profile
+    if (decoded.id !== req.params.id) {
+      return res.status(403).send("Forbidden: You cannot edit another user's profile");
+    }
+
     const { username, bio, email, university } = req.body;
 
-    // Find and update the user, and return the updated document
     const updatedUser = await userModel.findByIdAndUpdate(
       req.params.id,
       { username, bio, email, university },
-      { new: true } // returns the updated user
+      { new: true }
     );
 
-    // If user not found
-    if (!updatedUser) {
-      return res.status(404).send("User not found");
-    }
+    const loggedInUser = await userModel.findById(decoded.id);
 
-    // Render with the updated user data
-    res.render("Profile", { user: updatedUser });
+    // 🔥 IMPORTANT: pass loggedInUser to EJS
+    return res.render("Profile", { 
+      user: updatedUser,
+      loggedInUser 
+    });
+
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error updating profile");
+    return res.status(500).send("Error updating profile");
   }
 });
+
+
 
 module.exports = router;
