@@ -62,18 +62,12 @@ router.post("/join/:id", isLoggedIn, async (req, res) => {
       return res.redirect(`/projects?message=already_member`);
     }
 
-    // -------------------------------
     // PUBLIC PROJECT ⇒ AUTO-JOIN
-    // -------------------------------
     if (project.visibility === "public") {
       project.members.push(req.user._id);
       await project.save();
       return res.redirect(`/projects/project/${project._id}`);
     }
-
-    // -----------------------------------
-    // PRIVATE PROJECT ⇒ SEND REQUEST
-    // -----------------------------------
 
     // Check if user already requested
     const alreadyRequested = project.joinRequests.some(
