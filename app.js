@@ -10,6 +10,7 @@ const groupsRouter = require("./routes/groupsRouter");
 const projectsRouter = require("./routes/projectsRouter");
 const navRouter = require("./routes/navRouter");
 const requestRouter = require("./routes/requestRouter");
+const searchRouter = require("./routes/searchRouter");
 
 const userModel = require("./model/userModel");
 
@@ -25,6 +26,7 @@ app.use("/groups", groupsRouter);
 app.use("/projects", projectsRouter);
 app.use("/nav", navRouter);
 app.use("/requestRoute", requestRouter);
+app.use("/search", searchRouter);
 
 // Database Connection
 mongoose

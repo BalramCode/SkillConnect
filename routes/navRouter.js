@@ -41,7 +41,6 @@ router.get("/projects", isLoggedIn, async (req, res) => {
 
 router.get("/groups", isLoggedIn, async (req, res) => {
   const groups = await groupModel.find().sort({ createdAt: -1 });
-  // Pass req.user instead of fetching a random user
   res.render("groups", { groups, user: req.user });
 });
 

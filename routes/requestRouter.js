@@ -48,16 +48,53 @@ router.get("/project/:id/requests", isLoggedIn, async (req, res) => {
 });
 
 // Join Request
+// Join Project
 router.post("/join/:id", isLoggedIn, async (req, res) => {
-  const project = await projectModel.findById(req.params.id);
+  try {
+    const project = await projectModel.findById(req.params.id);
 
-  project.joinRequests.push({ user: req.user._id });
+    if (!project) {
+      return res.status(404).send("Project not found");
+    }
 
-  await project.save();
+    // Already a member?
+    if (project.members.includes(req.user._id)) {
+      return res.redirect(`/projects?message=already_member`);
+    }
 
-  // Redirect to projects page WITH message
-  res.redirect(`/projects?message=sent`);
+    // -------------------------------
+    // PUBLIC PROJECT ⇒ AUTO-JOIN
+    // -------------------------------
+    if (project.visibility === "public") {
+      project.members.push(req.user._id);
+      await project.save();
+      return res.redirect(`/projects/project/${project._id}`);
+    }
+
+    // -----------------------------------
+    // PRIVATE PROJECT ⇒ SEND REQUEST
+    // -----------------------------------
+
+    // Check if user already requested
+    const alreadyRequested = project.joinRequests.some(
+      (reqObj) => reqObj.user.toString() === req.user._id.toString()
+    );
+
+    if (alreadyRequested) {
+      return res.redirect(`/projects?message=request_exists`);
+    }
+
+    project.joinRequests.push({ user: req.user._id });
+    await project.save();
+
+    return res.redirect(`/projects?message=request_sent`);
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Something went wrong ❌");
+  }
 });
+
 
 // Accept Request
 router.get("/project/:projectId/accept/:userId", async (req, res) => {

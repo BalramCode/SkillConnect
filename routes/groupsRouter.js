@@ -7,12 +7,16 @@ const isLoggedIn = require("../middleware/isLoggedIn"); // <--- Import middlewar
 // Show all groups page
 router.get("/", isLoggedIn, async (req, res) => {
   try {
-    const groups = await groupModel.find().sort({ createdAt: -1 });
+    const groups = await groupModel
+      .find()
+      .populate("creator")
+      .populate("members")
+      .sort({ createdAt: -1 });
     // Use req.user (logged-in user)
     res.render("groups", { groups, user: req.user });
   } catch (error) {
     console.log(error);
-    res.status(500).send("Failed to load groups ❌");
+    res.status(500).send("Failed to load groups");
   }
 });
 
@@ -31,10 +35,10 @@ router.post("/create", isLoggedIn, async (req, res) => {
       groupName,
       groupDescription,
       category,
-      members,
       visibility,
       skill,
-      
+      creator: req.user._id,
+      members: [req.user._id],
     });
 
     // Redirect to the GET route, which will handle fetching the user

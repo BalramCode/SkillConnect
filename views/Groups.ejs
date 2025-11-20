@@ -448,7 +448,7 @@
                   d="M20 7v10a2 2 0 01-2 2H6a2 2 0 01-2-2V7m16 0H4m16 0V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2M4 7V5a2 2 0 012-2h4a2 2 0 012 2v2"
                 />
               </svg>
-              <h3 class="truncate"><%= group.groupName %></h3>
+              <h3 class="truncate capitalize"><%= group.groupName %></h3>
             </div>
 
             <!-- Category Badge (More executive look with rounded-full and uppercase) -->
@@ -459,14 +459,14 @@
             </div>
 
             <!-- Description (mt-4 for more space) -->
-            <p class="mt-4 text-gray-600 text-sm leading-relaxed">
+            <p class="mt-4 text-gray-600 text-sm leading-relaxed truncate">
               <%= group.groupDescription %>
             </p>
 
             <!-- Skills/Tags (Improved styling with border and shadow-inner) -->
             <div class="mt-4 flex gap-2 text-xs font-medium text-gray-700">
               <span
-                class="px-2.5 py-1 bg-gray-100 rounded-lg shadow-inner border border-gray-200"
+                class="capitalize px-2.5 py-1 bg-gray-100 rounded-lg shadow-inner border border-gray-200"
                 ><%= group.skill %></span
               >
               <!-- Placeholder for other skills -->
@@ -487,19 +487,18 @@
               <!-- Members (Updated text color to gray) -->
               <span class="flex items-center gap-1">
                 <svg
-                  class="w-4 h-4 text-gray-400"
+                  class="w-4 h-4 text-gray-500 flex-shrink-0"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="1.8"
+                  stroke-width="2"
                   viewBox="0 0 24 24"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M17 20v-2a4 4 0 00-3-3.87M9 20v-2a4 4 0 013-3.87M7 8a4 4 0 118 0 4 4 0 01-8 0z"
-                  />
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                 </svg>
-                <%= group.members %>
+                <%= group.members ? group.members.length : 10 %>
               </span>
 
               <!-- Created Date (Month abbreviated for cleaner look) -->
