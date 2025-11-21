@@ -599,6 +599,11 @@
                 />
               </svg>
               <h3 class="truncate capitalize"><%= project.projectName %></h3>
+              <p
+                class="text-xs m-0 p-1 right-0 rounded-full <%= project.visibility == 'public' ? 'bg-green-100' : 'bg-red-100' %>"
+              >
+                <%= project.visibility %>
+              </p>
             </div>
 
             <!-- Description -->
