@@ -587,14 +587,12 @@
               <div class="flex justify-between items-center mb-6">
                 <h1 class="text-2xl font-semibold text-gray-800">Task Board</h1>
 
-                <form action="/projects/newTask" method="GET">
-                  <button
-                    type="submit"
-                    class="px-5 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-                  >
-                    + New Task
-                  </button>
-                </form>
+                <button
+                  type="submit"
+                  class="openTaskModal px-5 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+                >
+                  + New Task
+                </button>
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -671,13 +669,11 @@
 
                   <!-- Add Task -->
 
-                  <form action="/projects/newTask" method="GET">
-                    <button
-                      class="w-full py-3 mt-2 border rounded-xl text-gray-600 hover:bg-gray-100 transition"
-                    >
-                      + Add Task
-                    </button>
-                  </form>
+                  <button
+                    class="openTaskModal w-full py-3 mt-2 border rounded-xl text-gray-600 hover:bg-gray-100 transition"
+                  >
+                    + Add Task
+                  </button>
                 </div>
 
                 <!-- Column -->
@@ -745,13 +741,11 @@
                     </div>
                   </div>
 
-                  <form action="/projects/newTask" method="GET">
-                    <button
-                      class="w-full py-3 mt-2 border rounded-xl text-gray-600 hover:bg-gray-100 transition"
-                    >
-                      + Add Task
-                    </button>
-                  </form>
+                  <button
+                    class="openTaskModal w-full py-3 mt-2 border rounded-xl text-gray-600 hover:bg-gray-100 transition"
+                  >
+                    + Add Task
+                  </button>
                 </div>
 
                 <!-- Column -->
@@ -818,13 +812,11 @@
                       <p class="text-sm text-gray-400">Dec 3</p>
                     </div>
                   </div>
-                  <form action="/projects/newTask" method="GET">
-                    <button
-                      class="w-full py-3 mt-2 border rounded-xl text-gray-600 hover:bg-gray-100 transition"
-                    >
-                      + Add Task
-                    </button>
-                  </form>
+                  <button
+                    class="openTaskModal w-full py-3 mt-2 border rounded-xl text-gray-600 hover:bg-gray-100 transition"
+                  >
+                    + Add Task
+                  </button>
                 </div>
 
                    
@@ -1092,7 +1084,74 @@
         </div>
       </div>
     </div>
+
+    <!-- Task Modal -->
+    <div
+      id="taskModal"
+      class="fixed hidden inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+    >
+      <!-- Modal Box -->
+      <div
+        class="bg-white rounded-xl shadow-xl w-full max-w-2xl p-6 relative max-h-[90vh] overflow-y-auto"
+      >
+        <button
+          id="closeTaskModal"
+          class="absolute top-6 right-3 text-center text-gray-500 hover:text-black"
+        >
+          ✕
+        </button>
+
+        <h2 class="text-xl font-semibold mb-4 text-center">Add New Task</h2>
+
+        <form
+          id="taskForm"
+          action="/projects/newTask"
+          method="post"
+          class="space-y-4"
+        >
+          <div>
+            <label class="block text-sm font-medium">Task Name</label>
+            <input
+              type="text"
+              name="taskName"
+              required
+              class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium">Description</label>
+            <textarea
+              name="taskDescription"
+              required
+              class="w-full border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            ></textarea>
+          </div>
+          <div class="flex justify-end">
+            <button
+              type="submit"
+              class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            >
+              Add
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const openBtn = document.querySelectorAll(".openTaskModal");
+        const closeBtn = document.querySelector(".closeTaskModal");
+        const modal = document.getElementById("taskModal");
+        const form = document.getElementById("taskForm");
+
+        openBtn.addEventListener("click", () =>
+          modal.classList.remove("hidden")
+        );
+        closeBtn.addEventListener("click", () => modal.classList.add("hidden"));
+      });
+
       document.addEventListener("DOMContentLoaded", () => {
         // All sections
         const sections = ["overview", "tasks", "chat", "files", "members"];

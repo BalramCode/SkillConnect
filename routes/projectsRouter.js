@@ -63,4 +63,8 @@ router.get("/project/:id", isLoggedIn, async (req, res) => {
   }
 });
 
+router.post("/newTask", async (req, res) => {
+  res.send("hello jee")
+})
+
 module.exports = router;
