@@ -61,7 +61,7 @@
           >
             <path d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
-          <p class="text-indigo-800 font-extrabold text-2xl">SkillConnect</p>
+          <p class="text-indigo-800 font-extrabold text-2xl">JokoHub</p>
         </div>
 
         <div class="mt-8 flex-grow overflow-y-auto">
@@ -850,6 +850,168 @@
               >
                 Members
               </button>
+            </div>
+            <!-- Copy this single div into your page (requires Tailwind CSS) -->
+            <div
+              class="w-full mx-auto bg-white/90 p-4 rounded-2xl shadow-lg ring-1 ring-gray-200 font-sans"
+            >
+              <!-- Header -->
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <div class="text-lg font-semibold text-gray-900">
+                    Project: <%= project.projectName %>
+                  </div>
+                  <div class="text-xs text-gray-500">Team chat • 6 members</div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <div class="text-xs text-green-600 font-medium">Online</div>
+                  <div
+                    class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-pink-500 rounded-full text-white flex items-center justify-center text-sm"
+                  >
+                    CP
+                  </div>
+                </div>
+              </div>
+
+              <!-- Messages container -->
+              <div class="space-y-3 max-h-80 overflow-y-auto pr-2">
+                <!-- Message (left) -->
+                <div class="flex items-start space-x-3">
+                  <div class="flex-shrink-0">
+                    <div
+                      class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-700"
+                    >
+                      AR
+                    </div>
+                  </div>
+                  <div>
+                    <div class="text-xs text-gray-500">Aarav • 10:02 AM</div>
+                    <div
+                      class="mt-1 bg-gray-100 text-gray-900 px-3 py-2 rounded-lg rounded-tl-none max-w-xs shadow-sm"
+                    >
+                      I pushed the initial project skeleton to the repo — check
+                      the README for setup steps.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Message (right) -->
+                <div class="flex items-start justify-end">
+                  <div class="max-w-xs">
+                    <div class="text-right text-xs text-gray-500">
+                      Me • 10:05 AM
+                    </div>
+                    <div
+                      class="mt-1 inline-block bg-indigo-600 text-white px-3 py-2 rounded-lg rounded-tr-none shadow"
+                    >
+                      Nice — I'll integrate GitHub storage and add CI in the
+                      next commit.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Message (left) -->
+                <div class="flex items-start space-x-3">
+                  <div class="flex-shrink-0">
+                    <div
+                      class="w-9 h-9 rounded-full bg-yellow-200 flex items-center justify-center text-sm font-medium text-yellow-800"
+                    >
+                      SM
+                    </div>
+                  </div>
+                  <div>
+                    <div class="text-xs text-gray-500">Sima • 10:07 AM</div>
+                    <div
+                      class="mt-1 bg-gray-100 text-gray-900 px-3 py-2 rounded-lg rounded-tl-none max-w-xs shadow-sm"
+                    >
+                      Can someone add a short demo video (30s)? Deadline is
+                      today. I can write the voiceover.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Message (right) with file pill -->
+                <div class="flex items-start justify-end">
+                  <div class="max-w-xs text-right">
+                    <div class="text-xs text-gray-500">Me • 10:09 AM</div>
+                    <div
+                      class="mt-1 inline-block bg-indigo-600 text-white px-3 py-2 rounded-lg rounded-tr-none shadow"
+                    >
+                      Uploaded a quick script draft —
+                      <span class="underline font-medium">script-v1.txt</span>
+                    </div>
+                    <div class="mt-2 flex justify-end">
+                      <span
+                        class="inline-flex items-center px-2.5 py-1 rounded-full bg-white/10 text-xs text-white/90"
+                        >0.8 MB</span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- System / status message -->
+                <div class="text-center text-xs text-gray-400">
+                  — Project members joined: Aarav, Me, Sima, Priya, Rahul —
+                </div>
+
+                <!-- Message (left) -->
+                <div class="flex items-start space-x-3">
+                  <div class="flex-shrink-0">
+                    <div
+                      class="w-9 h-9 rounded-full bg-pink-100 flex items-center justify-center text-sm font-medium text-pink-700"
+                    >
+                      PR
+                    </div>
+                  </div>
+                  <div>
+                    <div class="text-xs text-gray-500">Priya • 10:12 AM</div>
+                    <div
+                      class="mt-1 bg-gray-100 text-gray-900 px-3 py-2 rounded-lg rounded-tl-none max-w-xs shadow-sm"
+                    >
+                      I'll record the 30s video today. What scenes do we want?
+                      (1) intro, (2) create project, (3) upload file, (4) join
+                      group.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Quick reaction row -->
+                <div class="flex items-center space-x-2 text-xs text-gray-500">
+                  <div class="flex items-center space-x-2">
+                    <div
+                      class="w-6 h-6 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 text-xs"
+                    >
+                      👍
+                    </div>
+                    <div>Got it</div>
+                  </div>
+                  <div class="ml-3">•</div>
+                  <div>2 new messages</div>
+                </div>
+              </div>
+
+              <!-- Composer / input -->
+              <div class="mt-4">
+                <label for="chat-input" class="sr-only">Write a message</label>
+                <div class="flex items-center space-x-2">
+                  <input
+                    id="chat-input"
+                    type="text"
+                    placeholder="Write a short message or /todo"
+                    class="flex-1 px-3 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                  />
+                  <button
+                    class="px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 text-sm"
+                  >
+                    Send
+                  </button>
+                </div>
+                <div class="mt-2 text-xs text-gray-400">
+                  Pro tip: type <span class="font-medium">/todo</span> to add a
+                  task (UI only).
+                </div>
+                  
+              </div>
             </div>
           </div>
           <div id="files" class="hidden">
