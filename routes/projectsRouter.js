@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const projectModel = require("../model/projectModel");
 const isLoggedIn = require("../middleware/isLoggedIn");
+const Task = require("../model/taskModel");
 
 // Get all projects
 router.get("/", isLoggedIn, async (req, res) => {
@@ -46,25 +47,55 @@ router.post("/create", isLoggedIn, async (req, res) => {
 // View Specific Project
 router.get("/project/:id", isLoggedIn, async (req, res) => {
   try {
-    const project = await projectModel
-      .findById(req.params.id)
+    const project = await projectModel.findById(req.params.id)
       .populate("creator")
       .populate("members")
       .populate("joinRequests.user");
 
-    if (!project) {
-      return res.status(404).send("Project not found ❌");
-    }
+    const tasks = await Task.find({ project: req.params.id })
+      .populate("assignedTo")
+      .sort({ createdAt: -1 });
 
-    res.render("specificProject", { project, user: req.user });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Failed to view project ❌");
+    res.render("specificProject", {
+      project,
+      user: req.user,
+      tasks
+    });
+
+  } catch (err) {
+    res.status(500).send("Error loading project");
   }
 });
 
+
+// router.post("/newTask", async (req, res) => {
+//   res.send("hello jee")
+// })
+
+
 router.post("/newTask", async (req, res) => {
-  res.send("hello jee")
-})
+  try {
+    const { project, title, description, priority, assignedTo, dueDate, status } = req.body;
+
+    const task = await Task.create({
+      project,
+      title,
+      description,
+      priority,
+      assignedTo,
+      dueDate,
+      status
+    });
+
+    // redirect user back to the specific project page
+    res.redirect("/projects/project/" + project);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+});
+
+
+
 
 module.exports = router;
