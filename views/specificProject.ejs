@@ -274,7 +274,7 @@
         <!-- Each Project Overview-->
         <div class="max-w-6xl mx-auto p-6 space-y-6">
           <div
-            class="bg-white rounded-2xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl"
+            class="bg-white rounded-2xl shadow-lg p-3 transition-all duration-300 hover:shadow-xl"
           >
             <div class="flex justify-between items-start">
               <div>
@@ -604,9 +604,9 @@
                     >
                       <i class="ri-clipboard-line text-gray-600"></i> To Do
                     </h2>
-                    <span class="text-sm bg-gray-100 px-2 py-0.5 rounded"
-                      >2</span
-                    >
+                    <span class="text-sm bg-gray-100 px-2 py-0.5 rounded">
+                      <%= tasks.filter(t => t.status === "todo").length %>
+                    </span>
                   </div>
 
                   <!-- Task Card -->
@@ -616,13 +616,19 @@
                     <div
                       class="p-4 mb-4 bg-white w-full rounded-xl border hover:shadow-md transition"
                     >
-                      <div class="flex justify-between mb-1">
-                        <h3 class="font-semibold"><%= task.title %></h3>
-                        <span
-                          class="text-xs px-2 py-1 rounded-full <%= task.priority === 'high' ? 'bg-red-100 text-red-600' : task.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-600' %>"
+                      <div class="relative mb-1">
+                        <!-- Priority Badge (only takes space in first line visually) -->
+                        <p
+                          class="text-sm font-medium text-base leading-tight mb-1"
                         >
-                          <%= task.priority %>
-                        </span>
+                          <span
+                            class="float-right ml-2 text-[10px] px-2 py-[2px] rounded-full whitespace-nowrap <%= task.priority === 'high' ? 'bg-red-100 text-red-600' : task.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-600' %>"
+                          >
+                            <%= task.priority %>
+                          </span>
+
+                          <%= task.title %>
+                        </p>
                       </div>
 
                       <p class="text-sm text-gray-500 mb-3">
@@ -634,15 +640,17 @@
                           <% if (task.assignedTo) { %>
                           <img
                             src="https://i.pravatar.cc/25?u=<%= task.assignedTo._id %>"
-                            class="w-6 h-6 rounded-full"
+                            class="w-4 h-4 rounded-full"
                           />
-                          <p class="text-sm"><%= task.assignedTo.username %></p>
+                          <p class="text-[10px]">
+                            <%= task.assignedTo.username %>
+                          </p>
                           <% } else { %>
                           <p class="text-sm text-gray-400">Unassigned</p>
                           <% } %>
                         </div>
 
-                        <p class="text-sm text-gray-400">
+                        <p class="text-[8px] leading-none text-gray-400">
                           <%= task.dueDate ? task.dueDate.toDateString() : '' %>
                         </p>
                       </div>
@@ -1248,99 +1256,87 @@
 
         <h2 class="text-xl font-semibold mb-4 text-center">Add New Task</h2>
 
-       <form
-  id="taskForm"
-  action="/projects/newTask"
-  method="post"
-  class="space-y-4"
->
-  <!-- Hidden Project ID -->
-  <input type="hidden" name="project" value="<%= project._id %>">
+        <form
+          id="taskForm"
+          action="/projects/newTask"
+          method="post"
+          class="space-y-4"
+        >
+          <!-- Hidden Project ID -->
+          <input type="hidden" name="project" value="<%= project._id %>" />
 
-  <!-- Task Title -->
-  <div>
-    <label class="block text-sm font-medium mb-1">Task Title</label>
-    <input
-      type="text"
-      name="title"
-      required
-      class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-    />
-  </div>
+          <!-- Task Title -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Task Title</label>
+            <input
+              type="text"
+              name="title"
+              required
+              class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            />
+          </div>
 
-  <!-- Description -->
-  <div>
-    <label class="block text-sm font-medium mb-1">Description</label>
-    <textarea
-      name="description"
-      required
-      class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-    ></textarea>
-  </div>
+          <!-- Description -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Description</label>
+            <textarea
+              name="description"
+              required
+              class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            ></textarea>
+          </div>
 
-  <!-- Assign To -->
-  <div>
-    <label class="block text-sm font-medium mb-1">Assign To</label>
-    <select
-      name="assignedTo"
-      class="w-full p-2 border rounded-lg"
-    >
-      <option value="">Unassigned</option>
-      <% project.members.forEach(member => { %>
-        <option value="<%= member._id %>">
-          <%= member.username %>
-        </option>
-      <% }) %>
-    </select>
-  </div>
+          <!-- Assign To -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Assign To</label>
+            <select name="assignedTo" class="w-full p-2 border rounded-lg">
+              <option value="">Unassigned</option>
+              <% project.members.forEach(member => { %>
+              <option value="<%= member._id %>"><%= member.username %></option>
+              <% }) %>
+            </select>
+          </div>
 
-  <!-- Priority -->
-  <div>
-    <label class="block text-sm font-medium mb-1">Priority</label>
-    <select
-      name="priority"
-      class="w-full p-2 border rounded-lg"
-    >
-      <option value="low">Low</option>
-      <option value="medium">Medium</option>
-      <option value="high">High</option>
-    </select>
-  </div>
+          <!-- Priority -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Priority</label>
+            <select name="priority" class="w-full p-2 border rounded-lg">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
 
-  <!-- Due Date -->
-  <div>
-    <label class="block text-sm font-medium mb-1">Due Date</label>
-    <input
-      type="date"
-      name="dueDate"
-      class="w-full p-2 border rounded-lg"
-    />
-  </div>
+          <!-- Due Date -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Due Date</label>
+            <input
+              type="date"
+              name="dueDate"
+              class="w-full p-2 border rounded-lg"
+            />
+          </div>
 
-  <!-- Status -->
-  <div>
-    <label class="block text-sm font-medium mb-1">Status</label>
-    <select
-      name="status"
-      class="w-full p-2 border rounded-lg"
-    >
-      <option value="todo">To-Do</option>
-      <option value="inprogress">In Progress</option>
-      <option value="done">Done</option>
-    </select>
-  </div>
+          <!-- Status -->
+          <div>
+            <label class="block text-sm font-medium mb-1">Status</label>
+            <select name="status" class="w-full p-2 border rounded-lg">
+              <option value="todo">To-Do</option>
+              <option value="inprogress">In Progress</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
 
-  <!-- Submit Button -->
-  <div class="flex justify-end">
-    <button
-      type="submit"
-      class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-    >
-      Add Task
-    </button>
-  </div>
-</form>
-
+          <!-- Submit Button -->
+          <div class="flex justify-end">
+            <button
+              type="submit"
+              class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+            >
+              Add Task
+            </button>
+          </div>
+        </form>
       </div>
     </div>
 
