@@ -554,6 +554,7 @@
               </div>
             </div>
           </div>
+
           <div id="tasks" class="hidden">
             <div class="flex gap-6 border-b border-gray-200 text-gray-600 pt-2">
               <button
@@ -595,8 +596,11 @@
                 </button>
               </div>
 
+              <!-- GRID FOR 3 COLUMNS -->
               <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Column -->
+                <!-- ============================================================ -->
+                <!-- =======================   TO DO  ============================ -->
+                <!-- ============================================================ -->
                 <div class="bg-white rounded-xl p-4 shadow border">
                   <div class="flex items-center justify-between mb-3">
                     <h2
@@ -604,62 +608,55 @@
                     >
                       <i class="ri-clipboard-line text-gray-600"></i> To Do
                     </h2>
+
                     <span class="text-sm bg-gray-100 px-2 py-0.5 rounded">
                       <%= tasks.filter(t => t.status === "todo").length %>
                     </span>
                   </div>
 
-                  <!-- Task Card -->
-                  <div>
-                    <% tasks.filter(t => t.status === "todo").forEach(task => {
-                    %>
-                    <div
-                      class="p-4 mb-4 bg-white w-full rounded-xl border hover:shadow-md transition"
-                    >
-                      <div class="relative mb-1">
-                        <!-- Priority Badge (only takes space in first line visually) -->
-                        <p
-                          class="text-sm font-medium text-base leading-tight mb-1"
+                  <!-- LIST TASKS FOR TODO -->
+                  <% tasks.filter(t => t.status === "todo").forEach(task => { %>
+                  <div
+                    class="p-4 mb-4 bg-white w-full rounded-xl border hover:shadow-md transition"
+                  >
+                    <div class="relative mb-1">
+                      <p class="text-sm font-medium leading-tight mb-1">
+                        <span
+                          class="float-right ml-2 text-[10px] px-2 py-[2px] rounded-full whitespace-nowrap <%= task.priority === 'high' ? 'bg-red-100 text-red-600' : task.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-600' %>"
                         >
-                          <span
-                            class="float-right ml-2 text-[10px] px-2 py-[2px] rounded-full whitespace-nowrap <%= task.priority === 'high' ? 'bg-red-100 text-red-600' : task.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-600' %>"
-                          >
-                            <%= task.priority %>
-                          </span>
-
-                          <%= task.title %>
-                        </p>
-                      </div>
-
-                      <p class="text-sm text-gray-500 mb-3">
-                        <%= task.description %>
+                          <%= task.priority %>
+                        </span>
+                        <%= task.title %>
                       </p>
-
-                      <div class="flex justify-between">
-                        <div class="flex items-center gap-2">
-                          <% if (task.assignedTo) { %>
-                          <img
-                            src="https://i.pravatar.cc/25?u=<%= task.assignedTo._id %>"
-                            class="w-4 h-4 rounded-full"
-                          />
-                          <p class="text-[10px]">
-                            <%= task.assignedTo.username %>
-                          </p>
-                          <% } else { %>
-                          <p class="text-sm text-gray-400">Unassigned</p>
-                          <% } %>
-                        </div>
-
-                        <p class="text-[8px] leading-none text-gray-400">
-                          <%= task.dueDate ? task.dueDate.toDateString() : '' %>
-                        </p>
-                      </div>
                     </div>
-                    <% }) %>
+
+                    <p class="text-sm text-gray-500 mb-3">
+                      <%= task.description %>
+                    </p>
+
+                    <div class="flex justify-between items-center">
+                      <div class="flex items-center gap-2">
+                        <% if (task.assignedTo) { %>
+                        <img
+                          src="https://i.pravatar.cc/25?u=<%= task.assignedTo._id %>"
+                          class="w-4 h-4 rounded-full"
+                        />
+                        <p class="text-[10px]">
+                          <%= task.assignedTo.username %>
+                        </p>
+                        <% } else { %>
+                        <p class="text-[10px] text-gray-400">Unassigned</p>
+                        <% } %>
+                      </div>
+
+                      <p class="text-[8px] leading-none text-gray-400">
+                        <%= task.dueDate ? task.dueDate.toDateString() : '' %>
+                      </p>
+                    </div>
                   </div>
+                  <% }) %>
 
-                  <!-- Add Task -->
-
+                  <!-- ADD NEW TASK BUTTON -->
                   <button
                     class="openTaskModal w-full py-3 mt-2 border rounded-xl text-gray-600 hover:bg-gray-100 transition"
                   >
@@ -667,70 +664,58 @@
                   </button>
                 </div>
 
-                <!-- Column -->
+                <!-- ============================================================ -->
+                <!-- ======================= IN PROGRESS ========================= -->
+                <!-- ============================================================ -->
                 <div class="bg-white rounded-xl p-4 shadow border">
                   <div class="flex items-center justify-between mb-3">
                     <h2 class="font-semibold text-gray-800">In Progress</h2>
-                    <span class="text-sm bg-gray-100 px-2 py-0.5 rounded"
-                      >2</span
-                    >
+                    <span class="text-sm bg-gray-100 px-2 py-0.5 rounded">
+                      <%= tasks.filter(t => t.status === "inprogress").length %>
+                    </span>
                   </div>
 
+                 <% tasks.filter(t => t.status === "inprogress").forEach(task => { %>
+
                   <div
-                    class="p-4 mb-4 bg-white w-full rounded-xl border hover:shadow-md transition cursor-pointer"
+                    class="p-4 mb-4 bg-white w-full rounded-xl border hover:shadow-md transition"
                   >
-                    <div class="flex justify-between items-center mb-1">
-                      <h3 class="font-semibold text-gray-800">
-                        Navigation Wireframes
-                      </h3>
-                      <span
-                        class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full"
-                        >high</span
-                      >
+                    <div class="relative mb-1">
+                      <p class="text-sm font-medium leading-tight mb-1">
+                        <span
+                          class="float-right ml-2 text-[10px] px-2 py-[2px] rounded-full whitespace-nowrap <%= task.priority === 'high' ? 'bg-red-100 text-red-600' : task.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-600' %>"
+                        >
+                          <%= task.priority %>
+                        </span>
+                        <%= task.title %>
+                      </p>
                     </div>
+
                     <p class="text-sm text-gray-500 mb-3">
-                      Design new navigation structure
+                      <%= task.description %>
                     </p>
 
                     <div class="flex justify-between items-center">
                       <div class="flex items-center gap-2">
+                        <% if (task.assignedTo) { %>
                         <img
-                          src="https://i.pravatar.cc/25?img=1"
-                          class="w-6 h-6 rounded-full"
+                          src="https://i.pravatar.cc/25?u=<%= task.assignedTo._id %>"
+                          class="w-4 h-4 rounded-full"
                         />
-                        <p class="text-sm text-gray-700">Michael Brown</p>
+                        <p class="text-[10px]">
+                          <%= task.assignedTo.username %>
+                        </p>
+                        <% } else { %>
+                        <p class="text-[10px] text-gray-400">Unassigned</p>
+                        <% } %>
                       </div>
-                      <p class="text-sm text-gray-400">Dec 8</p>
+
+                      <p class="text-[8px] leading-none text-gray-400">
+                        <%= task.dueDate ? task.dueDate.toDateString() : '' %>
+                      </p>
                     </div>
                   </div>
-
-                  <div
-                    class="p-4 mb-4 bg-white w-full rounded-xl border hover:shadow-md transition cursor-pointer"
-                  >
-                    <div class="flex justify-between items-center mb-1">
-                      <h3 class="font-semibold text-gray-800">
-                        Icon Set Creation
-                      </h3>
-                      <span
-                        class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full"
-                        >medium</span
-                      >
-                    </div>
-                    <p class="text-sm text-gray-500 mb-3">
-                      Design custom icons for interface
-                    </p>
-
-                    <div class="flex justify-between items-center">
-                      <div class="flex items-center gap-2">
-                        <img
-                          src="https://i.pravatar.cc/25?img=8"
-                          class="w-6 h-6 rounded-full"
-                        />
-                        <p class="text-sm text-gray-700">Lina Garcia</p>
-                      </div>
-                      <p class="text-sm text-gray-400">Dec 9</p>
-                    </div>
-                  </div>
+                  <% }) %>
 
                   <button
                     class="openTaskModal w-full py-3 mt-2 border rounded-xl text-gray-600 hover:bg-gray-100 transition"
@@ -739,81 +724,68 @@
                   </button>
                 </div>
 
-                <!-- Column -->
+                <!-- ============================================================ -->
+                <!-- =========================== DONE ============================ -->
+                <!-- ============================================================ -->
                 <div class="bg-white rounded-xl p-4 shadow border">
                   <div class="flex items-center justify-between mb-3">
                     <h2 class="font-semibold text-gray-800">Done</h2>
-                    <span class="text-sm bg-gray-100 px-2 py-0.5 rounded"
-                      >2</span
-                    >
+                    <span class="text-sm bg-gray-100 px-2 py-0.5 rounded">
+                      <%= tasks.filter(t => t.status === "done").length %>
+                    </span>
                   </div>
 
+                  <% tasks.filter(t => t.status === "done").forEach(task => { %>
                   <div
-                    class="p-4 mb-4 bg-white w-full rounded-xl border hover:shadow-md transition cursor-pointer"
+                    class="p-4 mb-4 bg-white w-full rounded-xl border hover:shadow-md transition"
                   >
-                    <div class="flex justify-between items-center mb-1">
-                      <h3 class="font-semibold text-gray-800">
-                        User Interface Mockups
-                      </h3>
-                      <span
-                        class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full"
-                        >high</span
-                      >
+                    <div class="relative mb-1">
+                      <p class="text-sm font-medium leading-tight mb-1">
+                        <span
+                          class="float-right ml-2 text-[10px] px-2 py-[2px] rounded-full whitespace-nowrap <%= task.priority === 'high' ? 'bg-red-100 text-red-600' : task.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-600' %>"
+                        >
+                          <%= task.priority %>
+                        </span>
+                        <%= task.title %>
+                      </p>
                     </div>
+
                     <p class="text-sm text-gray-500 mb-3">
-                      Complete high-fidelity mockups
+                      <%= task.description %>
                     </p>
 
                     <div class="flex justify-between items-center">
                       <div class="flex items-center gap-2">
+                        <% if (task.assignedTo) { %>
                         <img
-                          src="https://i.pravatar.cc/25?img=7"
-                          class="w-6 h-6 rounded-full"
+                          src="https://i.pravatar.cc/25?u=<%= task.assignedTo._id %>"
+                          class="w-4 h-4 rounded-full"
                         />
-                        <p class="text-sm text-gray-700">Emma Wilson</p>
+                        <p class="text-[10px]">
+                          <%= task.assignedTo.username %>
+                        </p>
+                        <% } else { %>
+                        <p class="text-[10px] text-gray-400">Unassigned</p>
+                        <% } %>
                       </div>
-                      <p class="text-sm text-gray-400">Dec 5</p>
+
+                      <p class="text-[8px] leading-none text-gray-400">
+                        <%= task.dueDate ? task.dueDate.toDateString() : '' %>
+                      </p>
                     </div>
                   </div>
+                  <% }) %>
 
-                  <div
-                    class="p-4 mb-4 bg-white w-full rounded-xl border hover:shadow-md transition cursor-pointer"
-                  >
-                    <div class="flex justify-between items-center mb-1">
-                      <h3 class="font-semibold text-gray-800">
-                        Brand Guidelines
-                      </h3>
-                      <span
-                        class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full"
-                        >medium</span
-                      >
-                    </div>
-                    <p class="text-sm text-gray-500 mb-3">
-                      Establish brand design system
-                    </p>
-
-                    <div class="flex justify-between items-center">
-                      <div class="flex items-center gap-2">
-                        <img
-                          src="https://i.pravatar.cc/25?img=9"
-                          class="w-6 h-6 rounded-full"
-                        />
-                        <p class="text-sm text-gray-700">Alex Johnson</p>
-                      </div>
-                      <p class="text-sm text-gray-400">Dec 3</p>
-                    </div>
-                  </div>
                   <button
                     class="openTaskModal w-full py-3 mt-2 border rounded-xl text-gray-600 hover:bg-gray-100 transition"
                   >
                     + Add Task
                   </button>
                 </div>
-
-                   
               </div>
             </div>
           </div>
+
           <div id="chat" class="hidden">
             <div class="flex gap-6 border-b border-gray-200 text-gray-600 pt-2">
               <button
@@ -1023,7 +995,7 @@
                 Chat
               </button>
               <button
-                class="pb-3 border-b-2 border-indigo-500 text-indigo-600 font-semibold transition-all duration-200 hover:text-indigo-600"
+                class="pb-3 border-b-2 border-indigo-500 text-indigo-600 font-semibold transition-all"
               >
                 Files
               </button>
@@ -1033,6 +1005,7 @@
                 Members
               </button>
             </div>
+
             <div class="w-full p-6 bg-white rounded-xl shadow">
               <!-- Header -->
               <div class="flex justify-between items-center mb-4">
@@ -1048,16 +1021,31 @@
                   </button>
 
                   <label
-                    for="fileUpload"
+                    for="fileUploadInput"
                     class="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                   >
                     <i class="ri-upload-2-line"></i> Upload File
                   </label>
-                  <input id="fileUpload" type="file" class="hidden" multiple />
                 </div>
               </div>
 
-              <!-- Drag & Drop Box -->
+              <!-- Upload Form -->
+              <form
+                id="uploadForm"
+                action="/projects/project/<%= project._id %>/upload"
+                method="POST"
+                enctype="multipart/form-data"
+              >
+                <input
+                  id="fileUploadInput"
+                  type="file"
+                  name="file"
+                  multiple
+                  class="hidden"
+                />
+              </form>
+
+              <!-- Drag & Drop -->
               <div
                 id="dropArea"
                 class="w-full border-2 border-dashed border-gray-300 rounded-xl py-12 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 transition"
@@ -1068,15 +1056,11 @@
                 <p class="text-gray-600">
                   Drag and drop files here, or click to browse
                 </p>
-                <p class="text-sm text-gray-400 mt-1">
-                  Supports: PDF, DOC, FIGMA, SKETCH, ZIP (Max 50MB)
-                </p>
-
-                <input id="dropInput" type="file" class="hidden" multiple />
               </div>
 
               <!-- File List -->
               <div class="mt-6 space-y-4" id="fileList">
+                <% files.forEach(file => { %>
                 <div
                   class="p-4 bg-white border rounded-xl flex justify-between items-center hover:shadow transition"
                 >
@@ -1084,37 +1068,46 @@
                     <i class="ri-file-line text-2xl text-blue-600"></i>
 
                     <div>
-                      <p class="font-semibold text-gray-800">file.name</p>
-                      <p class="text-sm text-gray-500">
-                        Uploaded by file.uploadedBy • file.time • file.size
+                      <p class="font-semibold text-gray-800">
+                        <%= file.originalname %>
                       </p>
 
-                      <a href="" class="text-sm text-blue-600 underline"> </a>
+                      <p class="text-sm text-gray-500">
+  Uploaded by <%= file.uploadedBy.username %> • 
+  <%= file.createdAt.toDateString() %> • 
+  <%= (file.size / 1024).toFixed(1) %> KB
+</p>
+
+
+                      <a
+                        href="/uploads/files/<%= file.filename %>"
+                        download
+                        class="text-sm text-blue-600 underline"
+                      >
+                        Download
+                      </a>
                     </div>
                   </div>
 
                   <div class="flex items-center gap-4 text-gray-500">
-                    <a
-                      href="/files/downloadfile.id "
-                      class="hover:text-blue-600 transition"
-                    >
-                      <i class="ri-download-2-line text-xl"></i>
-                    </a>
-
-                    <button class="hover:text-blue-600 transition">
-                      <i class="ri-share-line text-xl"></i>
-                    </button>
-
-                    <form action="/files/delete file.id " method="POST">
+                    <form action="/file/delete/<%= file._id %>" method="POST">
                       <button class="hover:text-red-600 transition">
                         <i class="ri-delete-bin-line text-xl"></i>
                       </button>
                     </form>
                   </div>
                 </div>
+                <% }) %>
               </div>
             </div>
           </div>
+
+          <script>
+            document.getElementById("dropArea").onclick = () => {
+              document.getElementById("fileUploadInput").click();
+            };
+          </script>
+
           <div id="members" class="hidden">
             <div class="flex gap-6 border-b border-gray-200 text-gray-600 pt-2">
               <button
@@ -1378,6 +1371,35 @@
             }
           });
         });
+      });
+    </script>
+    <script>
+      const dropArea = document.getElementById("dropArea");
+      const fileInput = document.getElementById("fileUploadInput"); // FIXED
+      const uploadForm = document.getElementById("uploadForm");
+
+      // Click to open file selector
+      dropArea.onclick = () => fileInput.click();
+
+      // Auto submit when file is selected
+      fileInput.onchange = () => uploadForm.submit();
+
+      // Drag + drop events
+      dropArea.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropArea.classList.add("border-blue-400");
+      });
+
+      dropArea.addEventListener("dragleave", () => {
+        dropArea.classList.remove("border-blue-400");
+      });
+
+      dropArea.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropArea.classList.remove("border-blue-400");
+
+        fileInput.files = e.dataTransfer.files;
+        uploadForm.submit();
       });
     </script>
   </body>

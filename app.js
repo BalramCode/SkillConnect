@@ -39,6 +39,20 @@ mongoose
     console.error("Mongodb not connected:", err.message);
   });
 
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/files"); // create this folder
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  }
+});
+
+const upload = multer({ storage });
+
+
 // Root Route
 app.get("/", (req, res) => {
   res.render("index");
