@@ -152,6 +152,8 @@ router.post(
   }
 );
 
+
+// Delete file
 router.post("/file/delete/:id", isLoggedIn, async (req, res) => {
   const file = await File.findById(req.params.id);
   if (!file) return res.status(404).send("File not found");
@@ -160,5 +162,18 @@ router.post("/file/delete/:id", isLoggedIn, async (req, res) => {
 
   res.redirect(`/projects/project/${file.project}`);
 });
+
+// Download file
+router.get("/uploads/files/:filename", (req, res) => {
+  const filePath = path.join(__dirname, "../uploads/files", req.params.filename);
+
+  res.download(filePath, (err) => {
+    if (err) {
+      console.error("Download error:", err);
+      return res.status(404).send("File not found");
+    }
+  });
+});
+
 
 module.exports = router;
