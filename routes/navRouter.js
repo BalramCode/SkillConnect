@@ -54,31 +54,37 @@ router.get("/setting", isLoggedIn, (req, res) => {
 
 //For LoggedIn User 
 router.get("/profile", isLoggedIn, async (req, res) => {
-  const loggedInUser = req.user;
+  const isLoggedIn = req.user;
   return res.render("Profile", { 
-    user: loggedInUser,
-    loggedInUser 
+    user: isLoggedIn,
+    isLoggedIn 
   });
 });
 
 
-
 // For Other User
-router.get("/profile/:id", async (req, res) => {
-  const token = req.cookies.token;
-  let loggedInUser = null;
+router.get("/profile/:id", isLoggedIn, async (req, res) => {
+  const otherUser = await userModel.findById(req.params.id);
 
-  if (token) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_KEY);
-      loggedInUser = await userModel.findById(decoded.id);
-    } catch (err) {
-      loggedInUser = null;
-    }
-  }
-
-  const user = await userModel.findById(req.params.id);
-  return res.render("Profile", { user, loggedInUser });
+  res.render("Profile", {
+    user: otherUser,
+    isLoggedIn: req.user
+  });
 });
+
+
+router.get("/project/:id", isLoggedIn, async (req, res) => {
+  const project = await projectModel.findById(req.params.id)
+    .populate("creator")
+    .populate("members")
+    .populate("joinRequests.user");
+
+  res.render("specificProject", { 
+    project, 
+    user: req.user, 
+    isLoggedIn: req.user  // ✅ ADD THIS
+  });
+});
+
 
 module.exports = router;

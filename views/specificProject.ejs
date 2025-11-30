@@ -1162,6 +1162,7 @@
                     >
                       <%= member.fullname.charAt(0).toUpperCase() %>
                     </div>
+                    
 
                     <div class="leading-tight">
                       <h3 class="font-medium inline text-lg">
@@ -1332,6 +1333,28 @@
         </form>
       </div>
     </div>
+<script>
+  const LOGGED_IN_USER_ID = "<%= isLoggedIn ? isLoggedIn._id.toString() : '' %>";
+</script>
+
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".profile").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userId = btn.dataset.memberId;
+
+        // pure JS comparison — no EJS here!
+        const url = (userId === LOGGED_IN_USER_ID || !userId)
+          ? "/nav/profile"
+          : `/nav/profile/${userId}`;
+
+        window.location.href = url;
+      });
+    });
+  });
+</script>
+
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {

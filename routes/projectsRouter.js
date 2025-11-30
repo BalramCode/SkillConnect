@@ -71,9 +71,8 @@ router.get("/project/:id", isLoggedIn, async (req, res) => {
     .populate("members")
     .populate("joinRequests.user");
 
-  const tasks = await Task.find({ project: req.params.id }).populate(
-    "assignedTo"
-  );
+  const tasks = await Task.find({ project: req.params.id })
+    .populate("assignedTo");
 
   const files = await File.find({ project: req.params.id })
     .populate("uploadedBy")
@@ -82,10 +81,12 @@ router.get("/project/:id", isLoggedIn, async (req, res) => {
   res.render("specificProject", {
     project,
     tasks,
-    files, // 👈 added
-    user: req.user,
+    files,
+    user: req.user,        // 👈 already there
+    isLoggedIn: req.user,  // ✅ ADD THIS
   });
 });
+
 
 // router.post("/newTask", async (req, res) => {
 //   res.send("hello jee")
