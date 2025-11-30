@@ -491,11 +491,11 @@
                 </button>
 
                 <script>
-                  const profileUserId = "<%= user._id %>"; // user whose profile is open
+                  const profileUsername = "<%= user.username %>";
                   const shareBtn = document.getElementById("shareProfileBtn");
 
                   shareBtn.addEventListener("click", () => {
-                    const shareUrl = `${window.location.origin}/nav/profile/${profileUserId}`;
+                    const shareUrl = `${window.location.origin}/nav/profile/${profileUsername}`;
 
                     navigator.clipboard
                       .writeText(shareUrl)

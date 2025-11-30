@@ -1158,7 +1158,7 @@
                   <div class="flex gap-2 w-25 border-5">
                     <div
                       class="profile cursor-pointer w-10 h-10 rounded-full bg-indigo-200 flex items-center justify-center text-indigo-800 font-bold text-lg"
-                      data-member-id="<%= member._id %>"
+                      data-member-username="<%= member.username %>"
                     >
                       <%= member.fullname.charAt(0).toUpperCase() %>
                     </div>
@@ -1339,20 +1339,22 @@
 
 
   <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".profile").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const userId = btn.dataset.memberId;
+        document.addEventListener("DOMContentLoaded", () => {
+          document.querySelectorAll(".profile").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const username = btn.dataset.memberUsername;
 
-        // pure JS comparison — no EJS here!
-        const url = (userId === LOGGED_IN_USER_ID || !userId)
-          ? "/nav/profile"
-          : `/nav/profile/${userId}`;
+              if (!username) return;
 
-        window.location.href = url;
-      });
-    });
-  });
+              const url = username === "<%= isLoggedIn.username %>"
+                ? "/nav/profile"
+                : `/nav/profile/${username}`;
+
+              window.location.href = url;
+            });
+          });
+        });
+
 </script>
 
 

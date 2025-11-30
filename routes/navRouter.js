@@ -65,9 +65,9 @@ router.get("/profile", isLoggedIn, async (req, res) => {
 
 
 // For Other User
-router.get("/profile/:id",isLoggedIn, async (req, res) => {
+router.get("/profile/:username", isLoggedIn, async (req, res) => {
   try {
-    const otherUser = await userModel.findById(req.params.id);
+    const otherUser = await userModel.findOne({ username: req.params.username });
 
     if (!otherUser) return res.status(404).send("User not found");
 
@@ -75,10 +75,15 @@ router.get("/profile/:id",isLoggedIn, async (req, res) => {
       user: otherUser,
       isLoggedIn: req.user || null
     });
+
   } catch (err) {
+    console.error("Profile Error:", err);
     res.status(500).send("Server error");
   }
 });
+
+
+
 
 
 
