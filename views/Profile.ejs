@@ -441,9 +441,10 @@
               </div>
 
               <!-- Action Buttons -->
-               
+
               <div class="flex flex-wrap gap-4 mt-8">
-             <% if (isLoggedIn && isLoggedIn._id.toString() === user._id.toString()) { %>
+                <% if (isLoggedIn && isLoggedIn._id.toString() ===
+                user._id.toString()) { %>
 
                 <button
                   class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg font-semibold shadow-md transition transform hover:scale-105"
@@ -468,9 +469,9 @@
                 <% } %>
 
                 <button
+                  id="shareProfileBtn"
                   class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold shadow-md transition transform hover:scale-105"
                 >
-                  <!-- Share Icon -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="w-5 h-5"
@@ -485,8 +486,23 @@
                       d="M4 12v8m0-8l8 4-8-4zm0 0l8-4-8 4zm16 0v8m0-8l-8 4 8-4zm0 0l-8-4 8 4z"
                     />
                   </svg>
+
                   Share Profile
                 </button>
+
+                <script>
+                  const profileUserId = "<%= user._id %>"; // user whose profile is open
+                  const shareBtn = document.getElementById("shareProfileBtn");
+
+                  shareBtn.addEventListener("click", () => {
+                    const shareUrl = `${window.location.origin}/nav/profile/${profileUserId}`;
+
+                    navigator.clipboard
+                      .writeText(shareUrl)
+                      .then(() => alert("Profile link copied!\n" + shareUrl))
+                      .catch((err) => console.error("Copy failed", err));
+                  });
+                </script>
               </div>
             </div>
           </div>

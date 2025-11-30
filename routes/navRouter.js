@@ -54,23 +54,32 @@ router.get("/setting", isLoggedIn, (req, res) => {
 
 //For LoggedIn User 
 router.get("/profile", isLoggedIn, async (req, res) => {
-  const isLoggedIn = req.user;
+  const isLoggedInUser = req.user;
+
   return res.render("Profile", { 
-    user: isLoggedIn,
-    isLoggedIn 
+    user: isLoggedInUser,
+    isLoggedIn: isLoggedInUser
   });
 });
+
 
 
 // For Other User
-router.get("/profile/:id", isLoggedIn, async (req, res) => {
-  const otherUser = await userModel.findById(req.params.id);
+router.get("/profile/:id",isLoggedIn, async (req, res) => {
+  try {
+    const otherUser = await userModel.findById(req.params.id);
 
-  res.render("Profile", {
-    user: otherUser,
-    isLoggedIn: req.user
-  });
+    if (!otherUser) return res.status(404).send("User not found");
+
+    res.render("Profile", {
+      user: otherUser,
+      isLoggedIn: req.user || null
+    });
+  } catch (err) {
+    res.status(500).send("Server error");
+  }
 });
+
 
 
 router.get("/project/:id", isLoggedIn, async (req, res) => {
