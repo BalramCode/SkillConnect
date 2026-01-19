@@ -20,6 +20,10 @@ router.get("/", isLoggedIn, async (req, res) => {
   }
 });
 
+router.post("/:id/join", async (req, res) => {
+  res.send("Join hogya bhai tu");
+})
+
 router.post("/create", isLoggedIn, async (req, res) => {
   try {
     const {
