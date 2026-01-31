@@ -3,6 +3,8 @@ const router = express.Router();
 const userModel = require("../model/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const isLoggedIn = require("../middleware/isLoggedIn");
+
 
 // GET: render login/register page
 router.get("/loginregister", async (req, res) => {
@@ -124,23 +126,32 @@ router.post("/edit/:id", async (req, res) => {
 
     // Prevent editing another user's profile
     if (decoded.id !== req.params.id) {
-      return res.status(403).send("Forbidden: You cannot edit another user's profile");
+      return res
+        .status(403)
+        .send("Forbidden: You cannot edit another user's profile");
     }
 
-    const { username, bio, email, university } = req.body;
+    // 👇 ADD githubUsername here
+    const { username, bio, email, university, githubUsername } = req.body;
 
     const updatedUser = await userModel.findByIdAndUpdate(
       req.params.id,
-      { username, bio, email, university },
+      {
+        username,
+        bio,
+        email,
+        university,
+        githubUsername, // 👈 SAVE IT
+      },
       { new: true }
     );
 
     const loggedInUser = await userModel.findById(decoded.id);
 
-    // 🔥 IMPORTANT: pass loggedInUser to EJS
-    return res.render("Profile", { 
+    // Pass updated user to EJS
+    return res.render("Profile", {
       user: updatedUser,
-      loggedInUser 
+      loggedInUser,isLoggedIn: loggedInUser,
     });
 
   } catch (err) {
@@ -148,6 +159,31 @@ router.post("/edit/:id", async (req, res) => {
     return res.status(500).send("Error updating profile");
   }
 });
+
+
+
+
+
+router.post("/update-github", isLoggedIn, async (req, res) => {
+  try {
+    const { githubUsername } = req.body;
+
+    if (!githubUsername) {
+      return res.status(400).send("GitHub username required");
+    }
+
+    req.user.githubUsername = githubUsername.trim();
+    await req.user.save();
+
+    res.redirect("/profile"); // or wherever your profile page is
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Failed to save GitHub username");
+  }
+});
+
+
+
 
 
 

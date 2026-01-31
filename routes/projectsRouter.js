@@ -179,13 +179,42 @@ router.get("/uploads/files/:filename", (req, res) => {
 
 
 
+async function addCollaborator(repoUrl, githubUsername) {
+  if (!githubUsername) return;
+
+  const [owner, repo] = repoUrl
+    .replace("https://github.com/", "")
+    .split("/");
+
+  await axios.put(
+    `https://api.github.com/repos/${owner}/${repo}/collaborators/${githubUsername}`,
+    {},
+    {
+      headers: {
+        Authorization: `token ${process.env.GITHUB_TOKEN}`,
+        Accept: "application/vnd.github+json",
+      },
+    }
+  );
+
+  console.log(`INVITED ${githubUsername} TO ${repo}`);
+}
+
 
 const axios = require("axios");
 
 router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
   try {
     const project = await projectModel.findById(req.params.id);
+//  console.log("LOGGED-IN USER:", {
+//       id: req.user._id,
+//       githubUsername: req.user.githubUsername,
+//     });
 
+// ✅ Auto-add member as collaborator
+    if (req.user.githubUsername) {
+      await addCollaborator(project.repoUrl, req.user.githubUsername);
+    }
     if (!project) {
       return res.status(404).json({ error: "Project not found" });
     }
@@ -224,6 +253,10 @@ router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
         },
       }
     );
+
+   
+
+    
 
     // ✅ Save once → source of truth
     project.repoUrl = response.data.html_url;
