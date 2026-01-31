@@ -54,7 +54,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-
+console.log(
+  process.env.GITHUB_TOKEN
+    ? "GitHub Token Loaded"
+    : "Token Missing"
+);
 // Root Route
 app.get("/", (req, res) => {
   res.render("index");

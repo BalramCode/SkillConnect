@@ -9,18 +9,20 @@ const session = require("express-session");
 const flash = require("connect-flash");
 
 router.use(session({
-    secret: "yourSecretKey",
-    resave: false,
-    saveUninitialized: true
+  secret: "yourSecretKey",
+  resave: false,
+  saveUninitialized: true
 }));
+console.log(process.env.GITHUB_TOKEN ? "GitHub Token Loaded" : "Token Missing");
+
 
 router.use(flash());
 
 // Make flash messages available to all EJS templates
 router.use((req, res, next) => {
-    res.locals.success = req.flash("success");
-    res.locals.error = req.flash("error");
-    next();
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
 });
 
 
@@ -174,6 +176,81 @@ router.get("/uploads/files/:filename", (req, res) => {
     }
   });
 });
+
+
+
+
+const axios = require("axios");
+
+router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
+  try {
+    const project = await projectModel.findById(req.params.id);
+
+    if (!project) {
+      return res.status(404).json({ error: "Project not found" });
+    }
+
+    // ✅ CASE 1: Repo already exists → reuse
+    if (project.repoUrl && project.cloneUrl) {
+      console.log("USING EXISTING REPO:", project.repoUrl);
+      return res.json({
+        status: "exists",
+        repoUrl: project.repoUrl,
+        cloneUrl: project.cloneUrl,
+      });
+    }
+
+    // ✅ CASE 2: Repo does not exist → create ONCE
+    const repoName =
+      project.projectName
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-") +
+      "-" +
+      project._id.toString().slice(-5); // uniqueness
+
+    console.log("CREATING GITHUB REPO:", repoName);
+
+    const response = await axios.post(
+      "https://api.github.com/user/repos",
+      {
+        name: repoName,
+        description: project.projectDescription || "SkillConnect Project",
+        private: false,
+      },
+      {
+        headers: {
+          Authorization: `token ${process.env.GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+        },
+      }
+    );
+
+    // ✅ Save once → source of truth
+    project.repoUrl = response.data.html_url;
+    project.cloneUrl = response.data.clone_url;
+    await project.save();
+
+    console.log("REPO CREATED & SAVED:", project.repoUrl);
+
+    return res.json({
+      status: "created",
+      repoUrl: project.repoUrl,
+      cloneUrl: project.cloneUrl,
+    });
+
+  } catch (err) {
+    console.error("START CODING ERROR:", err.response?.data || err);
+    res.status(500).json({ error: "Start coding failed" });
+  }
+});
+
+
+
+
+
+
+
+
 
 
 module.exports = router;

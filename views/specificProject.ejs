@@ -333,10 +333,39 @@
                 Members
               </button>
 
-              <button class="ml-auto mb-3 px-4 py-1.5 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 transition-colors shadow-sm">
-                Start Coding
-              </button>
+              <button
+  id="startCodingBtn"
+  class="ml-auto mb-3 px-4 py-1.5 bg-indigo-600 text-white rounded-md"
+>
+  Start Coding
+</button>
+
+
             </div>
+            <!-- <form action="/projects/<%= project._id %>/start-coding" method="POST">
+  <button type="submit">TEST START CODING</button>
+</form> -->
+
+<script>
+document.getElementById("startCodingBtn").addEventListener("click", async () => {
+  const res = await fetch("/projects/<%= project._id %>/start-coding", {
+    method: "POST",
+  });
+
+  const data = await res.json();
+
+  if (data.error) {
+    alert(data.error);
+    return;
+  }
+
+  // ✅ ALWAYS open VS Code (repo new OR existing)
+  window.location.href =
+    "vscode://vscode.git/clone?url=" + data.repoUrl;
+});
+</script>
+
+
 
             <div
               class="grid md:grid-cols-2 gap-6 bg-white p-6 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl"

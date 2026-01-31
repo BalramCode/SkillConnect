@@ -14,8 +14,8 @@ const projectSchema = new mongoose.Schema({
   members: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      unique:true,
       ref: "User",
+      // ❌ unique removed (VERY IMPORTANT)
     }
   ],
 
@@ -40,13 +40,18 @@ const projectSchema = new mongoose.Schema({
     }
   ],
 
-  // project creator
+  // ---------------------------
+  // PROJECT CREATOR
+  // ---------------------------
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
 
+  // ---------------------------
+  // VISIBILITY & SKILL
+  // ---------------------------
   visibility: {
     type: String,
     enum: ["public", "private"],
@@ -58,6 +63,20 @@ const projectSchema = new mongoose.Schema({
     required: true,
   },
 
+  // ---------------------------
+  // GITHUB INTEGRATION (🔥 NEW)
+  // ---------------------------
+  repoUrl: {
+    type: String,
+  },
+
+  cloneUrl: {
+    type: String,
+  },
+
+  // ---------------------------
+  // TIMESTAMP
+  // ---------------------------
   createdAt: {
     type: Date,
     default: Date.now,
