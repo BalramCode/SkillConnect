@@ -9,18 +9,27 @@ router.get("/", isLoggedIn, async (req, res) => {
   try {
     const groups = await groupModel
       .find()
-      .populate("creator")
-      .populate("members")
+      .populate("creator", "name")
+      .populate("members", "name")
       .sort({ createdAt: -1 });
-    // Use req.user (logged-in user)
-    res.render("groups", { groups, user: req.user });
+
+    res.render("groups", {
+      groups,
+      user: req.user,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Failed to load groups");
   }
 });
 
+
+router.post("/:id/join", async (req, res) => {
+  res.send("Join hogya bhai tu");
+})
+
 router.post("/create", isLoggedIn, async (req, res) => {
+  console.log("USER IN CREATE:", req.user);
   try {
     const {
       groupName,
@@ -40,7 +49,8 @@ router.post("/create", isLoggedIn, async (req, res) => {
       creator: req.user._id,
       members: [req.user._id],
     });
-
+    
+    
     // Redirect to the GET route, which will handle fetching the user
     res.redirect("/groups");
   } catch (error) {
