@@ -1,855 +1,585 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SkillConnect</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  </head>
 
-  <body class="bg-zinc-100 font-sans">
-    <nav
-      class="bg-white w-full flex justify-between items-center p-3 shadow-lg fixed top-0 left-0 z-50"
-    >
-      <div class="flex gap-2 items-center">
-        <svg
-          class="w-8 h-8 text-indigo-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M13 10V3L4 14h7v7l9-11h-7z"
-          ></path>
-        </svg>
-        <p class="text-blue-700 font-bold text-xl">SkillConnect</p>
-      </div>
-      <div class="flex gap-6 font-semibold hidden md:flex">
-        <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href=""
-          >Explore Projects</a
-        >
-        <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href=""
-          >Find Teammates</a
-        >
-        <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href=""
-          >Browse Skill</a
-        >
-        <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href=""
-          >Community</a
-        >
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkillConnect</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
 
-      <div class="hidden md:flex gap-6 items-center">
-        <a
-          href="/users/loginregister"
-          class="hover:bg-zinc-100 px-3 py-1 rounded-lg transition"
-        >
-          Sign In
-        </a>
+<body class="bg-zinc-100 font-sans">
+  <nav class="bg-white w-full flex justify-between items-center p-3 shadow-lg fixed top-0 left-0 z-50">
+    <div class="flex gap-2 items-center">
+      <svg class="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+      </svg>
+      <p class="text-blue-700 font-bold text-xl">SkillConnect</p>
+    </div>
+    <div class="flex gap-6 font-semibold hidden md:flex">
+      <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href="">Explore Projects</a>
+      <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href="">Find Teammates</a>
+      <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href="">Browse Skill</a>
+      <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href="">Community</a>
+    </div>
 
-        <a
-          href="users/loginregister"
-          class="bg-blue-700 hover:bg-blue-900 rounded-lg px-3 py-1 text-white transition"
-        >
-          Get Started
-        </a>
-      </div>
-
-      <div class="md:hidden">
-        <button id="menuBtn" class="p-2 focus:outline-none">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 text-blue-700"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
-      </div>
-    </nav>
-
-    <div
-      id="mobileMenu"
-      class="hidden flex-col items-center bg-white shadow-md py-4 mt-[56px] space-y-4 md:hidden fixed top-0 w-full z-40"
-    >
-      <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href=""
-        >Explore Projects</a
-      >
-      <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href=""
-        >Find Teammates</a
-      >
-      <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href=""
-        >Browse Skill</a
-      >
-      <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href=""
-        >Community</a
-      >
-
-      <a
-        href="#"
-        class="hover:text-blue-700 transition-all duration-300 block p-2 cursor-pointer"
-      >
+    <div class="hidden md:flex gap-6 items-center">
+      <a href="/users/loginregister" class="hover:bg-zinc-100 px-3 py-1 rounded-lg transition">
         Sign In
       </a>
-      <a
-        href="#"
-        class="bg-blue-700 hover:bg-blue-900 rounded-lg px-4 py-2 text-white font-bold transition-all duration-300 block cursor-pointer"
-      >
+
+      <a href="users/loginregister" class="bg-blue-700 hover:bg-blue-900 rounded-lg px-3 py-1 text-white transition">
         Get Started
       </a>
     </div>
 
-    <main
-      class="relative bg-[url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDsou-9Yj0s2NTQ1pGx4zvMQj12BW1NUvgLA&s')] bg-cover bg-center flex flex-col gap-6 text-center text-white justify-center items-center h-screen px-4 **pt-[56px]**"
-    >
-      <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="md:hidden">
+      <button id="menuBtn" class="p-2 focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-700" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
 
-      <h1
-        class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold drop-shadow-lg z-10"
-      >
-        Connect, Collaborate, Create
+  <div id="mobileMenu"
+    class="hidden flex-col items-center bg-white shadow-md py-4 mt-[56px] space-y-4 md:hidden fixed top-0 w-full z-40">
+    <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href="">Explore Projects</a>
+    <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href="">Find Teammates</a>
+    <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href="">Browse Skill</a>
+    <a class="hover:bg-zinc-100 hover:rounded-lg p-1 cursor-pointer" href="">Community</a>
+
+    <a href="#" class="hover:text-blue-700 transition-all duration-300 block p-2 cursor-pointer">
+      Sign In
+    </a>
+    <a href="#"
+      class="bg-blue-700 hover:bg-blue-900 rounded-lg px-4 py-2 text-white font-bold transition-all duration-300 block cursor-pointer">
+      Get Started
+    </a>
+  </div>
+
+  <main
+    class="relative bg-[url('https://t4.ftcdn.net/jpg/05/54/46/89/360_F_554468927_iwU3VYIjsaeopAb0WPYxVf21TloEhTEj.jpg')] bg-cover bg-center flex flex-col gap-6 text-center text-white justify-center items-center h-screen px-4 **pt-[56px]**">
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+
+    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold drop-shadow-lg z-10">
+      Connect, Collaborate, Create
+    </h1>
+    <p class="max-w-xl text-center text-lg sm:text-xl opacity-90 z-10">
+      Join thousands of students showcasing skills, finding teammates, and
+      building amazing projects. Your next breakthrough collaboration starts
+      here.
+    </p>
+    <div class="flex gap-4 flex-wrap justify-center items-center z-10">
+      <button
+        class="bg-blue-700 px-6 py-2 rounded-lg font-bold hover:bg-blue-600 transition-all duration-300 shadow-xl cursor-pointer">
+        Start Building
+      </button>
+      <button
+        class="border-2 border-white px-6 py-2 rounded-lg hover:bg-white hover:text-blue-700 transition-all duration-300 font-semibold cursor-pointer">
+        Explore Projects
+      </button>
+    </div>
+    <div class="flex gap-12 font-bold drop-shadow-lg z-10">
+      <div>
+        <p class="text-3xl">50K+</p>
+        <p>Active Students</p>
+      </div>
+      <div>
+        <p class="text-3xl">15K+</p>
+        <p>Project Created</p>
+      </div>
+      <div>
+        <p class="text-3xl">200+</p>
+        <p>Skills Available</p>
+      </div>
+    </div>
+  </main>
+
+  <div class="flex flex-col justify-center items-center py-12 text-center px-4 bg-white shadow-inner">
+    <p class="text-2xl sm:text-3xl font-bold mb-2 text-gray-800">
+      Everything you need to
+      <span class="text-3xl sm:text-4xl">succeed</span>
+    </p>
+    <p class="max-w-2xl text-gray-600">
+      SkillConnect provides all the tools and features you need to find
+      teammates, showcase your abilities, and build amazing projects together.
+    </p>
+  </div>
+
+  <section class="bg-zinc-100 flex flex-wrap justify-center gap-6 px-4 py-12">
+    <!-- Discover Talent -->
+    <div
+      class="flex flex-col gap-3 justify-start items-start rounded-xl bg-white h-60 w-64 p-5 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+      <svg class="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
+        </path>
+      </svg>
+      <p class="text-xl font-bold text-blue-700 mt-2">Discover Talent</p>
+      <p class="text-gray-600 text-sm">
+        Find skilled peers with complementary abilities for your next project.
+      </p>
+    </div>
+
+    <!-- Collaborate Seamlessly -->
+    <div
+      class="flex flex-col gap-3 justify-start items-start rounded-xl bg-white h-60 w-64 p-5 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+      <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 4v-4z">
+        </path>
+      </svg>
+      <p class="text-xl font-bold text-blue-700 mt-2">
+        Collaborate Seamlessly
+      </p>
+      <p class="text-gray-600 text-sm">
+        Work together with integrated project management and real-time chat.
+      </p>
+    </div>
+
+    <!-- Build Reputation -->
+    <div
+      class="flex flex-col gap-3 justify-start items-start rounded-xl bg-white h-60 w-64 p-5 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+      <svg class="w-10 h-10 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 0a9 9 0 11-18 0 9 9 0 0118 0z">
+        </path>
+      </svg>
+      <p class="text-xl font-bold text-blue-700 mt-2">Build Reputation</p>
+      <p class="text-gray-600 text-sm">
+        Showcase your work, get recognized, and grow your professional
+        profile.
+      </p>
+    </div>
+
+    <!-- Skill Profiles -->
+    <div
+      class="flex flex-col gap-3 justify-start items-start rounded-xl bg-white h-60 w-64 p-5 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+      <svg class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 11c0-1.104.896-2 2-2s2 .896 2 2-.896 2-2 2-2-.896-2-2zm-6 0c0-1.104.896-2 2-2s2 .896 2 2-.896 2-2 2-2-.896-2-2zM12 21c4.418 0 8-3.582 8-8H4c0 4.418 3.582 8 8 8z">
+        </path>
+      </svg>
+      <p class="text-xl font-bold text-blue-700 mt-2">Skill Profiles</p>
+      <p class="text-gray-600 text-sm">
+        Display your unique expertise and let others find you for
+        collaboration.
+      </p>
+    </div>
+
+    <!-- Team Chat -->
+    <div
+      class="flex flex-col gap-3 justify-start items-start rounded-xl bg-white h-60 w-64 p-5 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+      <svg class="w-10 h-10 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M7 8h10M7 12h6m-8 8l-3-3V5a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2H7z"></path>
+      </svg>
+      <p class="text-xl font-bold text-blue-700 mt-2">Team Chat</p>
+      <p class="text-gray-600 text-sm">
+        Communicate instantly with your teammates using real-time group
+        messaging.
+      </p>
+    </div>
+
+    <!-- Launch Projects -->
+    <div
+      class="flex flex-col gap-3 justify-start items-start rounded-xl bg-white h-60 w-64 p-5 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+      <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+      <p class="text-xl font-bold text-blue-700 mt-2">Launch Projects</p>
+      <p class="text-gray-600 text-sm">
+        Turn your concepts into reality by starting and managing projects
+        easily.
+      </p>
+    </div>
+  </section>
+
+  <div class="flex flex-col justify-center items-center py-12 text-center px-4 bg-white shadow-inner">
+    <p class="text-2xl sm:text-3xl font-bold mb-2 text-gray-800">
+      Featured
+      <span class="text-3xl sm:text-4xl">Students Projects</span>
+    </p>
+    <p class="max-w-2xl text-gray-600">
+      Discover amazing projects created by our community. Get inspired and
+      find your next collaboration opportunity.
+    </p>
+  </div>
+
+  <div class="bg-white flex flex-wrap gap-10 justify-center items-start py-12 px-6">
+    <!-- Project Card -->
+    <div
+      class="group relative h-auto w-80 border border-zinc-200 rounded-xl shadow-lg bg-white overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-blue-400">
+      <div class="h-40 w-full overflow-hidden rounded-t-xl">
+        <p class="h-7 absolute z-10 text-green-500 rounded-lg border m-1 right-0 bg-white">
+          Completed
+        </p>
+        <img class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          src="/images/streetfood1.jpg" alt="TasteRadar" />
+
+      </div>
+
+      <div class="p-4 flex flex-col gap-3">
+        <h3 class="text-xl font-semibold text-blue-700">
+          TasteRadar – StreetFood App
+        </h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          A mobile app that helps food lovers discover the most hygienic,
+          tasty, and affordable street food with the help of visual map
+          location + rating.
+        </p>
+
+        <div class="flex flex-wrap gap-2 mt-2">
+          <span class="px-2 py-1 text-sm rounded-full bg-blue-100 text-blue-700 font-medium">
+            Node.js
+          </span>
+          <span class="px-2 py-1 text-sm rounded-full bg-green-100 text-green-700 font-medium">
+            Express
+          </span>
+          <span class="px-2 py-1 text-sm rounded-full bg-yellow-100 text-yellow-700 font-medium">
+            EJS
+          </span>
+          <span class="px-2 py-1 text-sm rounded-full bg-emerald-100 text-emerald-700 font-medium">
+            MongoDB
+          </span>
+        </div>
+
+        <div class="flex justify-between text-sm text-gray-500 mt-3">
+          <span>👥 4 members</span>
+          <span>⏱️ 3 months</span>
+          <span>⭐ 4.8 rating</span>
+        </div>
+
+        <a href="https://tasteradar.in" target="_blank"
+          class="mt-4 border border-blue-600 text-blue-600 text-center rounded-lg py-2 font-medium transition-all duration-300 hover:bg-blue-600 hover:text-white">
+          View Project
+        </a>
+      </div>
+    </div>
+
+    <!-- Project Card 2 -->
+    <div
+      class="group relative h-auto w-80 border border-zinc-200 rounded-xl shadow-lg bg-white overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-blue-400">
+      <div class="h-40 w-full overflow-hidden rounded-t-xl">
+        <p class="h-7 absolute z-10 text-green-500 rounded-lg border m-1 right-0 bg-white">
+          Completed
+        </p>
+
+        <img class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          src="https://png.pngtree.com/thumb_back/fh260/background/20241203/pngtree-happy-kids-shopping-with-colorful-bags-in-a-mall-image_16141100.jpg" alt="ShopMee" />
+      </div>
+
+      <div class="p-4 flex flex-col gap-3">
+        <h3 class="text-xl font-semibold text-blue-700">
+          ShopMee – Shopping App
+        </h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          An online shopping platform that connects users to top-rated
+          products with personalized recommendations, fast checkout, and
+          affordable pricing.
+        </p>
+
+        <div class="flex flex-wrap gap-2 mt-2">
+          <span class="px-2 py-1 text-sm rounded-full bg-blue-100 text-blue-700 font-medium">
+            Node.js
+          </span>
+          <span class="px-2 py-1 text-sm rounded-full bg-green-100 text-green-700 font-medium">
+            Express
+          </span>
+          <span class="px-2 py-1 text-sm rounded-full bg-indigo-100 text-indigo-700 font-medium">
+            React
+          </span>
+          <span class="px-2 py-1 text-sm rounded-full bg-yellow-100 text-yellow-700 font-medium">
+            MySQL
+          </span>
+        </div>
+
+        <div class="flex justify-between text-sm text-gray-500 mt-3">
+          <span>👥 3 members</span>
+          <span>⏱️ 6 months</span>
+          <span>⭐ 4.2 rating</span>
+        </div>
+
+        <a href="https://shopmee-lk1p.onrender.com/" target="_blank"
+          class="mt-4 border border-blue-600 text-blue-600 text-center rounded-lg py-2 font-medium transition-all duration-300 hover:bg-blue-600 hover:text-white">
+          View Project
+        </a>
+      </div>
+    </div>
+
+    <!-- Project Card 3 -->
+    <div
+      class="group relative h-auto w-80 border border-zinc-200 rounded-xl shadow-lg bg-white overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-blue-400">
+      <div class="h-40 w-full overflow-hidden rounded-t-xl">
+        <p class="h-7 absolute z-10 text-green-500 rounded-lg border m-1 right-0 bg-white">
+          Completed
+        </p>
+
+        <img class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          src="https://sofiaclean.bg/wp-content/uploads/2019/12/Deep_cleaning_services_can_provide_a_new_look_to_your_home_9t1Z9Qr.jpeg" alt="Ghar Set Go" />
+      </div>
+
+      <div class="p-4 flex flex-col gap-3">
+        <h3 class="text-xl font-semibold text-blue-700">
+          Ghar Set Go – Hire Workers
+        </h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          A platform that connects households with verified service
+          professionals for tasks like elder care, babysitting, cooking, home
+          cleaning, etc.
+        </p>
+
+        <div class="flex flex-wrap gap-2 mt-2">
+          <span class="px-2 py-1 text-sm rounded-full bg-pink-100 text-pink-700 font-medium">
+            UI/UX
+          </span>
+          <span class="px-2 py-1 text-sm rounded-full bg-red-100 text-red-700 font-medium">
+            Angular
+          </span>
+          <span class="px-2 py-1 text-sm rounded-full bg-purple-100 text-purple-700 font-medium">
+            Bootstrap
+          </span>
+          <span class="px-2 py-1 text-sm rounded-full bg-orange-100 text-orange-700 font-medium">
+            Java
+          </span>
+        </div>
+
+        <div class="flex justify-between text-sm text-gray-500 mt-3">
+          <span>👥 5 members</span>
+          <span>⏱️ 2 months</span>
+          <span>⭐ 4.9 rating</span>
+        </div>
+
+        <a href="https://gharsetgo.netlify.app/" target="_blank"
+          class="mt-4 border border-blue-600 text-blue-600 text-center rounded-lg py-2 font-medium transition-all duration-300 hover:bg-blue-600 hover:text-white">
+          View Project
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative w-full bg-blue-600 text-white py-20 px-6">
+    <!-- Background Image -->
+    <div class="absolute inset-0">
+      <img src="../public/images/image copy.png" class="w-full h-full object-cover opacity-30" />
+    </div>
+
+    <!-- Content -->
+    <div class="relative max-w-5xl mx-auto text-center">
+      <h1 class="text-4xl font-bold leading-tight">
+        Ready to Start Your Next Collaboration Journey?
       </h1>
-      <p class="max-w-xl text-center text-lg sm:text-xl opacity-90 z-10">
-        Join thousands of students showcasing skills, finding teammates, and
-        building amazing projects. Your next breakthrough collaboration starts
-        here.
+      <p class="mt-4 text-lg">
+        Join thousands of students who are already building amazing projects
+        together. Your perfect teammate is waiting for you.
       </p>
-      <div class="flex gap-4 flex-wrap justify-center items-center z-10">
-        <button
-          class="bg-blue-700 px-6 py-2 rounded-lg font-bold hover:bg-blue-600 transition-all duration-300 shadow-xl cursor-pointer"
-        >
-          Start Building
-        </button>
-        <button
-          class="border-2 border-white px-6 py-2 rounded-lg hover:bg-white hover:text-blue-700 transition-all duration-300 font-semibold cursor-pointer"
-        >
-          Explore Projects
-        </button>
-      </div>
-      <div class="flex gap-12 font-bold drop-shadow-lg z-10">
-        <div>
-          <p class="text-3xl">50K+</p>
-          <p>Active Students</p>
-        </div>
-        <div>
-          <p class="text-3xl">15K+</p>
-          <p>Project Created</p>
-        </div>
-        <div>
-          <p class="text-3xl">200+</p>
-          <p>Skills Available</p>
-        </div>
-      </div>
-    </main>
 
-    <div
-      class="flex flex-col justify-center items-center py-12 text-center px-4 bg-white shadow-inner"
-    >
-      <p class="text-2xl sm:text-3xl font-bold mb-2 text-gray-800">
-        Everything you need to
-        <span class="text-3xl sm:text-4xl">succeed</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10 text-left">
+        <ul class="space-y-3">
+          <li class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 13l4 4L19 7"></path>
+            </svg>
+            Create your skill profile in minutes
+          </li>
+
+          <li class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 13l4 4L19 7"></path>
+            </svg>
+            Access to exclusive project opportunities
+          </li>
+
+          <li class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 13l4 4L19 7"></path>
+            </svg>
+            Connect with industry mentors
+          </li>
+        </ul>
+
+        <ul class="space-y-3">
+          <li class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 13l4 4L19 7"></path>
+            </svg>
+            Get matched with compatible teammates
+          </li>
+
+          <li class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 13l4 4L19 7"></path>
+            </svg>
+            Build your portfolio and reputation
+          </li>
+
+          <li class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 13l4 4L19 7"></path>
+            </svg>
+            Free forever for students
+          </li>
+        </ul>
+      </div>
+
+      <p class="mt-4 text-sm">
+        No credit card required • Free forever for students • Join 50,000+
+        active users
       </p>
-      <p class="max-w-2xl text-gray-600">
-        SkillConnect provides all the tools and features you need to find
-        teammates, showcase your abilities, and build amazing projects together.
-      </p>
+
+      <button class="mt-6 bg-white text-blue-600 font-semibold px-8 py-3 rounded-md hover:bg-gray-100 transition">
+        Get Started Free →
+      </button>
     </div>
+  </div>
 
-    <section class="bg-zinc-100 flex flex-wrap justify-center gap-6 px-4 py-12">
-      <!-- Discover Talent -->
+  <footer class="bg-gray-900 text-gray-200 py-12 px-6 sm:px-10 min-h-fit">
+    <div class="max-w-7xl mx-auto">
       <div
-        class="flex flex-col gap-3 justify-start items-start rounded-xl bg-white h-60 w-64 p-5 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-      >
-        <svg
-          class="w-10 h-10 text-blue-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-          ></path>
-        </svg>
-        <p class="text-xl font-bold text-blue-700 mt-2">Discover Talent</p>
-        <p class="text-gray-600 text-sm">
-          Find skilled peers with complementary abilities for your next project.
-        </p>
-      </div>
-
-      <!-- Collaborate Seamlessly -->
-      <div
-        class="flex flex-col gap-3 justify-start items-start rounded-xl bg-white h-60 w-64 p-5 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-      >
-        <svg
-          class="w-10 h-10 text-green-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 4v-4z"
-          ></path>
-        </svg>
-        <p class="text-xl font-bold text-blue-700 mt-2">
-          Collaborate Seamlessly
-        </p>
-        <p class="text-gray-600 text-sm">
-          Work together with integrated project management and real-time chat.
-        </p>
-      </div>
-
-      <!-- Build Reputation -->
-      <div
-        class="flex flex-col gap-3 justify-start items-start rounded-xl bg-white h-60 w-64 p-5 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-      >
-        <svg
-          class="w-10 h-10 text-yellow-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 0a9 9 0 11-18 0 9 9 0 0118 0z"
-          ></path>
-        </svg>
-        <p class="text-xl font-bold text-blue-700 mt-2">Build Reputation</p>
-        <p class="text-gray-600 text-sm">
-          Showcase your work, get recognized, and grow your professional
-          profile.
-        </p>
-      </div>
-
-      <!-- Skill Profiles -->
-      <div
-        class="flex flex-col gap-3 justify-start items-start rounded-xl bg-white h-60 w-64 p-5 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-      >
-        <svg
-          class="w-10 h-10 text-purple-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 11c0-1.104.896-2 2-2s2 .896 2 2-.896 2-2 2-2-.896-2-2zm-6 0c0-1.104.896-2 2-2s2 .896 2 2-.896 2-2 2-2-.896-2-2zM12 21c4.418 0 8-3.582 8-8H4c0 4.418 3.582 8 8 8z"
-          ></path>
-        </svg>
-        <p class="text-xl font-bold text-blue-700 mt-2">Skill Profiles</p>
-        <p class="text-gray-600 text-sm">
-          Display your unique expertise and let others find you for
-          collaboration.
-        </p>
-      </div>
-
-      <!-- Team Chat -->
-      <div
-        class="flex flex-col gap-3 justify-start items-start rounded-xl bg-white h-60 w-64 p-5 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-      >
-        <svg
-          class="w-10 h-10 text-pink-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M7 8h10M7 12h6m-8 8l-3-3V5a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2H7z"
-          ></path>
-        </svg>
-        <p class="text-xl font-bold text-blue-700 mt-2">Team Chat</p>
-        <p class="text-gray-600 text-sm">
-          Communicate instantly with your teammates using real-time group
-          messaging.
-        </p>
-      </div>
-
-      <!-- Launch Projects -->
-      <div
-        class="flex flex-col gap-3 justify-start items-start rounded-xl bg-white h-60 w-64 p-5 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-      >
-        <svg
-          class="w-10 h-10 text-red-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M5 13l4 4L19 7"
-          ></path>
-        </svg>
-        <p class="text-xl font-bold text-blue-700 mt-2">Launch Projects</p>
-        <p class="text-gray-600 text-sm">
-          Turn your concepts into reality by starting and managing projects
-          easily.
-        </p>
-      </div>
-    </section>
-
-    <div
-      class="flex flex-col justify-center items-center py-12 text-center px-4 bg-white shadow-inner"
-    >
-      <p class="text-2xl sm:text-3xl font-bold mb-2 text-gray-800">
-        Featured
-        <span class="text-3xl sm:text-4xl">Students Projects</span>
-      </p>
-      <p class="max-w-2xl text-gray-600">
-        Discover amazing projects created by our community. Get inspired and
-        find your next collaboration opportunity.
-      </p>
-    </div>
-
-    <div
-      class="bg-white flex flex-wrap gap-10 justify-center items-start py-12 px-6"
-    >
-      <!-- Project Card -->
-      <div
-        class="group relative h-auto w-80 border border-zinc-200 rounded-xl shadow-lg bg-white overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-blue-400"
-      >
-        <div class="h-40 w-full overflow-hidden rounded-t-xl">
-          <p
-            class="h-7 absolute z-10 text-green-500 rounded-lg border m-1 right-0 bg-white"
-          >
-            Completed
-          </p>
-          <img
-            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-            src="../public/images/streetfood1.jpg"
-            alt="TasteRadar"
-          />
-        </div>
-
-        <div class="p-4 flex flex-col gap-3">
-          <h3 class="text-xl font-semibold text-blue-700">
-            TasteRadar – StreetFood App
-          </h3>
-          <p class="text-gray-600 text-sm leading-relaxed">
-            A mobile app that helps food lovers discover the most hygienic,
-            tasty, and affordable street food with the help of visual map
-            location + rating.
-          </p>
-
-          <div class="flex flex-wrap gap-2 mt-2">
-            <span
-              class="px-2 py-1 text-sm rounded-full bg-blue-100 text-blue-700 font-medium"
-            >
-              Node.js
-            </span>
-            <span
-              class="px-2 py-1 text-sm rounded-full bg-green-100 text-green-700 font-medium"
-            >
-              Express
-            </span>
-            <span
-              class="px-2 py-1 text-sm rounded-full bg-yellow-100 text-yellow-700 font-medium"
-            >
-              EJS
-            </span>
-            <span
-              class="px-2 py-1 text-sm rounded-full bg-emerald-100 text-emerald-700 font-medium"
-            >
-              MongoDB
-            </span>
+        class="grid grid-cols-2 gap-y-10 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 border-b border-gray-700 pb-10">
+        <div class="col-span-2 md:col-span-1 lg:col-span-2 space-y-4 pr-8">
+          <div class="flex items-center gap-2">
+            <svg class="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+              </path>
+            </svg>
+            <h2 class="text-2xl font-bold text-white">SkillConnect</h2>
           </div>
-
-          <div class="flex justify-between text-sm text-gray-500 mt-3">
-            <span>👥 4 members</span>
-            <span>⏱️ 3 months</span>
-            <span>⭐ 4.8 rating</span>
-          </div>
-
-          <a
-            href="https://tasteradar.in"
-            target="_blank"
-            class="mt-4 border border-blue-600 text-blue-600 text-center rounded-lg py-2 font-medium transition-all duration-300 hover:bg-blue-600 hover:text-white"
-          >
-            View Project
-          </a>
-        </div>
-      </div>
-
-      <!-- Project Card 2 -->
-      <div
-        class="group relative h-auto w-80 border border-zinc-200 rounded-xl shadow-lg bg-white overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-blue-400"
-      >
-        <div class="h-40 w-full overflow-hidden rounded-t-xl">
-          <p
-            class="h-7 absolute z-10 text-green-500 rounded-lg border m-1 right-0 bg-white"
-          >
-            Completed
+          <p class="text-sm text-gray-400 leading-relaxed">
+            Empowering students to **connect, collaborate**, and create
+            amazing projects together. Your hub for skill-sharing and
+            teamwork.
           </p>
-
-          <img
-            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-            src="../public/images/Screenshot 2025-10-26 122312.png"
-            alt="ShopMee"
-          />
-        </div>
-
-        <div class="p-4 flex flex-col gap-3">
-          <h3 class="text-xl font-semibold text-blue-700">
-            ShopMee – Shopping App
-          </h3>
-          <p class="text-gray-600 text-sm leading-relaxed">
-            An online shopping platform that connects users to top-rated
-            products with personalized recommendations, fast checkout, and
-            affordable pricing.
-          </p>
-
-          <div class="flex flex-wrap gap-2 mt-2">
-            <span
-              class="px-2 py-1 text-sm rounded-full bg-blue-100 text-blue-700 font-medium"
-            >
-              Node.js
-            </span>
-            <span
-              class="px-2 py-1 text-sm rounded-full bg-green-100 text-green-700 font-medium"
-            >
-              Express
-            </span>
-            <span
-              class="px-2 py-1 text-sm rounded-full bg-indigo-100 text-indigo-700 font-medium"
-            >
-              React
-            </span>
-            <span
-              class="px-2 py-1 text-sm rounded-full bg-yellow-100 text-yellow-700 font-medium"
-            >
-              MySQL
-            </span>
-          </div>
-
-          <div class="flex justify-between text-sm text-gray-500 mt-3">
-            <span>👥 3 members</span>
-            <span>⏱️ 6 months</span>
-            <span>⭐ 4.2 rating</span>
-          </div>
-
-          <a
-            href="https://shopmee-lk1p.onrender.com/"
-            target="_blank"
-            class="mt-4 border border-blue-600 text-blue-600 text-center rounded-lg py-2 font-medium transition-all duration-300 hover:bg-blue-600 hover:text-white"
-          >
-            View Project
-          </a>
-        </div>
-      </div>
-
-      <!-- Project Card 3 -->
-      <div
-        class="group relative h-auto w-80 border border-zinc-200 rounded-xl shadow-lg bg-white overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-blue-400"
-      >
-        <div class="h-40 w-full overflow-hidden rounded-t-xl">
-          <p
-            class="h-7 absolute z-10 text-green-500 rounded-lg border m-1 right-0 bg-white"
-          >
-            Completed
-          </p>
-
-          <img
-            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-            src="../public/images/image copy.png"
-            alt="Ghar Set Go"
-          />
-        </div>
-
-        <div class="p-4 flex flex-col gap-3">
-          <h3 class="text-xl font-semibold text-blue-700">
-            Ghar Set Go – Hire Workers
-          </h3>
-          <p class="text-gray-600 text-sm leading-relaxed">
-            A platform that connects households with verified service
-            professionals for tasks like elder care, babysitting, cooking, home
-            cleaning, etc.
-          </p>
-
-          <div class="flex flex-wrap gap-2 mt-2">
-            <span
-              class="px-2 py-1 text-sm rounded-full bg-pink-100 text-pink-700 font-medium"
-            >
-              UI/UX
-            </span>
-            <span
-              class="px-2 py-1 text-sm rounded-full bg-red-100 text-red-700 font-medium"
-            >
-              Angular
-            </span>
-            <span
-              class="px-2 py-1 text-sm rounded-full bg-purple-100 text-purple-700 font-medium"
-            >
-              Bootstrap
-            </span>
-            <span
-              class="px-2 py-1 text-sm rounded-full bg-orange-100 text-orange-700 font-medium"
-            >
-              Java
-            </span>
-          </div>
-
-          <div class="flex justify-between text-sm text-gray-500 mt-3">
-            <span>👥 5 members</span>
-            <span>⏱️ 2 months</span>
-            <span>⭐ 4.9 rating</span>
-          </div>
-
-          <a
-            href="https://gharsetgo.netlify.app/"
-            target="_blank"
-            class="mt-4 border border-blue-600 text-blue-600 text-center rounded-lg py-2 font-medium transition-all duration-300 hover:bg-blue-600 hover:text-white"
-          >
-            View Project
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="relative w-full bg-blue-600 text-white py-20 px-6">
-      <!-- Background Image -->
-      <div class="absolute inset-0">
-        <img
-          src="../public/images/image copy.png"
-          class="w-full h-full object-cover opacity-30"
-        />
-      </div>
-
-      <!-- Content -->
-      <div class="relative max-w-5xl mx-auto text-center">
-        <h1 class="text-4xl font-bold leading-tight">
-          Ready to Start Your Next Collaboration Journey?
-        </h1>
-        <p class="mt-4 text-lg">
-          Join thousands of students who are already building amazing projects
-          together. Your perfect teammate is waiting for you.
-        </p>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10 text-left">
-          <ul class="space-y-3">
-            <li class="flex items-center gap-2">
-              <svg
-                class="w-5 h-5 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="3"
-                viewBox="0 0 24 24"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M5 13l4 4L19 7"></path>
-              </svg>
-              Create your skill profile in minutes
-            </li>
-
-            <li class="flex items-center gap-2">
-              <svg
-                class="w-5 h-5 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="3"
-                viewBox="0 0 24 24"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M5 13l4 4L19 7"></path>
-              </svg>
-              Access to exclusive project opportunities
-            </li>
-
-            <li class="flex items-center gap-2">
-              <svg
-                class="w-5 h-5 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="3"
-                viewBox="0 0 24 24"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M5 13l4 4L19 7"></path>
-              </svg>
-              Connect with industry mentors
-            </li>
-          </ul>
-
-          <ul class="space-y-3">
-            <li class="flex items-center gap-2">
-              <svg
-                class="w-5 h-5 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="3"
-                viewBox="0 0 24 24"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M5 13l4 4L19 7"></path>
-              </svg>
-              Get matched with compatible teammates
-            </li>
-
-            <li class="flex items-center gap-2">
-              <svg
-                class="w-5 h-5 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="3"
-                viewBox="0 0 24 24"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M5 13l4 4L19 7"></path>
-              </svg>
-              Build your portfolio and reputation
-            </li>
-
-            <li class="flex items-center gap-2">
-              <svg
-                class="w-5 h-5 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="3"
-                viewBox="0 0 24 24"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M5 13l4 4L19 7"></path>
-              </svg>
-              Free forever for students
-            </li>
-          </ul>
-        </div>
-
-        <p class="mt-4 text-sm">
-          No credit card required • Free forever for students • Join 50,000+
-          active users
-        </p>
-
-        <button
-          class="mt-6 bg-white text-blue-600 font-semibold px-8 py-3 rounded-md hover:bg-gray-100 transition"
-        >
-          Get Started Free →
-        </button>
-      </div>
-    </div>
-
-    <footer class="bg-gray-900 text-gray-200 py-12 px-6 sm:px-10 min-h-fit">
-      <div class="max-w-7xl mx-auto">
-        <div
-          class="grid grid-cols-2 gap-y-10 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 border-b border-gray-700 pb-10"
-        >
-          <div class="col-span-2 md:col-span-1 lg:col-span-2 space-y-4 pr-8">
-            <div class="flex items-center gap-2">
-              <svg
-                class="w-8 h-8 text-indigo-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+          <div class="flex gap-4 pt-2">
+            <a href="#" aria-label="Facebook"
+              class="text-gray-400 hover:text-indigo-400 transition duration-300 transform hover:scale-110">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                ></path>
+                  d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-3 7h-2.5v-.5c0-.528.472-.5 1 0h1.5v-2h-3c-1.657 0-3 1.343-3 3v2h-2v3h2v7h3v-7h3l1-3h-4v-2h2.5z" />
               </svg>
-              <h2 class="text-2xl font-bold text-white">SkillConnect</h2>
-            </div>
-            <p class="text-sm text-gray-400 leading-relaxed">
-              Empowering students to **connect, collaborate**, and create
-              amazing projects together. Your hub for skill-sharing and
-              teamwork.
-            </p>
-            <div class="flex gap-4 pt-2">
-              <a
-                href="#"
-                aria-label="Facebook"
-                class="text-gray-400 hover:text-indigo-400 transition duration-300 transform hover:scale-110"
-              >
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path
-                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-3 7h-2.5v-.5c0-.528.472-.5 1 0h1.5v-2h-3c-1.657 0-3 1.343-3 3v2h-2v3h2v7h3v-7h3l1-3h-4v-2h2.5z"
-                  />
-                </svg>
-              </a>
-              <a
-                href="#"
-                aria-label="Twitter"
-                class="text-gray-400 hover:text-indigo-400 transition duration-300 transform hover:scale-110"
-              >
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path
-                    d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.799-1.574 2.16-2.723-.951.558-2.007.958-3.127 1.185-.845-.939-2.043-1.528-3.372-1.528-2.54 0-4.604 2.064-4.604 4.604 0 .361.041.713.118 1.053-3.824-.194-7.218-2.029-9.495-4.809-.395.679-.623 1.474-.623 2.329 0 1.597.811 3.004 2.035 3.829-.75-.024-1.454-.23-2.072-.57v.058c0 2.241 1.595 4.102 3.719 4.526-.388.106-.795.162-1.214.162-.296 0-.585-.029-.868-.082.593 1.848 2.329 3.18 4.381 3.224-1.583 1.242-3.582 1.981-5.748 1.981-.373 0-.74-.021-1.101-.065 2.046 1.314 4.46 2.089 7.085 2.089 8.503 0 13.153-7.078 13.153-13.153 0-.2-.005-.399-.011-.598.905-.654 1.697-1.474 2.327-2.41z"
-                  />
-                </svg>
-              </a>
-              <a
-                href="#"
-                aria-label="LinkedIn"
-                class="text-gray-400 hover:text-indigo-400 transition duration-300 transform hover:scale-110"
-              >
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path
-                    d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 14h-2.181v-5.524c0-1.343-.478-1.505-1.026-1.505-.536 0-1.011.378-1.189.756-.178.378-.23.756-.23 1.134v5.139h-2.181v-7.141h2.181v1.134c.319-.478.756-.956 1.621-1.233 1.063-.378 2.233-.284 3.089.478v-1.042h2.181v7.141zm-13.639-8.498c-.689 0-1.233-.544-1.233-1.233 0-.689.544-1.233 1.233-1.233s1.233.544 1.233 1.233c0 .689-.544 1.233-1.233 1.233zm-1.091 8.498h2.181v-7.141h-2.181v7.141z"
-                  />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <div class="space-y-3">
-            <h3 class="text-lg font-semibold text-white">Platform</h3>
-            <ul class="space-y-2">
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block"
-                  >Discover</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block"
-                  >Projects</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block"
-                  >Chat</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block"
-                  >Community</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <div class="space-y-3">
-            <h3 class="text-lg font-semibold text-white">Company</h3>
-            <ul class="space-y-2">
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block"
-                  >About Us</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block"
-                  >Careers
-                  <span
-                    class="text-xs ml-1 bg-indigo-500 text-white px-2 py-0.5 rounded-full"
-                    >Hiring</span
-                  ></a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block"
-                  >Blog</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block"
-                  >Sitemap</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <div class="space-y-3">
-            <h3 class="text-lg font-semibold text-white">Support</h3>
-            <ul class="space-y-2">
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block"
-                  >Help Center</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block"
-                  >Contact Us</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block"
-                  >Terms of Service</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block"
-                  >Privacy Policy</a
-                >
-              </li>
-            </ul>
+            </a>
+            <a href="#" aria-label="Twitter"
+              class="text-gray-400 hover:text-indigo-400 transition duration-300 transform hover:scale-110">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.799-1.574 2.16-2.723-.951.558-2.007.958-3.127 1.185-.845-.939-2.043-1.528-3.372-1.528-2.54 0-4.604 2.064-4.604 4.604 0 .361.041.713.118 1.053-3.824-.194-7.218-2.029-9.495-4.809-.395.679-.623 1.474-.623 2.329 0 1.597.811 3.004 2.035 3.829-.75-.024-1.454-.23-2.072-.57v.058c0 2.241 1.595 4.102 3.719 4.526-.388.106-.795.162-1.214.162-.296 0-.585-.029-.868-.082.593 1.848 2.329 3.18 4.381 3.224-1.583 1.242-3.582 1.981-5.748 1.981-.373 0-.74-.021-1.101-.065 2.046 1.314 4.46 2.089 7.085 2.089 8.503 0 13.153-7.078 13.153-13.153 0-.2-.005-.399-.011-.598.905-.654 1.697-1.474 2.327-2.41z" />
+              </svg>
+            </a>
+            <a href="#" aria-label="LinkedIn"
+              class="text-gray-400 hover:text-indigo-400 transition duration-300 transform hover:scale-110">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 14h-2.181v-5.524c0-1.343-.478-1.505-1.026-1.505-.536 0-1.011.378-1.189.756-.178.378-.23.756-.23 1.134v5.139h-2.181v-7.141h2.181v1.134c.319-.478.756-.956 1.621-1.233 1.063-.378 2.233-.284 3.089.478v-1.042h2.181v7.141zm-13.639-8.498c-.689 0-1.233-.544-1.233-1.233 0-.689.544-1.233 1.233-1.233s1.233.544 1.233 1.233c0 .689-.544 1.233-1.233 1.233zm-1.091 8.498h2.181v-7.141h-2.181v7.141z" />
+              </svg>
+            </a>
           </div>
         </div>
 
-        <div class="pt-8 text-center text-sm text-gray-500">
-          <p>&copy; 2026 **SkillConnect**. All rights reserved.</p>
+        <div class="space-y-3">
+          <h3 class="text-lg font-semibold text-white">Platform</h3>
+          <ul class="space-y-2">
+            <li>
+              <a href="#"
+                class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block">Discover</a>
+            </li>
+            <li>
+              <a href="#"
+                class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block">Projects</a>
+            </li>
+            <li>
+              <a href="#"
+                class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block">Chat</a>
+            </li>
+            <li>
+              <a href="#"
+                class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block">Community</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <h3 class="text-lg font-semibold text-white">Company</h3>
+          <ul class="space-y-2">
+            <li>
+              <a href="#"
+                class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block">About
+                Us</a>
+            </li>
+            <li>
+              <a href="#"
+                class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block">Careers
+                <span class="text-xs ml-1 bg-indigo-500 text-white px-2 py-0.5 rounded-full">Hiring</span></a>
+            </li>
+            <li>
+              <a href="#"
+                class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block">Blog</a>
+            </li>
+            <li>
+              <a href="#"
+                class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block">Sitemap</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <h3 class="text-lg font-semibold text-white">Support</h3>
+          <ul class="space-y-2">
+            <li>
+              <a href="#"
+                class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block">Help
+                Center</a>
+            </li>
+            <li>
+              <a href="#"
+                class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block">Contact
+                Us</a>
+            </li>
+            <li>
+              <a href="#"
+                class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block">Terms of
+                Service</a>
+            </li>
+            <li>
+              <a href="#"
+                class="text-gray-400 hover:text-indigo-400 transition duration-300 hover:translate-x-1 block">Privacy
+                Policy</a>
+            </li>
+          </ul>
         </div>
       </div>
-    </footer>
-    <script>
-      // Mobile menu toggle logic
-      const menuBtn = document.getElementById("menuBtn");
-      const mobileMenu = document.getElementById("mobileMenu");
 
-      menuBtn.addEventListener("click", () => {
-        // Toggle the 'hidden' class to show/hide the menu
-        mobileMenu.classList.toggle("hidden");
-        mobileMenu.classList.toggle("flex");
-      });
-    </script>
-  </body>
+      <div class="pt-8 text-center text-sm text-gray-500">
+        <p>&copy; 2026 **SkillConnect**. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Mobile menu toggle logic
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    menuBtn.addEventListener("click", () => {
+      // Toggle the 'hidden' class to show/hide the menu
+      mobileMenu.classList.toggle("hidden");
+      mobileMenu.classList.toggle("flex");
+    });
+  </script>
+</body>
+
 </html>

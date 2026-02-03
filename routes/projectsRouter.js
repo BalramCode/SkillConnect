@@ -180,7 +180,8 @@ router.get("/uploads/files/:filename", (req, res) => {
 
 
 async function addCollaborator(repoUrl, githubUsername) {
-  if (!githubUsername) return;
+  // ✅ GUARD: do nothing if data is missing
+  if (!repoUrl || !githubUsername) return;
 
   const [owner, repo] = repoUrl
     .replace("https://github.com/", "")
@@ -201,27 +202,38 @@ async function addCollaborator(repoUrl, githubUsername) {
 }
 
 
+
 const axios = require("axios");
 
 router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
   try {
     const project = await projectModel.findById(req.params.id);
-//  console.log("LOGGED-IN USER:", {
-//       id: req.user._id,
-//       githubUsername: req.user.githubUsername,
-//     });
 
-// ✅ Auto-add member as collaborator
-    if (req.user.githubUsername) {
-      await addCollaborator(project.repoUrl, req.user.githubUsername);
-    }
+    // 1️⃣ Project must exist
     if (!project) {
       return res.status(404).json({ error: "Project not found" });
     }
 
-    // ✅ CASE 1: Repo already exists → reuse
+    // 2️⃣ User must be a member
+    const isMember = project.members.some(
+      (memberId) => memberId.toString() === req.user._id.toString()
+    );
+
+    if (!isMember) {
+      return res.status(403).json({
+        error: "Please join the project first",
+      });
+    }
+
+    // 3️⃣ Repo already exists → reuse
     if (project.repoUrl && project.cloneUrl) {
       console.log("USING EXISTING REPO:", project.repoUrl);
+
+      // ✅ Invite member (safe now)
+      if (project.repoUrl && req.user.githubUsername) {
+        await addCollaborator(project.repoUrl, req.user.githubUsername);
+      }
+
       return res.json({
         status: "exists",
         repoUrl: project.repoUrl,
@@ -229,13 +241,13 @@ router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
       });
     }
 
-    // ✅ CASE 2: Repo does not exist → create ONCE
+    // 4️⃣ Repo does not exist → create once
     const repoName =
       project.projectName
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-") +
       "-" +
-      project._id.toString().slice(-5); // uniqueness
+      project._id.toString().slice(-5);
 
     console.log("CREATING GITHUB REPO:", repoName);
 
@@ -254,16 +266,17 @@ router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
       }
     );
 
-   
-
-    
-
-    // ✅ Save once → source of truth
+    // 5️⃣ Save repo (source of truth)
     project.repoUrl = response.data.html_url;
     project.cloneUrl = response.data.clone_url;
     await project.save();
 
     console.log("REPO CREATED & SAVED:", project.repoUrl);
+
+    // ✅ Invite creator/member
+    if (project.repoUrl && req.user.githubUsername) {
+      await addCollaborator(project.repoUrl, req.user.githubUsername);
+    }
 
     return res.json({
       status: "created",
@@ -276,6 +289,7 @@ router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
     res.status(500).json({ error: "Start coding failed" });
   }
 });
+
 
 
 
