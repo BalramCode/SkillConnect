@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>SkillConnect - Dashboard</title>
+    <title>SkillConnect - Specific Project</title>
     <style>
       /* Fix 1: Ensure full height and proper scrolling context */
       html,
@@ -316,32 +316,59 @@
           </div>
 
           <div id="overview" class="">
-            <div class="flex items-center gap-6 border-b border-gray-200 text-gray-600 pt-2">
-              <button class="pb-3 border-b-2 border-indigo-500 text-indigo-600 font-semibold transition-all duration-200">
-                Overview
-              </button>
-              <button class="pb-3 hover:text-indigo-600 font-medium transition-colors">
-                Tasks
-              </button>
-              <button class="pb-3 hover:text-indigo-600 font-medium transition-colors">
-                Chat
-              </button>
-              <button class="pb-3 hover:text-indigo-600 font-medium transition-colors">
-                Files
-              </button>
-              <button class="pb-3 hover:text-indigo-600 font-medium transition-colors">
-                Members
-              </button>
+           <div class="flex items-center gap-6 border-b border-gray-200 text-gray-600 pt-2">
+          <button class="pb-3 border-b-2 border-indigo-500 text-indigo-600 font-semibold transition-all duration-200">
+            Overview
+          </button>
+          <button class="pb-3 hover:text-indigo-600 font-medium transition-colors">
+            Tasks
+          </button>
+          <button class="pb-3 hover:text-indigo-600 font-medium transition-colors">
+            Chat
+          </button>
+          <button class="pb-3 hover:text-indigo-600 font-medium transition-colors">
+            Files
+          </button>
+          <button class="pb-3 hover:text-indigo-600 font-medium transition-colors">
+            Members
+          </button>
 
-              <button
-  id="startCodingBtn"
-  class="ml-auto mb-3 px-4 py-1.5 bg-indigo-600 text-white rounded-md"
->
-  Start Coding
-</button>
+          <div class="ml-auto flex items-center gap-3">
+            <!-- Share Icon Button -->
+            <button
+              id="shareBtn"
+              class="p-2 rounded-md hover:bg-indigo-100 transition"
+              title="Share Project"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 12v3a2 2 0 002 2h12a2 2 0 002-2v-3" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 6l-4-4m0 0L8 6m4-4v10" />
+        </svg>
+
+         </button>
+
+          <!-- Start Coding -->
+          <button
+            id="startCodingBtn"
+            class="px-4 py-1.5 bg-indigo-600 text-white rounded-md"
+          >
+            Start Coding
+          </button>
+        </div>
+</div>
+<!-- For copy and share specific project link -->
+<script>
+  const shareBtn = document.getElementById("shareBtn");
+
+  shareBtn.addEventListener("click", () => {
+    const url = window.location.href;  // current project URL
+    navigator.clipboard.writeText(url);
+    alert("Project link copied! 🔗");
+  });
+</script>
 
 
-            </div>
+
             <!-- <form action="/projects/<%= project._id %>/start-coding" method="POST">
   <button type="submit">TEST START CODING</button>
 </form> -->

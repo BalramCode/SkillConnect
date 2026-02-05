@@ -178,6 +178,35 @@ router.get("/uploads/files/:filename", (req, res) => {
 });
 
 
+// Rendering my Projects
+// My Projects (Joined OR Created)
+router.get('/myprojects', isLoggedIn, async (req, res) => {
+  try {
+    const projects = await projectModel
+      .find({
+        $or: [
+          { creator: req.user._id },
+          { members: req.user._id }
+        ]
+      })
+      .populate('creator')   // 👈 REQUIRED for creator.fullname
+      .populate('members');  // optional but useful
+
+    res.render('myProject', {
+      user: req.user,
+      isLoggedIn: true,
+      projects
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Failed to load My Projects ❌');
+  }
+});
+
+
+
+
+
 
 async function addCollaborator(repoUrl, githubUsername) {
   // ✅ GUARD: do nothing if data is missing

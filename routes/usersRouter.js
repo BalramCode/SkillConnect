@@ -132,12 +132,13 @@ router.post("/edit/:id", async (req, res) => {
     }
 
     // 👇 ADD githubUsername here
-    const { username, bio, email, university, githubUsername } = req.body;
+    const { username,fullname, bio, email, university, githubUsername } = req.body;
 
     const updatedUser = await userModel.findByIdAndUpdate(
       req.params.id,
       {
         username,
+        fullname,
         bio,
         email,
         university,
