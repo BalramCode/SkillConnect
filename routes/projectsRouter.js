@@ -3,18 +3,20 @@ const router = express.Router();
 const projectModel = require("../model/projectModel");
 const isLoggedIn = require("../middleware/isLoggedIn");
 const Task = require("../model/taskModel");
+const Activity = require("../model//activityModel");
 const multer = require("../middleware/multer");
 const File = require("../model/fileModel");
 const session = require("express-session");
 const flash = require("connect-flash");
 
-router.use(session({
-  secret: "yourSecretKey",
-  resave: false,
-  saveUninitialized: true
-}));
+router.use(
+  session({
+    secret: "yourSecretKey",
+    resave: false,
+    saveUninitialized: true,
+  }),
+);
 console.log(process.env.GITHUB_TOKEN ? "GitHub Token Loaded" : "Token Missing");
-
 
 router.use(flash());
 
@@ -24,7 +26,6 @@ router.use((req, res, next) => {
   res.locals.error = req.flash("error");
   next();
 });
-
 
 // Get all projects
 router.get("/", isLoggedIn, async (req, res) => {
@@ -73,28 +74,65 @@ router.get("/project/:id", isLoggedIn, async (req, res) => {
     .populate("members")
     .populate("joinRequests.user");
 
-  const tasks = await Task.find({ project: req.params.id })
-    .populate("assignedTo");
+  const tasks = await Task.find({ project: req.params.id }).populate(
+    "assignedTo",
+  );
 
   const files = await File.find({ project: req.params.id })
     .populate("uploadedBy")
     .sort({ createdAt: -1 });
 
+  // ✅ REAL STATS
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter((t) => t.status === "done").length;
+  const inProgressTasks = tasks.filter((t) => t.status === "inprogress").length;
+  const teamMembers = project.members.length;
+
+  // ✅ RECENT ACTIVITY (NEW)
+  const activities = await Activity.find({ project: req.params.id })
+    .populate("user", "name email")
+    .sort({ createdAt: -1 })
+    .limit(5);
+
   res.render("specificProject", {
     project,
     tasks,
     files,
-    user: req.user,        // 👈 already there
-    isLoggedIn: req.user,  // ✅ ADD THIS
+    activities, // 👈 IMPORTANT
+    user: req.user,
+    isLoggedIn: req.user,
+
+    // stats
+    totalTasks,
+    completedTasks,
+    inProgressTasks,
+    teamMembers,
   });
 });
 
+// Add a key objective to project
+router.post("/project/:id/objective", isLoggedIn, async (req, res) => {
+  const { title, targetValue, unit } = req.body;
+
+  await projectModel.findByIdAndUpdate(req.params.id, {
+    $push: {
+      objectives: {
+        title,
+        targetValue,
+        unit,
+        currentValue: 0,
+      },
+    },
+  });
+
+  res.redirect(`/projects/project/${req.params.id}`);
+});
 
 // router.post("/newTask", async (req, res) => {
 //   res.send("hello jee")
 // })
 
-router.post("/newTask", async (req, res) => {
+router.post("/newTask",isLoggedIn, async (req, res) => {
   try {
     const {
       project,
@@ -114,6 +152,14 @@ router.post("/newTask", async (req, res) => {
       assignedTo,
       dueDate,
       status,
+    });
+
+    // ✅ ADD THIS
+    await Activity.create({
+      project,
+      user: req.user._id,
+      type: "task_created",
+      message: `created a new task "${title}"`,
     });
 
     // redirect user back to the specific project page
@@ -144,6 +190,13 @@ router.post(
         uploadedBy: req.user._id,
       });
 
+      await Activity.create({
+      project: req.params.id,
+      user: req.user._id,
+      type: "file_uploaded",
+      message: `uploaded a file "${req.file.originalname}"`,
+    });
+
       req.flash("success", "File uploaded successfully");
       res.redirect(`/projects/project/${req.params.id}`);
     } catch (err) {
@@ -151,9 +204,8 @@ router.post(
       req.flash("error", "Something went wrong");
       res.redirect(`/projects/project/${req.params.id}`);
     }
-  }
+  },
 );
-
 
 // Delete file
 router.post("/file/delete/:id", isLoggedIn, async (req, res) => {
@@ -167,7 +219,11 @@ router.post("/file/delete/:id", isLoggedIn, async (req, res) => {
 
 // Download file
 router.get("/uploads/files/:filename", (req, res) => {
-  const filePath = path.join(__dirname, "../uploads/files", req.params.filename);
+  const filePath = path.join(
+    __dirname,
+    "../uploads/files",
+    req.params.filename,
+  );
 
   res.download(filePath, (err) => {
     if (err) {
@@ -177,44 +233,33 @@ router.get("/uploads/files/:filename", (req, res) => {
   });
 });
 
-
 // Rendering my Projects
 // My Projects (Joined OR Created)
-router.get('/myprojects', isLoggedIn, async (req, res) => {
+router.get("/myprojects", isLoggedIn, async (req, res) => {
   try {
     const projects = await projectModel
       .find({
-        $or: [
-          { creator: req.user._id },
-          { members: req.user._id }
-        ]
+        $or: [{ creator: req.user._id }, { members: req.user._id }],
       })
-      .populate('creator')   // 👈 REQUIRED for creator.fullname
-      .populate('members');  // optional but useful
+      .populate("creator") // 👈 REQUIRED for creator.fullname
+      .populate("members"); // optional but useful
 
-    res.render('myProject', {
+    res.render("myProject", {
       user: req.user,
       isLoggedIn: true,
-      projects
+      projects,
     });
   } catch (error) {
     console.error(error);
-    res.status(500).send('Failed to load My Projects ❌');
+    res.status(500).send("Failed to load My Projects ❌");
   }
 });
-
-
-
-
-
 
 async function addCollaborator(repoUrl, githubUsername) {
   // ✅ GUARD: do nothing if data is missing
   if (!repoUrl || !githubUsername) return;
 
-  const [owner, repo] = repoUrl
-    .replace("https://github.com/", "")
-    .split("/");
+  const [owner, repo] = repoUrl.replace("https://github.com/", "").split("/");
 
   await axios.put(
     `https://api.github.com/repos/${owner}/${repo}/collaborators/${githubUsername}`,
@@ -224,13 +269,11 @@ async function addCollaborator(repoUrl, githubUsername) {
         Authorization: `token ${process.env.GITHUB_TOKEN}`,
         Accept: "application/vnd.github+json",
       },
-    }
+    },
   );
 
   console.log(`INVITED ${githubUsername} TO ${repo}`);
 }
-
-
 
 const axios = require("axios");
 
@@ -245,7 +288,7 @@ router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
 
     // 2️⃣ User must be a member
     const isMember = project.members.some(
-      (memberId) => memberId.toString() === req.user._id.toString()
+      (memberId) => memberId.toString() === req.user._id.toString(),
     );
 
     if (!isMember) {
@@ -272,9 +315,7 @@ router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
 
     // 4️⃣ Repo does not exist → create once
     const repoName =
-      project.projectName
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-") +
+      project.projectName.toLowerCase().replace(/[^a-z0-9]+/g, "-") +
       "-" +
       project._id.toString().slice(-5);
 
@@ -292,7 +333,7 @@ router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
           Authorization: `token ${process.env.GITHUB_TOKEN}`,
           Accept: "application/vnd.github+json",
         },
-      }
+      },
     );
 
     // 5️⃣ Save repo (source of truth)
@@ -312,21 +353,10 @@ router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
       repoUrl: project.repoUrl,
       cloneUrl: project.cloneUrl,
     });
-
   } catch (err) {
     console.error("START CODING ERROR:", err.response?.data || err);
     res.status(500).json({ error: "Start coding failed" });
   }
 });
-
-
-
-
-
-
-
-
-
-
 
 module.exports = router;

@@ -16,7 +16,44 @@ const projectSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       // ❌ unique removed (VERY IMPORTANT)
-    }
+    },
+  ],
+
+  // ---------------------------
+  // KEY OBJECTIVES (REAL DATA)
+  // ---------------------------
+  objectives: [
+    {
+      title: {
+        type: String,
+        required: true,
+      },
+
+      targetValue: {
+        type: Number, // e.g. 40
+      },
+
+      unit: {
+        type: String, // %, tasks, users, etc.
+        default: "%",
+      },
+
+      currentValue: {
+        type: Number,
+        default: 0,
+      },
+
+      updateMode: {
+        type: String,
+        enum: ["manual", "auto"],
+        default: "manual",
+      },
+
+      updatedAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
   ],
 
   // ---------------------------
@@ -37,7 +74,7 @@ const projectSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
       },
-    }
+    },
   ],
 
   // ---------------------------
