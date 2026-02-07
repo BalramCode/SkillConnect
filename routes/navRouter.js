@@ -5,6 +5,7 @@ const userModel = require("../model/userModel");
 const groupModel = require("../model/groupModel");
 const projectModel = require("../model/projectModel");
 const isLoggedIn = require("../middleware/isLoggedIn");
+const Task = require("../model/taskModel");
 
 router.get("/logout", (req, res) => {
   res.clearCookie("token");
@@ -13,9 +14,42 @@ router.get("/logout", (req, res) => {
 
 // Use the middleware to protect and populate req.user
 router.get("/dashboard", isLoggedIn, async (req, res) => {
-  // Now req.user holds the logged-in user's data!
-  res.render("dashboard", { user: req.user });
+  const userId = req.user._id;
+
+  // 1️⃣ Active projects (user is a member)
+  const activeProjects = await projectModel.find({
+    members: userId,
+  });
+
+  // 2️⃣ Total team members (unique, across projects)
+  const teamMemberSet = new Set();
+  activeProjects.forEach(p => {
+    p.members.forEach(m => teamMemberSet.add(m.toString()));
+  });
+
+  // 3️⃣ Tasks completed by user
+  const completedTasks = await Task.countDocuments({
+    assignedTo: userId,
+    status: "done",
+  });
+
+  // 4️⃣ Pending tasks for user
+  const pendingTasks = await Task.countDocuments({
+    assignedTo: userId,
+    status: { $in: ["todo", "inprogress"] },
+  });
+
+  res.render("dashboard", {
+    user: req.user,
+    stats: {
+      activeProjects: activeProjects.length,
+      teamMembers: teamMemberSet.size,
+      completedTasks,
+      pendingTasks,
+    },
+  });
 });
+
 
 router.get("/projects", isLoggedIn, async (req, res) => {
   try {

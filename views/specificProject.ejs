@@ -94,20 +94,11 @@
                 class="flex items-center gap-3 p-3 text-lg rounded-lg active"
                 href="/nav/projects"
               >
-                <svg
-                  class="w-6 h-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10m-4-10v10m8-10v10"
-                  />
-                </svg>
+                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M3 7a2 2 0 012-2h14a2 2 0 012 2M3 7h18" />
+                          </svg>
                 Projects
               </a>
             </li>
@@ -117,20 +108,13 @@
                 class="flex items-center gap-3 p-3 text-lg rounded-lg"
                 href="/nav/groups"
               >
-                <svg
-                  class="w-6 h-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M17 20h5v-2a3 3 0 00-3-3H5a3 3 0 00-3 3v2h5m14-4a4 4 0 10-8 0 4 4 0 008 0zM12 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"
-                  />
-                </svg>
+                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M17 20h5v-2a3 3 0 00-3-3H5a3 3 0 00-3 3v2h5" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" />
+                          </svg>
                 Groups
               </a>
             </li>
@@ -323,9 +307,13 @@
           <button class="pb-3 hover:text-indigo-600 font-medium transition-colors">
             Tasks
           </button>
-          <button class="pb-3 hover:text-indigo-600 font-medium transition-colors">
-            Chat
-          </button>
+         <button
+          id="chatTabBtn"
+          class="pb-3 border-b-2  font-semibold transition-all duration-200 hover:text-indigo-600"
+        >
+          Chat
+        </button>
+
           <button class="pb-3 hover:text-indigo-600 font-medium transition-colors">
             Files
           </button>
@@ -678,6 +666,8 @@ document.getElementById("startCodingBtn").addEventListener("click", async () => 
             </div>
           </div>
 
+          <!-- For Task section -->
+           <% if (isMember) { %>
           <div id="tasks" class="hidden">
             <div class="flex gap-6 border-b border-gray-200 text-gray-600 pt-2">
               <button
@@ -908,198 +898,110 @@ document.getElementById("startCodingBtn").addEventListener("click", async () => 
               </div>
             </div>
           </div>
+          <% } else { %>
 
-          <div id="chat" class="hidden">
-            <div class="flex gap-6 border-b border-gray-200 text-gray-600 pt-2">
-              <button
-                class="pb-3 hover:text-indigo-600 font-medium transition-colors"
-              >
-                Overview
-              </button>
-              <button
-                class="pb-3 hover:text-indigo-600 font-medium transition-colors"
-              >
-                Tasks
-              </button>
-              <button
-                class="pb-3 border-b-2 border-indigo-500 text-indigo-600 font-semibold transition-all duration-200 hover:text-indigo-600"
-              >
-                Chat
-              </button>
-              <button
-                class="pb-3 hover:text-indigo-600 font-medium transition-colors"
-              >
-                Files
-              </button>
-              <button
-                class="pb-3 hover:text-indigo-600 font-medium transition-colors"
-              >
-                Members
-              </button>
-            </div>
-            <!-- Copy this single div into your page (requires Tailwind CSS) -->
-            <div
-              class="w-full mx-auto bg-white/90 p-4 rounded-2xl shadow-lg ring-1 ring-gray-200 font-sans"
-            >
-              <!-- Header -->
-              <div class="flex items-center justify-between mb-4">
-                <div>
-                  <div class="text-lg font-semibold text-gray-900">
-                    Project: <%= project.projectName %>
-                  </div>
-                  <div class="text-xs text-gray-500">Team chat • 6 members</div>
-                </div>
-                <div class="flex items-center space-x-2">
-                  <div class="text-xs text-green-600 font-medium">Online</div>
-                  <div
-                    class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-pink-500 rounded-full text-white flex items-center justify-center text-sm"
-                  >
-                    CP
-                  </div>
-                </div>
-              </div>
+  <!-- ================= TASKS LOCKED (NON-MEMBERS) ================= -->
+  <div id="tasks" class="hidden">
+    <div class="w-full mx-auto bg-white p-6 rounded-2xl shadow ring-1 ring-gray-200 text-center">
+      <p class="text-gray-700 font-medium">
+        🔒 Join this project to view and manage tasks
+      </p>
+    </div>
+  </div>
 
-              <!-- Messages container -->
-              <div class="space-y-3 max-h-80 overflow-y-auto pr-2">
-                <!-- Message (left) -->
-                <div class="flex items-start space-x-3">
-                  <div class="flex-shrink-0">
-                    <div
-                      class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-700"
-                    >
-                      AR
-                    </div>
-                  </div>
-                  <div>
-                    <div class="text-xs text-gray-500">Aarav • 10:02 AM</div>
-                    <div
-                      class="mt-1 bg-gray-100 text-gray-900 px-3 py-2 rounded-lg rounded-tl-none max-w-xs shadow-sm"
-                    >
-                      I pushed the initial project skeleton to the repo — check
-                      the README for setup steps.
-                    </div>
-                  </div>
-                </div>
+<% } %>
 
-                <!-- Message (right) -->
-                <div class="flex items-start justify-end">
-                  <div class="max-w-xs">
-                    <div class="text-right text-xs text-gray-500">
-                      Me • 10:05 AM
-                    </div>
-                    <div
-                      class="mt-1 inline-block bg-indigo-600 text-white px-3 py-2 rounded-lg rounded-tr-none shadow"
-                    >
-                      Nice — I'll integrate GitHub storage and add CI in the
-                      next commit.
-                    </div>
-                  </div>
-                </div>
+<!-- For chat section -->
+<% if (isMember) { %>
+  <div id="chat" class="hidden">
+    <!-- Tabs -->
+    <div class="flex gap-6 border-b border-gray-200 text-gray-600 pt-2">
+      <button class="pb-3 hover:text-indigo-600 font-medium">Overview</button>
+      <button class="pb-3 hover:text-indigo-600 font-medium">Tasks</button>
+      <button class="pb-3 border-b-2 border-indigo-500 text-indigo-600 font-semibold">
+        Chat
+      </button>
+      <button class="pb-3 hover:text-indigo-600 font-medium">Files</button>
+      <button class="pb-3 hover:text-indigo-600 font-medium">Members</button>
+    </div>
 
-                <!-- Message (left) -->
-                <div class="flex items-start space-x-3">
-                  <div class="flex-shrink-0">
-                    <div
-                      class="w-9 h-9 rounded-full bg-yellow-200 flex items-center justify-center text-sm font-medium text-yellow-800"
-                    >
-                      SM
-                    </div>
-                  </div>
-                  <div>
-                    <div class="text-xs text-gray-500">Sima • 10:07 AM</div>
-                    <div
-                      class="mt-1 bg-gray-100 text-gray-900 px-3 py-2 rounded-lg rounded-tl-none max-w-xs shadow-sm"
-                    >
-                      Can someone add a short demo video (30s)? Deadline is
-                      today. I can write the voiceover.
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Message (right) with file pill -->
-                <div class="flex items-start justify-end">
-                  <div class="max-w-xs text-right">
-                    <div class="text-xs text-gray-500">Me • 10:09 AM</div>
-                    <div
-                      class="mt-1 inline-block bg-indigo-600 text-white px-3 py-2 rounded-lg rounded-tr-none shadow"
-                    >
-                      Uploaded a quick script draft —
-                      <span class="underline font-medium">script-v1.txt</span>
-                    </div>
-                    <div class="mt-2 flex justify-end">
-                      <span
-                        class="inline-flex items-center px-2.5 py-1 rounded-full bg-white/10 text-xs text-white/90"
-                        >0.8 MB</span
-                      >
-                    </div>
-                  </div>
-                </div>
-
-                <!-- System / status message -->
-                <div class="text-center text-xs text-gray-400">
-                  — Project members joined: Aarav, Me, Sima, Priya, Rahul —
-                </div>
-
-                <!-- Message (left) -->
-                <div class="flex items-start space-x-3">
-                  <div class="flex-shrink-0">
-                    <div
-                      class="w-9 h-9 rounded-full bg-pink-100 flex items-center justify-center text-sm font-medium text-pink-700"
-                    >
-                      PR
-                    </div>
-                  </div>
-                  <div>
-                    <div class="text-xs text-gray-500">Priya • 10:12 AM</div>
-                    <div
-                      class="mt-1 bg-gray-100 text-gray-900 px-3 py-2 rounded-lg rounded-tl-none max-w-xs shadow-sm"
-                    >
-                      I'll record the 30s video today. What scenes do we want?
-                      (1) intro, (2) create project, (3) upload file, (4) join
-                      group.
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Quick reaction row -->
-                <div class="flex items-center space-x-2 text-xs text-gray-500">
-                  <div class="flex items-center space-x-2">
-                    <div
-                      class="w-6 h-6 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 text-xs"
-                    >
-                      👍
-                    </div>
-                    <div>Got it</div>
-                  </div>
-                  <div class="ml-3">•</div>
-                  <div>2 new messages</div>
-                </div>
-              </div>
-
-              <!-- Composer / input -->
-              <div class="mt-4">
-                <label for="chat-input" class="sr-only">Write a message</label>
-                <div class="flex items-center space-x-2">
-                  <input
-                    id="chat-input"
-                    type="text"
-                    placeholder="Write a short message or /todo"
-                    class="flex-1 px-3 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-200"
-                  />
-                  <button
-                    class="px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 text-sm"
-                  >
-                    Send
-                  </button>
-                </div>
-                <div class="mt-2 text-xs text-gray-400">
-                  Pro tip: type <span class="font-medium">/todo</span> to add a
-                  task (UI only).
-                </div>
-                  
-              </div>
-            </div>
+    <!-- Chat box -->
+    <div class="w-full mx-auto bg-white/90 p-4 rounded-2xl shadow-lg ring-1 ring-gray-200 font-sans">
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <div class="text-lg font-semibold text-gray-900">
+            Project: <%= project.projectName %>
           </div>
+          <div class="text-xs text-gray-500">
+            Team chat • <%= project.members.length %> members
+          </div>
+        </div>
+
+        <div class="text-xs text-green-600 font-medium">
+          Online (<span id="onlineCount">0</span>)
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div id="messages" class="space-y-3 max-h-80 overflow-y-auto pr-2">
+        <% messages.forEach(msg => { %>
+          <% if (msg.sender === user.username) { %>
+            <div class="flex justify-end">
+              <div class="max-w-xs text-right">
+                <div class="text-xs text-gray-500">Me • <%= msg.time %></div>
+                <div class="bg-indigo-600 text-white px-3 py-2 rounded-lg">
+                  <%= msg.message %>
+                </div>
+              </div>
+            </div>
+          <% } else { %>
+            <div class="flex">
+              <div class="max-w-xs">
+                <div class="text-xs text-gray-500">
+                  <%= msg.sender %> • <%= msg.time %>
+                </div>
+                <div class="bg-gray-100 px-3 py-2 rounded-lg">
+                  <%= msg.message %>
+                </div>
+              </div>
+            </div>
+          <% } %>
+        <% }) %>
+      </div>
+
+      <!-- Input -->
+      <div class="mt-4 flex gap-2">
+        <input
+          id="chat-input"
+          class="flex-1 px-3 py-2 border rounded-xl"
+          placeholder="Write a message"
+        />
+        <button
+          id="sendMessageBtn"
+          class="px-4 py-2 bg-indigo-600 text-white rounded-xl"
+        >
+          Send
+        </button>
+      </div>
+    </div>
+  </div>
+<% } else { %>
+  <div id="chat" class="hidden">
+    <div class="bg-white p-6 rounded-xl shadow text-center">
+      🔒 Join this project to participate in the chat
+    </div>
+  </div>
+<% } %>
+
+
+
+
+          
+    <% if (isMember) { %>
+  
+  <!-- ================= FILES (MEMBERS ONLY) ================= -->
+
           <div id="files" class="hidden">
             <div class="flex gap-6 border-b border-gray-200 text-gray-600 pt-2">
               <button
@@ -1224,6 +1126,19 @@ document.getElementById("startCodingBtn").addEventListener("click", async () => 
               </div>
             </div>
           </div>
+          <% } else { %>
+
+            <!-- ================= FILES LOCKED (NON-MEMBERS) ================= -->
+            <div id="files" class="hidden">
+              <div class="w-full mx-auto bg-white p-6 rounded-2xl shadow ring-1 ring-gray-200 text-center">
+                <p class="text-gray-700 font-medium">
+                  🔒 Join this project to access files
+                </p>
+              </div>
+            </div>
+
+          <% } %>
+
 
           <script>
             document.getElementById("dropArea").onclick = () => {
@@ -1551,5 +1466,138 @@ document.getElementById("startCodingBtn").addEventListener("click", async () => 
         uploadForm.submit();
       });
     </script>
+    <script src="/socket.io/socket.io.js"></script>
+      <script>
+        const socket = io();
+
+        socket.on("connect", () => {
+          console.log("🟢 Connected to socket:", socket.id);
+        });
+
+        socket.on("disconnect", () => {
+          console.log("🔴 Disconnected from socket");
+        });
+      </script>
+
+      <script>
+        socket.emit("join-project", {
+          projectId: "<%= project._id %>",
+          username: "<%= user.username %>",
+          userId: "<%= user._id %>"
+        });
+      </script>
+
+
+
+<script>
+  const chatInput = document.getElementById("chat-input");
+  const sendBtn = document.getElementById("sendMessageBtn");
+
+  sendBtn.addEventListener("click", () => {
+    const message = chatInput.value.trim();
+    if (!message) return;
+
+    socket.emit("send-message", {
+      projectId: "<%= project._id %>",
+      message: message,
+      sender: "<%= user.username %>",
+    });
+
+    chatInput.value = "";
+  });
+
+  // 🔑 Press Enter to send message
+  chatInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // stop newline / form submit
+      sendBtn.click();    // reuse existing send logic
+    }
+  });
+
+</script>
+
+       
+        <script>
+          const messagesContainer = document.getElementById("messages");
+          const CURRENT_USER = "<%= user.username %>";
+
+          socket.on("receive-message", ({ message, sender, time }) => {
+            console.log("📩 REALTIME MESSAGE:", message);
+
+            const messageDiv = document.createElement("div");
+            const isMe = sender === CURRENT_USER;
+
+            if (isMe) {
+              messageDiv.className = "flex justify-end";
+              messageDiv.innerHTML = `
+                <div class="max-w-xs text-right">
+                  <div class="text-xs text-gray-500">Me • ${time}</div>
+                  <div class="bg-indigo-600 text-white px-3 py-2 rounded-lg">
+                    ${message}
+                  </div>
+                </div>
+              `;
+            } else {
+              messageDiv.className = "flex";
+              messageDiv.innerHTML = `
+                <div class="max-w-xs">
+                  <div class="text-xs text-gray-500">${sender} • ${time}</div>
+                  <div class="bg-gray-100 px-3 py-2 rounded-lg">
+                    ${message}
+                  </div>
+                </div>
+              `;
+            }
+
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          });
+        </script>
+
+
+        <script>
+  // 🔑 JOIN ROOM IMMEDIATELY (for real-time sync)
+  socket.emit("join-project", {
+    projectId: "<%= project._id %>",
+    username: "<%= user.username %>",
+    userId: "<%= user._id %>"
+  });
+</script>
+
+
+<script>
+  // ✅ Auto-scroll to bottom when chat loads
+  window.addEventListener("load", () => {
+    const messagesContainer = document.getElementById("messages");
+    if (messagesContainer) {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+  });
+</script>
+<script>
+  const chatTabBtn = document.getElementById("chatTabBtn");
+
+  chatTabBtn.addEventListener("click", () => {
+    // wait till chat becomes visible
+    setTimeout(() => {
+      const messagesContainer = document.getElementById("messages");
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    }, 50); // tiny delay = DOM ready
+  });
+</script>
+
+
+<script>
+  const onlineCountEl = document.getElementById("onlineCount");
+
+  socket.on("online-users", ({ users }) => {
+    onlineCountEl.textContent = users.length;
+    console.log("🟢 Online users:", users);
+  });
+</script>
+
+
   </body>
 </html>

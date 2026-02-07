@@ -7,6 +7,9 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 
 
 // GET: render login/register page
+const projectModel = require("../model/projectModel");
+const Task = require("../model/taskModel");
+
 router.get("/loginregister", async (req, res) => {
   try {
     const token = req.cookies.token;
@@ -23,15 +26,52 @@ router.get("/loginregister", async (req, res) => {
       return res.render("loginregister");
     }
 
-    // If token is valid, redirect to the dashboard with the user object
-    return res.render("dashboard", { user: u });
+    // =========================
+    // ✅ CALCULATE DASHBOARD STATS
+    // =========================
+    const userId = u._id;
+
+    const activeProjects = await projectModel.find({
+      members: userId,
+    });
+
+    const teamMemberSet = new Set();
+    activeProjects.forEach(project => {
+      project.members.forEach(memberId =>
+        teamMemberSet.add(memberId.toString())
+      );
+    });
+
+    const completedTasks = await Task.countDocuments({
+      assignedTo: userId,
+      status: "done",
+    });
+
+    const pendingTasks = await Task.countDocuments({
+      assignedTo: userId,
+      status: { $in: ["todo", "inprogress"] },
+    });
+
+    // =========================
+    // ✅ RENDER DASHBOARD WITH STATS
+    // =========================
+    return res.render("dashboard", {
+      user: u,
+      stats: {
+        activeProjects: activeProjects.length,
+        teamMembers: teamMemberSet.size,
+        completedTasks,
+        pendingTasks,
+      },
+    });
+
   } catch (error) {
     console.error("Authentication Error:", error.message);
     res.clearCookie("token");
-    // Change: Render loginregister if auth fails, as index wasn't defined
     return res.render("loginregister");
   }
 });
+
 
 // POST: handle register form submission
 router.post("/register", async (req, res) => {
@@ -70,7 +110,24 @@ router.post("/register", async (req, res) => {
 
     res.cookie("token", token, { httpOnly: true });
 
-    return res.render("dashboard", { user: createdUser });
+    // =========================
+    // ✅ DASHBOARD STATS (NEW USER → ALL ZERO)
+    // =========================
+    const stats = {
+      activeProjects: 0,
+      teamMembers: 0,
+      completedTasks: 0,
+      pendingTasks: 0,
+    };
+
+    // =========================
+    // ✅ RENDER DASHBOARD SAFELY
+    // =========================
+    return res.render("dashboard", {
+      user: createdUser,
+      stats,
+    });
+
   } catch (err) {
     console.log(err);
     return res.render("loginregister", {
@@ -80,11 +137,12 @@ router.post("/register", async (req, res) => {
   }
 });
 
+
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    const u = await userModel.findOne({ email });
 
+    const u = await userModel.findOne({ email });
     if (!u) {
       return res.render("loginregister", {
         toastMessage: "User not found. Please register first.",
@@ -100,10 +158,51 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ email: u.email, id: u._id }, process.env.JWT_KEY);
+    const token = jwt.sign(
+      { email: u.email, id: u._id },
+      process.env.JWT_KEY
+    );
     res.cookie("token", token, { httpOnly: true });
 
-    return res.render("dashboard", { user: u });
+    // =========================
+    // ✅ CALCULATE DASHBOARD STATS
+    // =========================
+    const userId = u._id;
+
+    const activeProjects = await projectModel.find({
+      members: userId,
+    });
+
+    const teamMemberSet = new Set();
+    activeProjects.forEach(project => {
+      project.members.forEach(memberId =>
+        teamMemberSet.add(memberId.toString())
+      );
+    });
+
+    const completedTasks = await Task.countDocuments({
+      assignedTo: userId,
+      status: "done",
+    });
+
+    const pendingTasks = await Task.countDocuments({
+      assignedTo: userId,
+      status: { $in: ["todo", "inprogress"] },
+    });
+
+    // =========================
+    // ✅ RENDER DASHBOARD WITH STATS
+    // =========================
+    return res.render("dashboard", {
+      user: u,
+      stats: {
+        activeProjects: activeProjects.length,
+        teamMembers: teamMemberSet.size,
+        completedTasks,
+        pendingTasks,
+      },
+    });
+
   } catch (error) {
     console.error("Login error:", error);
     return res.render("loginregister", {

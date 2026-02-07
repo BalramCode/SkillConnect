@@ -8,6 +8,7 @@ const multer = require("../middleware/multer");
 const File = require("../model/fileModel");
 const session = require("express-session");
 const flash = require("connect-flash");
+const ChatMessage = require("../model/messageModel");
 
 router.use(
   session({
@@ -82,6 +83,21 @@ router.get("/project/:id", isLoggedIn, async (req, res) => {
     .populate("uploadedBy")
     .sort({ createdAt: -1 });
 
+    const messages = await ChatMessage.find({
+      project: req.params.id,
+    }).sort({ createdAt: 1 });
+
+   const isMember = project.members.some(
+  (member) => member._id.toString() === req.user._id.toString()
+);
+
+    console.log("IS MEMBER CHECK:", {
+  userId: req.user._id.toString(),
+  members: project.members.map(id => id.toString()),
+  isMember
+});
+
+
   // ✅ REAL STATS
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((t) => t.status === "done").length;
@@ -98,7 +114,9 @@ router.get("/project/:id", isLoggedIn, async (req, res) => {
     project,
     tasks,
     files,
-    activities, // 👈 IMPORTANT
+    activities,
+    messages,
+    isMember,
     user: req.user,
     isLoggedIn: req.user,
 
