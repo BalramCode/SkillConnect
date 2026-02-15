@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const router = express.Router();
 const projectModel = require("../model/projectModel");
@@ -91,11 +92,6 @@ router.get("/project/:id", isLoggedIn, async (req, res) => {
   (member) => member._id.toString() === req.user._id.toString()
 );
 
-    console.log("IS MEMBER CHECK:", {
-  userId: req.user._id.toString(),
-  members: project.members.map(id => id.toString()),
-  isMember
-});
 
 
   // ✅ REAL STATS
