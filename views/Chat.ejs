@@ -432,47 +432,32 @@
 
           users.forEach(user => {
             const div = document.createElement("div");
-            // Replace the innerHTML part of your loadRecentChats function
+            
+            // Truncate long messages so they don't break the UI
+            const preview = user.lastMessage.length > 30 
+              ? user.lastMessage.substring(0, 30) + "..." 
+              : user.lastMessage;
+
             div.innerHTML = `
-              <div style="
-                display: flex;
-                align-items: center;
-                padding: 12px 16px;
-                cursor: pointer;
-                transition: background 0.2s;
-                border-bottom: 1px solid #f3f4f6;
-              " 
-              onmouseover="this.style.background='#f9fafb'" 
-              onmouseout="this.style.background='transparent'"
-              onclick="openChat('${user._id}', '${user.username}')">
+              <div style="display: flex; align-items: center; padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #f3f4f6;" 
+                  onclick="openChat('${user._id}', '${user.username}')">
                 
-                <div style="
-                  width: 48px; 
-                  height: 48px; 
-                  border-radius: 50%; 
-                  background: #4f46e5; 
-                  color: white; 
-                  display: flex; 
-                  align-items: center; 
-                  justify-content: center; 
-                  font-weight: 600;
-                  flex-shrink: 0; /* Prevents avatar from squeezing */
-                  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                ">
+                <div style="width: 48px; height: 48px; border-radius: 50%; background: #4f46e5; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0;">
                   ${user.username.charAt(0).toUpperCase()}
                 </div>
 
-                <div style="margin-left: 12px; overflow: hidden; flex-grow: 1;">
-                  <div style="
-                    font-weight: 600; 
-                    color: #111827; 
-                    white-space: nowrap; 
-                    overflow: hidden; 
-                    text-overflow: ellipsis;
-                  ">
-                    ${user.username}
+                <div style="margin-left: 12px; flex: 1; min-width: 0;">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                    <div style="font-weight: 600; color: #111827; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                      ${user.username}
+                    </div>
+                    <div style="font-size: 11px; color: #9ca3af; margin-left: 10px;">
+                      ${user.lastTime || ""}
+                    </div>
                   </div>
-                  <div style="font-size: 13px; color: #6b7280;">Click to chat</div>
+                  <div style="font-size: 13px; color: #6b7280; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ${preview}
+                  </div>
                 </div>
               </div>
             `;

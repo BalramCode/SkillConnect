@@ -63,37 +63,47 @@ router.get("/recent-chats/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
 
+    // 1. Get all messages involving the user
     const messages = await ChatMessage.find({
       $or: [{ sender: userId }, { receiver: userId }]
     }).sort({ createdAt: -1 });
 
     const orderedIds = [];
-    messages.forEach(msg => {
-      // SAFE CHECK: Ensure msg, sender, and receiver exist
-      if (msg && msg.sender && msg.receiver) {
-        const senderStr = msg.sender.toString();
-        const receiverStr = msg.receiver.toString();
+    const lastMessagesMap = {}; // To store the latest message for each user
 
-        const otherPerson = senderStr === userId ? receiverStr : senderStr;
+    messages.forEach(msg => {
+      if (msg && msg.sender && msg.receiver) {
+        const otherPerson = msg.sender.toString() === userId ? msg.receiver.toString() : msg.sender.toString();
         
-        if (otherPerson && !orderedIds.includes(otherPerson)) {
+        if (!orderedIds.includes(otherPerson)) {
           orderedIds.push(otherPerson);
+          // Store the snippet and time of the first (newest) message found
+          lastMessagesMap[otherPerson] = {
+            text: msg.message,
+            time: msg.time
+          };
         }
       }
     });
 
     const User = require("../model/userModel");
-    const usersData = await User.find({ 
-      _id: { $in: orderedIds } 
-    }).select("username _id");
+    const usersData = await User.find({ _id: { $in: orderedIds } }).select("username _id");
 
-    const sortedRecentUsers = orderedIds.map(id => 
-      usersData.find(user => user._id.toString() === id)
-    ).filter(Boolean);
+    // 2. Combine user data with their last message
+    const sortedRecentUsers = orderedIds.map(id => {
+      const user = usersData.find(u => u._id.toString() === id);
+      if (!user) return null;
+      return {
+        _id: user._id,
+        username: user.username,
+        lastMessage: lastMessagesMap[id].text,
+        lastTime: lastMessagesMap[id].time
+      };
+    }).filter(Boolean);
 
     res.json(sortedRecentUsers);
   } catch (err) {
-    console.error("Recent chats error:", err);
+    console.error(err);
     res.status(500).json({ error: "Failed to load recent chats" });
   }
 });
