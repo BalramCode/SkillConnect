@@ -429,7 +429,12 @@
 
           const resultsDiv = document.getElementById("searchResults");
           resultsDiv.innerHTML = ""; // Clear the sidebar
-
+          // IF NO CHATS EXIST
+              if (users.length === 0) {
+                showEmptyState("No recent conversations");
+                return;
+              }
+              
           users.forEach(user => {
             const div = document.createElement("div");
             
@@ -468,8 +473,9 @@
         }
       }
       // This runs automatically when the page opens
-loadRecentChats();
+      loadRecentChats();
 
+      // Function that send msg when enter is pressed
       function handleKeyPress(event) {
         // Check if the pressed key is "Enter"
         if (event.key === "Enter") {
@@ -477,6 +483,19 @@ loadRecentChats();
           sendMessage();          // Calls your existing send function
         }
       }
+      // Function that shows empty msg in chat when a new user is coming
+      function showEmptyState(message) {
+      const resultsDiv = document.getElementById("searchResults");
+      resultsDiv.innerHTML = `
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 40px; text-align: center; color: #9ca3af;">
+          <svg xmlns="http://www.w3.org/2000/svg" style="width: 80px; height: 80px; margin-bottom: 20px; color: #e5e7eb;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+          <div style="font-weight: 500; font-size: 16px; color: #6b7280;">${message}</div>
+          <p style="font-size: 13px; margin-top: 8px;">Search for users above to start a new conversation.</p>
+        </div>
+      `;
+    }
     </script>
 
 
