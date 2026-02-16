@@ -95,100 +95,141 @@ io.on("connection", (socket) => {
 
   // 1️⃣ Join project room
   socket.on("join-project", async ({ projectId, username, userId }) => {
-  const project = await Project.findById(projectId);
+    const project = await Project.findById(projectId);
 
-  // 🚫 BLOCK: project not found
-  if (!project) {
-    socket.emit("not-allowed", "Project not found");
-    return;
-  }
+    // 🚫 BLOCK: project not found
+    if (!project) {
+      socket.emit("not-allowed", "Project not found");
+      return;
+    }
 
-  // 🚫 BLOCK: user is NOT a member
-  const isMember = project.members.some(
-    (id) => id.toString() === userId
-  );
+    // 🚫 BLOCK: user is NOT a member
+    const isMember = project.members.some(
+      (id) => id.toString() === userId
+    );
 
-  if (!isMember) {
-    socket.emit("not-allowed", "Join the project to chat");
-    return;
-  }
+    if (!isMember) {
+      socket.emit("not-allowed", "Join the project to chat");
+      return;
+    }
 
-  // ✅ ALLOWED: user is a member
-  const roomName = `project_${projectId}`;
-  socket.join(roomName);
+    // ✅ ALLOWED: user is a member
+    const roomName = `project_${projectId}`;
+    socket.join(roomName);
 
-  socket.username = username;
-  socket.projectId = projectId;
+    socket.username = username;
+    socket.projectId = projectId;
 
-  if (!onlineUsers[projectId]) {
-    onlineUsers[projectId] = {};
-  }
+    if (!onlineUsers[projectId]) {
+      onlineUsers[projectId] = {};
+    }
 
-  onlineUsers[projectId][username] = socket.id;
+    onlineUsers[projectId][username] = socket.id;
 
-  io.to(roomName).emit("online-users", {
-    users: Object.keys(onlineUsers[projectId]),
+    io.to(roomName).emit("online-users", {
+      users: Object.keys(onlineUsers[projectId]),
+    });
+
+    console.log(`🟢 ${username} joined chat (AUTHORIZED)`);
   });
-
-  console.log(`🟢 ${username} joined chat (AUTHORIZED)`);
-});
 
 
   // 2️⃣ Receive & broadcast message
   socket.on("send-message", async ({ projectId, message, sender }) => {
-  // 🚫 BLOCK if user never joined project room
-  if (
-    socket.projectId !== projectId ||
-    !socket.username ||
-    socket.username !== sender
-  ) {
-    console.log("🚫 Message blocked (not a project member)");
-    return;
-  }
+    // 🚫 BLOCK if user never joined project room
+    if (
+      socket.projectId !== projectId ||
+      !socket.username ||
+      socket.username !== sender
+    ) {
+      console.log("🚫 Message blocked (not a project member)");
+      return;
+    }
 
-  const time = new Date().toLocaleTimeString();
+    const time = new Date().toLocaleTimeString();
 
-  await ChatMessage.create({
-    project: projectId,
-    sender,
-    message,
-    time,
+      await ChatMessage.create({
+        project: projectId,
+        sender: sender,   // This is a username string
+        receiver: null,   // Projects don't have a single receiver
+        message,
+        time,
+      });
+
+      const roomName = `project_${projectId}`;
+      io.to(roomName).emit("receive-message", {
+        message,
+        sender,
+        time,
+      });
+
+
+    console.log("💾 Message saved & broadcasted (AUTHORIZED)");
   });
-
-  const roomName = `project_${projectId}`;
-
-console.log("ROOM MEMBERS:", io.sockets.adapter.rooms.get(roomName));
-
-io.to(roomName).emit("receive-message", {
-  message,
-  sender,
-  time,
-});
-
-
-  console.log("💾 Message saved & broadcasted (AUTHORIZED)");
-});
 
 
   // 3️⃣ Handle disconnect
   socket.on("disconnect", () => {
-  const { projectId, username } = socket;
+    const { projectId, username } = socket;
 
-  if (
-    projectId &&
-    username &&
-    onlineUsers[projectId] &&
-    onlineUsers[projectId][username] === socket.id
-  ) {
-    delete onlineUsers[projectId][username];
+    if (
+      projectId &&
+      username &&
+      onlineUsers[projectId] &&
+      onlineUsers[projectId][username] === socket.id
+    ) {
+      delete onlineUsers[projectId][username];
 
-    io.to(`project_${projectId}`).emit("online-users", {
-      users: Object.keys(onlineUsers[projectId]),
+      io.to(`project_${projectId}`).emit("online-users", {
+        users: Object.keys(onlineUsers[projectId]),
+      });
+
+      console.log(`🔴 ${username} went offline`);
+    } else {
+      console.log("🔴 Socket disconnected:", socket.id);
+    }
+  });
+
+
+  // ================= PRIVATE CHAT (DM) =================
+
+  // Join private room
+  socket.on("join-private", ({ userId, targetUserId }) => {
+
+    const roomName = "private_" + [userId, targetUserId].sort().join("_");
+
+    socket.join(roomName);
+
+    console.log(`🟢 Joined private chat room: ${roomName}`);
+  });
+
+
+  // Send private message
+socket.on("private-message", async ({ senderId, receiverId, message }) => {
+  try {
+    // 1. DEFINE the time variable first!
+    const time = new Date().toLocaleTimeString(); 
+
+    // 2. Save to MongoDB
+    const newMessage = await ChatMessage.create({
+      sender: senderId,
+      receiver: receiverId,
+      message,
+      time // Now 'time' is defined and won't crash
     });
 
-    console.log(`🔴 ${username} went offline`);
-  } else {
-    console.log("🔴 Socket disconnected:", socket.id);
+    // 3. Broadcast the message
+    io.emit("receive-private-message", {
+      senderId,
+      receiverId,
+      message,
+      time,
+      createdAt: newMessage.createdAt
+    });
+
+    console.log("💬 Private message sent and saved");
+  } catch (err) {
+    console.error("Private message error:", err);
   }
 });
 

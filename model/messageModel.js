@@ -1,14 +1,18 @@
 const mongoose = require("mongoose");
-
 const chatMessageSchema = new mongoose.Schema({
   project: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Project",
+    required: false,
+  },
+  // Change these to String so they don't force ObjectId validation
+  sender: {
+    type: String, 
     required: true,
   },
-  sender: {
+  receiver: {
     type: String,
-    required: true,
+    required: false, // Optional because Project Chats don't have a specific receiver
   },
   message: {
     type: String,
@@ -23,5 +27,4 @@ const chatMessageSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-
 module.exports = mongoose.model("ChatMessage", chatMessageSchema);
