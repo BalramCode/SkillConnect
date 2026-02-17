@@ -265,7 +265,7 @@ router.get("/myprojects", isLoggedIn, async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Failed to load My Projects ❌");
+    res.status(500).send("Failed to load My Projects  ❌");
   }
 });
 
