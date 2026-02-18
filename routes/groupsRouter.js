@@ -59,4 +59,26 @@ router.post("/create", isLoggedIn, async (req, res) => {
   }
 });
 
+
+// View Specific Group
+router.get("/group/:id", isLoggedIn, async (req, res) => {
+  const group = await groupModel.findById(req.params.id)
+    .populate("creator")
+    .populate("members")
+    .populate("joinRequests.user");
+
+  const isMember =
+    group.members &&
+    group.members.some(
+      (member) => member._id.toString() === req.user._id.toString()
+    );
+
+  res.render("specificGroup", {
+    group,
+    user: req.user,
+    isMember,
+  });
+});
+
+
 module.exports = router;
