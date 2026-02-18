@@ -265,32 +265,75 @@ router.get("/myprojects", isLoggedIn, async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Failed to load My Projects ❌");
+    res.status(500).send("Failed to load My Projects  ❌");
   }
 });
 
-async function addCollaborator(repoUrl, githubUsername) {
-  // ✅ GUARD: do nothing if data is missing
-  if (!repoUrl || !githubUsername) return;
-
-  const [owner, repo] = repoUrl.replace("https://github.com/", "").split("/");
-
-  await axios.put(
-    `https://api.github.com/repos/${owner}/${repo}/collaborators/${githubUsername}`,
-    {},
-    {
-      headers: {
-        Authorization: `token ${process.env.GITHUB_TOKEN}`,
-        Accept: "application/vnd.github+json",
-      },
-    },
-  );
-
-  console.log(`INVITED ${githubUsername} TO ${repo}`);
-}
-
 const axios = require("axios");
 
+// ===============================
+// ✅ CHECK IF REPO EXISTS
+// ===============================
+async function repoExists(repoUrl) {
+  if (!repoUrl) return false;
+
+  const [owner, repo] = repoUrl
+    .replace("https://github.com/", "")
+    .trim()
+    .split("/");
+
+  try {
+    await axios.get(
+      `https://api.github.com/repos/${owner}/${repo}`,
+      {
+        headers: {
+          Authorization: `token ${process.env.GITHUB_TOKEN}`,
+        },
+      }
+    );
+
+    return true;
+  } catch (err) {
+    console.log("Repo does not exist anymore.");
+    return false;
+  }
+}
+
+// ===============================
+// ✅ ADD COLLABORATOR
+// ===============================
+async function addCollaborator(repoUrl, githubUsername) {
+  if (!repoUrl || !githubUsername) return;
+
+  const [owner, repo] = repoUrl
+    .replace("https://github.com/", "")
+    .trim()
+    .split("/");
+
+  try {
+    await axios.put(
+      `https://api.github.com/repos/${owner}/${repo}/collaborators/${githubUsername}`,
+      { permission: "push" },
+      {
+        headers: {
+          Authorization: `token ${process.env.GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+        },
+      }
+    );
+
+    console.log(`INVITED ${githubUsername} TO ${repo}`);
+  } catch (err) {
+    console.error(
+      "COLLABORATOR ERROR:",
+      err.response?.data || err.message
+    );
+  }
+}
+
+// ===============================
+// ✅ START CODING ROUTE
+// ===============================
 router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
   try {
     const project = await projectModel.findById(req.params.id);
@@ -302,7 +345,7 @@ router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
 
     // 2️⃣ User must be a member
     const isMember = project.members.some(
-      (memberId) => memberId.toString() === req.user._id.toString(),
+      (memberId) => memberId.toString() === req.user._id.toString()
     );
 
     if (!isMember) {
@@ -311,25 +354,42 @@ router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
       });
     }
 
-    // 3️⃣ Repo already exists → reuse
+    // ===============================
+    // 3️⃣ REPO EXISTS IN DB → VERIFY
+    // ===============================
     if (project.repoUrl && project.cloneUrl) {
-      console.log("USING EXISTING REPO:", project.repoUrl);
+      console.log("USING STORED REPO:", project.repoUrl);
 
-      // ✅ Invite member (safe now)
-      if (project.repoUrl && req.user.githubUsername) {
-        await addCollaborator(project.repoUrl, req.user.githubUsername);
+      const exists = await repoExists(project.repoUrl);
+
+      if (exists) {
+        // Invite member safely
+        await addCollaborator(
+          project.repoUrl,
+          req.user.githubUsername
+        );
+
+        return res.json({
+          status: "exists",
+          repoUrl: project.repoUrl,
+          cloneUrl: project.cloneUrl,
+        });
+      } else {
+        // Repo deleted from GitHub → reset DB
+        console.log("Repo was deleted. Recreating...");
+        project.repoUrl = undefined;
+        project.cloneUrl = undefined;
+        await project.save();
       }
-
-      return res.json({
-        status: "exists",
-        repoUrl: project.repoUrl,
-        cloneUrl: project.cloneUrl,
-      });
     }
 
-    // 4️⃣ Repo does not exist → create once
+    // ===============================
+    // 4️⃣ CREATE NEW REPO
+    // ===============================
     const repoName =
-      project.projectName.toLowerCase().replace(/[^a-z0-9]+/g, "-") +
+      project.projectName
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-") +
       "-" +
       project._id.toString().slice(-5);
 
@@ -339,7 +399,9 @@ router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
       "https://api.github.com/user/repos",
       {
         name: repoName,
-        description: project.projectDescription || "SkillConnect Project",
+        description:
+          project.projectDescription ||
+          "SkillConnect Project",
         private: false,
       },
       {
@@ -347,30 +409,39 @@ router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
           Authorization: `token ${process.env.GITHUB_TOKEN}`,
           Accept: "application/vnd.github+json",
         },
-      },
+      }
     );
 
-    // 5️⃣ Save repo (source of truth)
+    // Save repo in DB
     project.repoUrl = response.data.html_url;
     project.cloneUrl = response.data.clone_url;
     await project.save();
 
     console.log("REPO CREATED & SAVED:", project.repoUrl);
 
-    // ✅ Invite creator/member
-    if (project.repoUrl && req.user.githubUsername) {
-      await addCollaborator(project.repoUrl, req.user.githubUsername);
-    }
+    // Invite user
+    await addCollaborator(
+      project.repoUrl,
+      req.user.githubUsername
+    );
 
     return res.json({
       status: "created",
       repoUrl: project.repoUrl,
       cloneUrl: project.cloneUrl,
     });
+
   } catch (err) {
-    console.error("START CODING ERROR:", err.response?.data || err);
-    res.status(500).json({ error: "Start coding failed" });
+    console.error(
+      "START CODING ERROR:",
+      err.response?.data || err.message
+    );
+
+    return res
+      .status(500)
+      .json({ error: "Start coding failed" });
   }
 });
+
 
 module.exports = router;
