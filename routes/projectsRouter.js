@@ -184,42 +184,16 @@ router.post("/newTask",isLoggedIn, async (req, res) => {
   }
 });
 
+const { uploadFile } = require("../controllers/fileController");
+
 router.post(
   "/project/:id/upload",
   isLoggedIn,
   multer.single("file"),
-  async (req, res) => {
-    try {
-      if (!req.file) {
-        req.flash("error", "No file selected");
-        return res.redirect(`/projects/project/${req.params.id}`);
-      }
-
-      await File.create({
-        project: req.params.id,
-        filename: req.file.filename,
-        originalname: req.file.originalname,
-        mimetype: req.file.mimetype,
-        size: req.file.size,
-        uploadedBy: req.user._id,
-      });
-
-      await Activity.create({
-      project: req.params.id,
-      user: req.user._id,
-      type: "file_uploaded",
-      message: `uploaded a file "${req.file.originalname}"`,
-    });
-
-      req.flash("success", "File uploaded successfully");
-      res.redirect(`/projects/project/${req.params.id}`);
-    } catch (err) {
-      console.log(err);
-      req.flash("error", "Something went wrong");
-      res.redirect(`/projects/project/${req.params.id}`);
-    }
-  },
+  uploadFile
 );
+
+
 
 // Delete file
 router.post("/file/delete/:id", isLoggedIn, async (req, res) => {
@@ -231,21 +205,6 @@ router.post("/file/delete/:id", isLoggedIn, async (req, res) => {
   res.redirect(`/projects/project/${file.project}`);
 });
 
-// Download file
-router.get("/uploads/files/:filename", (req, res) => {
-  const filePath = path.join(
-    __dirname,
-    "../uploads/files",
-    req.params.filename,
-  );
-
-  res.download(filePath, (err) => {
-    if (err) {
-      console.error("Download error:", err);
-      return res.status(404).send("File not found");
-    }
-  });
-});
 
 // Rendering my Projects
 // My Projects (Joined OR Created)

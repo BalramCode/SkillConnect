@@ -4,19 +4,22 @@ const fileSchema = new mongoose.Schema({
   project: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Project",
-    required: true
+    required: true,
   },
-
-  filename: String,
   originalname: String,
   size: Number,
-  mimetype: String,
   uploadedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+    ref: "User",
   },
-
-  createdAt: { type: Date, default: Date.now }
-});
+  url: {
+    type: String,
+    required: true,
+  },
+  public_id: {
+    type: String,
+    required: true,
+  },
+}, { timestamps: true });
 
 module.exports = mongoose.model("File", fileSchema);

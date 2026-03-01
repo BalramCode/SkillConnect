@@ -1139,19 +1139,23 @@ document.getElementById("startCodingBtn").addEventListener("click", async () => 
                       </p>
 
                       <p class="text-sm text-gray-500">
-  Uploaded by <%= file.uploadedBy.username %> • 
-  <%= file.createdAt.toDateString() %> • 
-  <%= (file.size / 1024).toFixed(1) %> KB
-</p>
+                        Uploaded by <%= file.uploadedBy.username %> •
+                          <%= file.createdAt.toDateString() %> •
+                            <%= (file.size / 1024).toFixed(1) %> KB
+                      </p>
 
 
-                      <a
-                        href="/projects/uploads/files/<%= file.filename %>"
-                        download
-                        class="text-sm text-blue-600 underline"
-                      >
-                        Download
-                      </a>
+                  <% if (file.url) { %>
+                    <a href="<%= file.url %>?download=true" class="text-blue-600 underline">
+                      Download
+                    </a>
+                    <% } else { %>
+                      <span class="text-red-500">File not available</span>
+                      <% } %>
+
+
+
+
                     </div>
                   </div>
 

@@ -28,7 +28,7 @@ app.use(express.json());
 app.use(cookieParser()); // 3. IMPORTANT: Re-added cookie-parser middleware
 
 // Serve uploaded files
-app.use("/projects/uploads/files", express.static("uploads/files"));
+// app.use("/projects/uploads/files", express.static("uploads/files"));
 app.use("/users", usersRouter);
 app.use("/groups", groupsRouter);
 app.use("/projects", projectsRouter);
@@ -47,18 +47,9 @@ mongoose
     console.error("Mongodb not connected:", err.message);
   });
 
-const multer = require("multer");
+const uploadRoute = require("./routes/uploadRoute");
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/files"); // create this folder
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
-  }
-});
-
-const upload = multer({ storage });
+app.use("/api", uploadRoute);
 
 console.log(
   process.env.GITHUB_TOKEN

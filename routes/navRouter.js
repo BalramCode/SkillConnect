@@ -131,20 +131,29 @@ router.get("/profile/:username", isLoggedIn, async (req, res) => {
 
 
 
-
+const File = require("../model/fileModel"); // 🔥 make sure this is imported
 
 router.get("/project/:id", isLoggedIn, async (req, res) => {
+
   const project = await projectModel.findById(req.params.id)
     .populate("creator")
     .populate("members")
     .populate("joinRequests.user");
 
+  // 🔥 FETCH FILES FOR THIS PROJECT
+  const files = await File.find({ project: req.params.id })
+    .populate("uploadedBy");
+
+  console.log(files); // optional debug
+
   res.render("specificProject", {
     project,
+    files,           // 🔥 SEND FILES TO EJS
     user: req.user,
-    isLoggedIn: req.user  // ✅ ADD THIS
+    isLoggedIn: req.user
   });
 });
+
 
 
 module.exports = router;
