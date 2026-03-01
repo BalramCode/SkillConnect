@@ -1,125 +1,133 @@
 const express = require("express");
 const router = express.Router();
-const groupModel = require("../model/groupModel");
-const userModel = require("../model/userModel");
-const isLoggedIn = require("../middleware/isLoggedIn");
 const projectModel = require("../model/projectModel");
+const isLoggedIn = require("../middleware/isLoggedIn");
 
+// 1. Notifications Page
 router.get("/notifications", isLoggedIn, async (req, res) => {
   try {
-    const message = req.query.msg || null; // <--- MESSAGE HERE
-
+    const message = req.query.msg || null;
     const userId = req.user._id;
 
+    // Requests YOU sent (Keep these as is, so user sees if they were rejected/pending)
     const userJoinRequests = await projectModel
       .find({ "joinRequests.user": userId })
       .populate("joinRequests.user")
-      .populate("creator")
       .sort({ createdAt: -1 });
 
-    const creatorProjects = await projectModel
+    // Requests on YOUR projects 
+    // FIX: Only send requests that are actually 'pending' to the creator
+    const rawCreatorProjects = await projectModel
       .find({ creator: userId })
       .populate("joinRequests.user")
-      .populate("creator")
       .sort({ createdAt: -1 });
+
+    // We filter the array manually to ensure the creator only sees "Pending" actions
+    const creatorProjects = rawCreatorProjects.map(project => {
+      const p = project.toObject(); // Convert to plain object to modify
+      p.joinRequests = p.joinRequests.filter(r => r.status === 'pending');
+      return p;
+    });
 
     res.render("projectRequests", {
       user: req.user,
       userJoinRequests,
-      creatorProjects,
-      message, // <--- SEND TO FRONTEND
+      creatorProjects, // Now only contains actionable pending requests
+      message,
     });
   } catch (err) {
-    console.log(err);
     res.status(500).send("Failed to load notifications ❌");
   }
 });
 
-// creator can see the request
-router.get("/project/:id/requests", isLoggedIn, async (req, res) => {
-  const project = await projectModel
-    .findById(req.params.id)
-    .populate("joinRequests.user");
+// 2. Accept Request Logic
+router.get("/project/:projectId/accept/:userId", isLoggedIn, async (req, res) => {
+  try {
+    const { projectId, userId } = req.params;
+    const project = await projectModel.findById(projectId);
 
-  if (project.creator.toString() !== req.user._id.toString()) {
-    return res.status(403).send("Not allowed");
+    // SECURITY: Only the creator can accept requests
+    if (project.creator.toString() !== req.user._id.toString()) {
+      return res.status(403).send("Unauthorized");
+    }
+
+    // Add to members if not already there
+    if (!project.members.includes(userId)) {
+      project.members.push(userId);
+    }
+
+    /* LOGIC CHANGE: 
+       We remove the request from the 'joinRequests' array 
+       because they are now a member. 
+    */
+    project.joinRequests = project.joinRequests.filter(
+      (r) => r.user.toString() !== userId
+    );
+
+    await project.save();
+    res.redirect(`/requestRoute/notifications?msg=accepted`);
+  } catch (err) {
+    res.status(500).send("Error accepting request");
   }
-  res.render("projectRequests.ejs", { project });
 });
 
-// Join Request
-// Join Project
+// 3. Reject Request Logic
+router.get("/project/:projectId/reject/:userId", isLoggedIn, async (req, res) => {
+  try {
+    const { projectId, userId } = req.params;
+    const project = await projectModel.findById(projectId);
+
+    // SECURITY: Only the creator can reject requests
+    if (project.creator.toString() !== req.user._id.toString()) {
+      return res.status(403).send("Unauthorized");
+    }
+
+    /* OPTION A: Remove the request entirely (Cleaner)
+       OPTION B: Keep it and mark as "rejected" (Good for history)
+       I will go with OPTION B as per your original design, 
+       but use a cleaner filter/update method.
+    */
+    const request = project.joinRequests.find(r => r.user.toString() === userId);
+    if (request) {
+      request.status = "rejected";
+    }
+
+    await project.save();
+    res.redirect(`/requestRoute/notifications?msg=rejected`);
+  } catch (err) {
+    res.status(500).send("Error rejecting request");
+  }
+});
+
 router.post("/join/:id", isLoggedIn, async (req, res) => {
   try {
     const project = await projectModel.findById(req.params.id);
+    const userId = req.user._id.toString();
 
-    if (!project) {
-      return res.status(404).send("Project not found");
+    // 1. Check if already a member
+    if (project.members.includes(userId)) {
+      return res.redirect(`/projects?msg=already_member`);
     }
 
-    // Already a member?
-    if (project.members.includes(req.user._id)) {
-      return res.redirect(`/projects?message=already_member`);
+    // 2. Check if a request already exists (Regardless of status)
+    const existingRequest = project.joinRequests.find(r => r.user.toString() === userId);
+    
+    if (existingRequest) {
+      if (existingRequest.status === 'pending') {
+        return res.redirect(`/projects?msg=already_requested`);
+      } else if (existingRequest.status === 'rejected') {
+        return res.redirect(`/projects?msg=request_rejected_previously`);
+      }
     }
 
-    // PUBLIC PROJECT ⇒ AUTO-JOIN
-    if (project.visibility === "public") {
-      project.members.push(req.user._id);
-      await project.save();
-      return res.redirect(`/projects/project/${project._id}`);
-    }
-
-    // Check if user already requested
-    const alreadyRequested = project.joinRequests.some(
-      (reqObj) => reqObj.user.toString() === req.user._id.toString()
-    );
-
-    if (alreadyRequested) {
-      return res.redirect(`/projects?message=request_exists`);
-    }
-
-    project.joinRequests.push({ user: req.user._id });
+    // 3. If no duplicate found, push new request
+    project.joinRequests.push({ user: userId, status: 'pending' });
     await project.save();
 
-    return res.redirect(`/projects?message=request_sent`);
-
+    res.redirect(`/projects?msg=sent`);
   } catch (err) {
-    console.log(err);
-    res.status(500).send("Something went wrong ❌");
+    res.status(500).send("Server Error");
   }
-});
-
-
-// Accept Request
-router.get("/project/:projectId/accept/:userId", async (req, res) => {
-  const project = await projectModel.findById(req.params.projectId);
-
-  if (!project.members.includes(req.params.userId)) {
-    project.members.push(req.params.userId);
-  }
-
-  project.joinRequests = project.joinRequests.map((r) =>
-    r.user.toString() === req.params.userId ? { ...r, status: "accepted" } : r
-  );
-
-  await project.save();
-
-  // Redirect with query message
-  res.redirect(`/requestRoute/notifications?msg=accepted`);
-});
-
-// Reject Request
-router.get("/project/:projectId/reject/:userId", async (req, res) => {
-  const project = await projectModel.findById(req.params.projectId);
-
-  project.joinRequests = project.joinRequests.map((r) =>
-    r.user.toString() === req.params.userId ? { ...r, status: "rejected" } : r
-  );
-
-  await project.save();
-
-  // Redirect with message
-  res.redirect(`/requestRoute/notifications?msg=rejected`);
 });
 
 module.exports = router;

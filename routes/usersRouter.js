@@ -163,7 +163,11 @@ router.post("/login", async (req, res) => {
       process.env.JWT_KEY
     );
     res.cookie("token", token, { httpOnly: true });
+  //  req.login(u, (err) => {
+  //     if (err) return next(err);
 
+  //     return res.redirect("/dashboard"); // or wherever
+  //   });
     // =========================
     // ✅ CALCULATE DASHBOARD STATS
     // =========================

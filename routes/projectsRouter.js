@@ -334,7 +334,16 @@ async function addCollaborator(repoUrl, githubUsername) {
 // ===============================
 // ✅ START CODING ROUTE
 // ===============================
+
 router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
+  console.log("REQ USER FULL:", req.user);
+
+  console.log("USER TOKEN:", req.user.githubAccessToken);
+  console.log("GITHUB USERNAME:", req.user.githubUsername);
+  if (!req.user.githubAccessToken) {
+    return res.status(403).json({ error: "Connect your GitHub account first" });
+  }
+
   try {
     const project = await projectModel.findById(req.params.id);
 
@@ -364,10 +373,14 @@ router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
 
       if (exists) {
         // Invite member safely
-        await addCollaborator(
-          project.repoUrl,
-          req.user.githubUsername
-        );
+        // Don't invite repo owner
+        if (req.user.githubUsername !== project.repoUrl.split("/")[3]) {
+          await addCollaborator(
+            project.repoUrl,
+            req.user.githubUsername
+          );
+        }
+
 
         return res.json({
           status: "exists",
@@ -406,7 +419,7 @@ router.post("/:id/start-coding", isLoggedIn, async (req, res) => {
       },
       {
         headers: {
-          Authorization: `token ${process.env.GITHUB_TOKEN}`,
+          Authorization: `token ${req.user.githubAccessToken}`,
           Accept: "application/vnd.github+json",
         },
       }

@@ -12,44 +12,56 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-// Use the middleware to protect and populate req.user
 router.get("/dashboard", isLoggedIn, async (req, res) => {
-  const userId = req.user._id;
+  try {
+    const userId = req.user._id;
 
-  // 1️⃣ Active projects (user is a member)
-  const activeProjects = await projectModel.find({
-    members: userId,
-  });
+    // 1️⃣ Fetch Projects (Active, Owned, and Sent Requests)
+    const activeProjects = await projectModel.find({
+      members: userId,
+    }).populate("creator");
 
-  // 2️⃣ Total team members (unique, across projects)
-  const teamMemberSet = new Set();
-  activeProjects.forEach(p => {
-    p.members.forEach(m => teamMemberSet.add(m.toString()));
-  });
+    const creatorProjects = await projectModel.find({
+      creator: userId
+    }).populate("joinRequests.user");
 
-  // 3️⃣ Tasks completed by user
-  const completedTasks = await Task.countDocuments({
-    assignedTo: userId,
-    status: "done",
-  });
+    const userJoinRequests = await projectModel.find({
+      "joinRequests.user": userId
+    });
 
-  // 4️⃣ Pending tasks for user
-  const pendingTasks = await Task.countDocuments({
-    assignedTo: userId,
-    status: { $in: ["todo", "inprogress"] },
-  });
+    // 2️⃣ Calculate Unique Team Members
+    const teamMemberSet = new Set();
+    activeProjects.forEach(p => {
+      p.members.forEach(m => teamMemberSet.add(m.toString()));
+    });
 
-  res.render("dashboard", {
-    user: req.user,
-    stats: {
-      activeProjects: activeProjects.length,
-      teamMembers: teamMemberSet.size,
-      completedTasks,
-      pendingTasks,
-    },
-  });
+    // 3️⃣ Fetch Task Statistics (Assuming 'Task' model is imported)
+    // Using Promise.all is faster as it runs queries in parallel
+    const [completedTasks, pendingTasks] = await Promise.all([
+      Task.countDocuments({ assignedTo: userId, status: "done" }),
+      Task.countDocuments({ assignedTo: userId, status: { $in: ["todo", "inprogress"] } })
+    ]);
+
+    // 4️⃣ Single Response Render
+    res.render("dashboard", {
+      user: req.user,
+      activeProjects,
+      creatorProjects,
+      userJoinRequests,
+      title: "Dashboard",
+      stats: {
+        activeProjectsCount: activeProjects.length,
+        teamMembers: teamMemberSet.size,
+        completedTasks,
+        pendingTasks,
+      },
+    });
+
+  } catch (err) {
+    console.error("Dashboard Error:", err);
+    res.status(500).send("Failed to load dashboard ❌");
+  }
 });
-
 
 router.get("/projects", isLoggedIn, async (req, res) => {
   try {
@@ -90,7 +102,7 @@ router.get("/setting", isLoggedIn, (req, res) => {
 router.get("/profile", isLoggedIn, async (req, res) => {
   const isLoggedInUser = req.user;
 
-  return res.render("Profile", { 
+  return res.render("Profile", {
     user: isLoggedInUser,
     isLoggedIn: isLoggedInUser
   });
@@ -127,9 +139,9 @@ router.get("/project/:id", isLoggedIn, async (req, res) => {
     .populate("members")
     .populate("joinRequests.user");
 
-  res.render("specificProject", { 
-    project, 
-    user: req.user, 
+  res.render("specificProject", {
+    project,
+    user: req.user,
     isLoggedIn: req.user  // ✅ ADD THIS
   });
 });

@@ -235,6 +235,38 @@ socket.on("private-message", async ({ senderId, receiverId, message }) => {
 
 });
 
+// Github Setup
+require("./config/passportGithub");
+const session = require("express-session");
+const passport = require("passport");
+
+// SESSION FIRST
+app.use(
+  session({
+    secret: "skillconnectsecret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false,        // true only in production with HTTPS
+      httpOnly: true,
+      sameSite: "lax",      // VERY IMPORTANT for OAuth redirects
+    },
+  })
+);
+app.get("/check-session", (req, res) => {
+  console.log("SESSION USER:", req.user);
+  res.json({ user: req.user });
+});
+
+
+// THEN PASSPORT
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Github OAuth Connection
+const githubAuthRoutes = require("./routes/githubAuth");
+app.use(githubAuthRoutes);
+
 
 // Start server
 server.listen(PORT, () => {

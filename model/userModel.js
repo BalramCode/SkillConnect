@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
-    required: true,
   },
 
   university: {
@@ -29,21 +28,28 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
     default:
-      "Full-stack developer passionate about creating innovative solutions. Currently pursuing Computer Science with a focus on AI and machine learning. Love building products that make a difference.",
+      "Full-stack developer passionate about creating innovative solutions.",
   },
 
-  // 🔥 ADD THIS FIELD
+  password: {
+    type: String,
+  },
+
+  confirmpassword: {
+    type: String,
+  },
+
+  // 🔥 GitHub OAuth fields
+  githubId: {
+    type: String,
+  },
+
   githubUsername: {
     type: String,
     trim: true,
   },
 
-  password: {
-    type: String,
-    required: true,
-  },
-
-  confirmpassword: {
+  githubAccessToken: {
     type: String,
   },
 });
