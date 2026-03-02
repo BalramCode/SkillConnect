@@ -260,6 +260,8 @@ app.use(githubAuthRoutes);
 
 
 // Start server
-server.listen(PORT, () => {
-  console.log(`Server + Socket.IO running on port ${PORT}`);
+server.listen(process.env.PORT
+, () => {
+  console.log(`Server + Socket.IO running on port ${process.env.PORT
+}`);
 });
