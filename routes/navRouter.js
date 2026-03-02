@@ -74,7 +74,7 @@ router.get("/projects", isLoggedIn, async (req, res) => {
 
     const message = req.query.msg || null; // <-- ADD THIS
 
-    res.render("projects", {
+    res.render("Projects", {
       projects,
       user: req.user,
       message, // <-- SEND TO EJS
@@ -87,7 +87,7 @@ router.get("/projects", isLoggedIn, async (req, res) => {
 
 router.get("/groups", isLoggedIn, async (req, res) => {
   const groups = await groupModel.find().sort({ createdAt: -1 });
-  res.render("groups", { groups, user: req.user });
+  res.render("Groups", { groups, user: req.user });
 });
 
 // Apply middleware to other protected routes

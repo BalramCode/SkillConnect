@@ -13,7 +13,7 @@ router.get("/", isLoggedIn, async (req, res) => {
       .populate("members", "name")
       .sort({ createdAt: -1 });
 
-    res.render("groups", {
+    res.render("Groups", {
       groups,
       user: req.user,
     });
