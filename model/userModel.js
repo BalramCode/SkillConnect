@@ -9,10 +9,10 @@ const userSchema = new mongoose.Schema({
 
   username: {
     type: String,
-    trim: true,
     unique: true,
-    default: "user_dev",
+    default: () => `user_${Math.floor(Math.random() * 100000)}`
   },
+
 
   email: {
     type: String,

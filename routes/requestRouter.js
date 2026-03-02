@@ -104,30 +104,44 @@ router.post("/join/:id", isLoggedIn, async (req, res) => {
     const project = await projectModel.findById(req.params.id);
     const userId = req.user._id.toString();
 
-    // 1. Check if already a member
+    // 1️⃣ Already a member?
     if (project.members.includes(userId)) {
       return res.redirect(`/projects?msg=already_member`);
     }
 
-    // 2. Check if a request already exists (Regardless of status)
-    const existingRequest = project.joinRequests.find(r => r.user.toString() === userId);
-    
+    // 🟢 IF PROJECT IS PUBLIC → DIRECT JOIN
+    if (project.visibility === "public") {
+      project.members.push(userId);
+      await project.save();
+
+      return res.redirect(`/projects/project/${project._id}`);
+    }
+
+    // 🔒 IF PROJECT IS PRIVATE → SEND REQUEST
+
+    const existingRequest = project.joinRequests.find(
+      r => r.user.toString() === userId
+    );
+
     if (existingRequest) {
-      if (existingRequest.status === 'pending') {
+      if (existingRequest.status === "pending") {
         return res.redirect(`/projects?msg=already_requested`);
-      } else if (existingRequest.status === 'rejected') {
+      }
+      if (existingRequest.status === "rejected") {
         return res.redirect(`/projects?msg=request_rejected_previously`);
       }
     }
 
-    // 3. If no duplicate found, push new request
-    project.joinRequests.push({ user: userId, status: 'pending' });
+    project.joinRequests.push({ user: userId, status: "pending" });
     await project.save();
 
-    res.redirect(`/projects?msg=sent`);
+    res.redirect(`/projects?msg=request_sent`);
+
   } catch (err) {
+    console.log(err);
     res.status(500).send("Server Error");
   }
 });
+
 
 module.exports = router;

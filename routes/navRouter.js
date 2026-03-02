@@ -50,7 +50,7 @@ router.get("/dashboard", isLoggedIn, async (req, res) => {
       userJoinRequests,
       title: "Dashboard",
       stats: {
-        activeProjectsCount: activeProjects.length,
+        activeProjects: activeProjects.length,
         teamMembers: teamMemberSet.size,
         completedTasks,
         pendingTasks,
