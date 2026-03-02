@@ -38,7 +38,7 @@ app.use("/search", searchRouter);
 
 // Database Connection
 mongoose
-  .connect(process.env.MONGODB_URl)
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("Mongodb Connected");
   })
