@@ -264,15 +264,20 @@ async function repoExists(repoUrl) {
 async function addCollaborator(repoUrl, githubUsername) {
   if (!repoUrl || !githubUsername) return;
 
-  const [owner, repo] = repoUrl
-    .replace("https://github.com/", "")
-    .trim()
-    .split("/");
+  // Improved parsing to handle trailing slashes or .git suffixes
+  const pathParts = repoUrl.replace("https://github.com/", "").split("/");
+  const owner = pathParts[0];
+  const repo = pathParts[1]?.replace(".git", "");
+
+  if (!owner || !repo) {
+    console.error("Invalid Repo URL");
+    return;
+  }
 
   try {
-    await axios.put(
+    const response = await axios.put(
       `https://api.github.com/repos/${owner}/${repo}/collaborators/${githubUsername}`,
-      { permission: "push" },
+      { permission: "push" }, // "push" is standard for contributors
       {
         headers: {
           Authorization: `token ${process.env.GITHUB_TOKEN}`,
@@ -281,12 +286,14 @@ async function addCollaborator(repoUrl, githubUsername) {
       }
     );
 
-    console.log(`INVITED ${githubUsername} TO ${repo}`);
+    // 201 means an invitation was created; 204 means they were already added/updated
+    if (response.status === 201) {
+      console.log(`INVITATION SENT to ${githubUsername}`);
+    } else {
+      console.log(`${githubUsername} is already a collaborator on ${repo}`);
+    }
   } catch (err) {
-    console.error(
-      "COLLABORATOR ERROR:",
-      err.response?.data || err.message
-    );
+    console.error("COLLABORATOR ERROR:", err.response?.data?.message || err.message);
   }
 }
 
