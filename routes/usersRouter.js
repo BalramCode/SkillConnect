@@ -108,7 +108,11 @@ router.post("/register", async (req, res) => {
       process.env.JWT_KEY
     );
 
-    res.cookie("token", token, { httpOnly: true });
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+
 
     // =========================
     // ✅ DASHBOARD STATS (NEW USER → ALL ZERO)
@@ -162,7 +166,11 @@ router.post("/login", async (req, res) => {
       { email: u.email, id: u._id },
       process.env.JWT_KEY
     );
-    res.cookie("token", token, { httpOnly: true });
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+
   //  req.login(u, (err) => {
   //     if (err) return next(err);
 
