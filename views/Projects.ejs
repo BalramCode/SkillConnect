@@ -231,14 +231,61 @@
                           type="text" name="search" placeholder="Search projects, teammates..." />
                       </form>
                     </div>
-                    <a href="/requestRoute/notifications" id="notification" class="flex justify-center items-center">
-                      <svg class="relative left-3 w-6 h-6 text-gray-500 hover:text-gray-700 transition"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                        stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 002 2zm6-6v-5a6 6 0 10-12 0v5l-2 2v1h16v-1l-2-2z" />
-                      </svg>
-                    </a>
+                     <% 
+    // This check prevents the "is not defined" error
+              let incomingCount = 0; 
+              if (typeof creatorProjects !== 'undefined' && creatorProjects) { 
+                  creatorProjects.forEach(p => { 
+                      if (p.joinRequests) {
+                          incomingCount += p.joinRequests.filter(r => r.status === 'pending').length; 
+                      }
+                  }); 
+              } 
+          %>
+
+          <a href="/requestRoute/notifications" class="relative group p-2 rounded-full hover:bg-gray-100 transition-all duration-200">
+            <svg class="relative left-3 w-6 h-6 text-gray-500 hover:text-gray-700 transition" xmlns="http://www.w3.org/2000/svg"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 002 2zm6-6v-5a6 6 0 10-12 0v5l-2 2v1h16v-1l-2-2z" />
+            </svg>
+
+            <% if (incomingCount > 0) { %>
+              <span class="absolute top-1 right-1 flex h-5 w-5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span id="notificationCount"
+                  class="relative inline-flex items-center justify-center rounded-full h-5 w-5 bg-red-600 text-[10px] font-bold text-white border-2 border-white">
+                  <%= incomingCount %>
+                </span>
+
+              </span>
+            <% } %>
+          </a>
+        <script>
+          async function loadNotifications() {
+            try {
+              const res = await fetch("/requestRoute/count");
+              const data = await res.json();
+
+              const badge = document.getElementById("notificationCount");
+
+              if (!badge) return;
+
+              if (data.count > 0) {
+                badge.innerText = data.count;
+                badge.parentElement.style.display = "flex";
+              } else {
+                badge.parentElement.style.display = "none";
+              }
+
+            } catch (err) {
+              console.log("Notification error:", err);
+            }
+          }
+
+          setInterval(loadNotifications, 5000); // check every 5 seconds
+          loadNotifications();
+        </script>
 
                     <div class="flex items-center gap-3 pr-6">
                       <div

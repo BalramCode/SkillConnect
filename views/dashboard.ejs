@@ -227,8 +227,7 @@
             type="text" placeholder="Search projects, teammates..." />
         </div>
         <% 
-    // This check prevents the "is not defined" error
-              let incomingCount = 0; 
+         let incomingCount = 0; 
               if (typeof creatorProjects !== 'undefined' && creatorProjects) { 
                   creatorProjects.forEach(p => { 
                       if (p.joinRequests) {
@@ -248,12 +247,39 @@
             <% if (incomingCount > 0) { %>
               <span class="absolute top-1 right-1 flex h-5 w-5">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span class="relative inline-flex items-center justify-center rounded-full h-5 w-5 bg-red-600 text-[10px] font-bold text-white border-2 border-white">
+                <span id="notificationCount"
+                  class="relative inline-flex items-center justify-center rounded-full h-5 w-5 bg-red-600 text-[10px] font-bold text-white border-2 border-white">
                   <%= incomingCount %>
                 </span>
+
               </span>
             <% } %>
           </a>
+        <script>
+          async function loadNotifications() {
+            try {
+              const res = await fetch("/requestRoute/count");
+              const data = await res.json();
+
+              const badge = document.getElementById("notificationCount");
+
+              if (!badge) return;
+
+              if (data.count > 0) {
+                badge.innerText = data.count;
+                badge.parentElement.style.display = "flex";
+              } else {
+                badge.parentElement.style.display = "none";
+              }
+
+            } catch (err) {
+              console.log("Notification error:", err);
+            }
+          }
+
+          setInterval(loadNotifications, 5000); // check every 5 seconds
+          loadNotifications();
+        </script>
 
         <div class="flex items-center gap-3 pr-6">
           <div

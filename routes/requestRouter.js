@@ -39,6 +39,27 @@ router.get("/notifications", isLoggedIn, async (req, res) => {
     res.status(500).send("Failed to load notifications ❌");
   }
 });
+router.get("/count", isLoggedIn, async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const rawCreatorProjects = await projectModel
+      .find({ creator: userId });
+
+    let incomingCount = 0;
+
+    rawCreatorProjects.forEach(project => {
+      if (project.joinRequests) {
+        incomingCount += project.joinRequests.filter(r => r.status === "pending").length;
+      }
+    });
+
+    res.json({ count: incomingCount });
+
+  } catch (err) {
+    res.status(500).json({ count: 0 });
+  }
+});
 
 // 2. Accept Request Logic
 router.get("/project/:projectId/accept/:userId", isLoggedIn, async (req, res) => {
